@@ -75,7 +75,7 @@ const createButtons = (displayUrl) => {
 
 app.get('/show-buttons', (request, response) => {
   const {userId} = request.query;
-  const displayUrl = 'https://discreet-attic.glitch.me/show-webview';
+  const displayUrl = 'https://boiling-push.glitch.me/show-webview';
   response.json(createButtons(displayUrl)); 
 });
 
@@ -183,7 +183,7 @@ app.post('/dynamic-webview-new', (request, response) => {
 app.get('/show-dynamic-buttons', (request, response) => {
   const {userId, blockName} = request.query;
   
-  const displayUrl = `https://discreet-attic.glitch.me/dynamic-webview?userId=${userId}&blockName=${blockName}`;
+  const displayUrl = `https://boiling-push.glitch.me/dynamic-webview?userId=${userId}&blockName=${blockName}`;
 
   response.json(createButtons(displayUrl)); 
 });
