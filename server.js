@@ -6,7 +6,6 @@ var express = require('express');
 const bodyParser = require('body-parser');
 const url = require('url');
 const requestPromise = require('request-promise');
-const chatfuelBroadcast = require('chatfuel-broadcast').default;
 
 var app = express();
 
