@@ -34,6 +34,12 @@ button:hover {
     padding: 10px 18px;
     background-color: #f44336;
 }
+  
+.nextbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #008000;
+}
 
 .imgcontainer {
     text-align: center;
@@ -69,18 +75,22 @@ span.psw {
 <body>
   
 <h2>Please verify your cell phone number</h2>
-
-  <div class="container">
-    <p>
-      <b>Is your cell phone number still (***) *** - 9414?</b>
-    </p>
-    <p>
-      <a href="/show-webview">Learn more</a>
-    </p>
-    <p>
-      <a href="/show-webview">Important information</a>
-    </p>
+  
+<form>
+<div class="container">
+  <p>
+    <b>Is your cell phone number still (***) *** - 9414?</b>
+  </p>
+  <p>
+      <input type="radio" name="phone" value="correct" checked> Yes, it is correct. Please provide a security code now.<br>
+      <input type="radio" name="phone" value="wrong"> No, it is no longer valid and must be changed.<br>
+  </p>
+</div>
+  
+  <div class="container" style="background-color:#f1f1f1">
+    <button type="button" class="nextbtn">Next</button>
+    <button type="button" class="cancelbtn">Exit</button>
   </div>
-
+</form>
 </body>
 </html>
