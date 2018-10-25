@@ -83,6 +83,10 @@ app.get('/show-webview', (request, response) => {
   response.sendFile(__dirname + '/views/webview.html');
 });
 
+app.get('/login', (request, response) => {
+  response.sendFile(__dirname + '/views/login.html');
+});
+
 app.post('/broadcast-to-chatfuel', (request, response) => {
   const botId = process.env.CHATFUEL_BOT_ID;
   const chatfuelToken = process.env.CHATFUEL_TOKEN;
