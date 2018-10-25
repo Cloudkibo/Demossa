@@ -1,5 +1,5 @@
 <!doctype html>
-	<html id="Si" data-ssa-page-id="Si" lang="en">
+	<html id="Sitos" data-ssa-page-id="Sitos" lang="en">
 	
 	<head>
 	<meta name="checkpointVersion" content="1.0.0-SNAPSHOT" />
@@ -7,7 +7,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="env" content="prd" />
 	<meta name="application-name" content="EA-Login" />
-	<meta name="description" content="Sign-In" />
+	<meta name="description" content="Sign-In-Terms-Of-Service" />
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,7 @@
 	<meta http-equiv="Cache-Control" content="proxy-revalidate" />
 	<meta http-equiv="Cache-Control" content="max-age=0" />
 	
-	<title>Sign In or Create an Account, Social Security</title>
+	<title>Social Security</title>
 	
 	<style>
 	@import url(https://www.socialsecurity.gov/flexweb/rel_5_0/css/import.css);
@@ -34,6 +34,8 @@
 	</script>
 	<script src="https://www.socialsecurity.gov/flexweb/rel_5_0/js/ssa.fn.setup.js"></script>
 	<script src="https://www.socialsecurity.gov/flexweb/rel_5_0/libs/headjs/head.min.js" data-headjs-load="https://www.socialsecurity.gov/flexweb/rel_5_0/js/ssa.flexweb.loader.js"></script>
+	<script src="appjavascript/snarevars.js"></script>
+	<script src="https://mpsnare.iesnare.com/snare.js"></script>
 	<script src="https://www.socialsecurity.gov/flexweb/analytics/ssa.analytics.js"></script>
 	
 	<script type="text/javascript">
@@ -74,7 +76,7 @@
 	<div class="uef-notice-content">
 	
 	<p>Social Security's online services are designed to be accessible and user-friendly. That is why we require all web browsers to have JavaScript enabled when working with our online services.</p>
-	<p>To use this service, please adjust your web browser settings to enable JavaScript, then <a href="/RIL/SiView.action">try again</a>.</p>
+	<p>To use this service, please adjust your web browser settings to enable JavaScript, then <a href="/RIL/SitosView.action">try again</a>.</p>
 	<p>If you can't or don't want to enable JavaScript, you can return to the <a href="http://www.socialsecurity.gov/">Social Security home page</a>.</p>
 	</div>
 	</div>
@@ -94,80 +96,11 @@
 	var mainSection = document.getElementById("uef-tmpl-content-wrapper");
 	if(mainSection){$(mainSection).removeClass("hide");}
 	</script>
-	<div id="uef-tmpl-page-title" class="section">
-	<h2>Sign In or Create an Account</h2>
-	</div>
-	
 	<div id="uef-tmpl-content" role="main">
 	
-	
-	<form id="Si" name="Si" action="/RIL/Si.action" method="post">
-	<input type="hidden" name="struts.token.name" value="Si_Rome_Token" />
-	<input type="hidden" name="Si_Rome_Token" value="92VYBHFFDWTMCMJ6WV95DS3BYQJJ73C" />
-	
-	
-	
-	
-	
-	<div class="uef-container module">
-	
-	<div class="uef-container-row hd uef-container-separator">
-	<div class="uef-container-content">
-	<h3 tabindex="0">
-	Sign In</h3></div>
-	</div>
-	
-	<div class="uef-container-row">
-	<div class="uef-container-content">
-	
-	
-	<div class="uef-textBox uef-input" data-uefID="uef-in-txtBx">
-	<div class="uef-pattern-label">
-	<label for="username" id="uef-textBox1PatternLabel">
-	Username
-	</label>
-	</div>
-	<div class="uef-pattern-content">
-	
-	<input name="username" aria-labelledby="uef-textBox1PatternLabel" id="username" type="text" autocomplete="off" size="20" maxlength="20"/>
-	
-	<a href="SiLink.action?FORGOT=USERNAME" target="_self" title="Forgot Username">Forgot Username?</a>
-	
-	</div>
-	</div>
-	
-	
-	
-	<div class="uef-textBox uef-input" data-uefID="uef-in-txtBx">
-	<div class="uef-pattern-label">
-	<label for="password" id="uef-textBox2PatternLabel">
-	Password
-	</label>
-	</div>
-	<div class="uef-pattern-content">
-	
-	<input name="password" aria-labelledby="uef-textBox2PatternLabel" id="password" type="password" autocomplete="off" size="20" maxlength="20"/>
-	
-	<a href="SiLink.action?FORGOT=PASSWORD" target="_self" title="Forgot Password">Forgot Password?</a>
-	
-	</div>
-	</div>
-	
-	</div>
-	</div>
-	
-	<div class="uef-container-row">
-	<div class="uef-container-content">
-	
-	
-	<input type="submit" value="Sign In" name="signIn"
-	id="signin" class="uef-btn uef-btn-primary"/>
-	</div>
-	</div>
-	
-	
-	
-	</div>
+	<form id="Sitos" name="Sitos" action="/RIL/Sitos.action" method="post">
+	<input type="hidden" name="struts.token.name" value="Sitos_Rome_Token" />
+	<input type="hidden" name="Sitos_Rome_Token" value="2BX67WQS489EL43QFP25J5PC0I1NMAGM" />
 	
 	
 	
@@ -179,111 +112,115 @@
 	<div class="uef-container-row hd uef-container-separator">
 	<div class="uef-container-content">
 	<h3 tabindex="0">
-	Create an Account </h3></div>
+	Terms of Service</h3></div>
 	</div>
 	
 	<div class="uef-container-row">
 	<div class="uef-container-content">
 	
-	<p>
-	<strong>Don't have an account? Create one now.</strong>
-	</p>
-	<p>
-	<a href="../RIR/HpsLearnView.action" rel="help" target="_blank" data-uefID="uef-li-hlp" data-uef-window-mode="lightbox" data-uef-lightbox-type="uef-information">Learn More</a>
-	</p>
-	<div class="uef-toggle-container" data-uef-show-hide-border="false">
-	<a href="#" class="uef-toggle-controller uef-toggle-show" data-uef-toggle-targetID="moreInfo" data-uef-toggle-defaultController="true">Important Information</a>
-	<a href="#" class="uef-toggle-controller uef-toggle-hide hide" data-uef-toggle-targetID="moreInfo">Important Information</a>
-	</div>
+	<p><ul>
 	
-	</div>
-	</div>
+	<li>I am using <span class="my">my</span> <span class="ssa">Social Security</span> account services with the account that I created myself using my own personal information and identity.
 	
-	<div id="moreInfo">
-	<div class="uef-container-row">
-	<div class="uef-container-content">
+	I am not using a <span class="my">my</span> <span class="ssa">Social Security</span> account created by another person or created using another person&#39;s information or identity,
 	
-	<strong>You must be able to verify some information about yourself and:</strong>
+	even if I have that person&#39;s written permission.
+	
+	</li>
+	
+	<li>
+	
+	I will never share the use of <span class="my">my</span> <span class="ssa">Social Security</span> account with anyone else under any circumstances.
+	
+	I will never use another person&#39;s <span class="my">my</span> <span class="ssa">Social Security</span> account.
+	
+	</li>
+	
+	<li>I understand that <span class="my">my</span> <span class="ssa">Social Security</span> account contains U.S. Government information.</li>
+	
+	<li>I consent to the monitoring and recording of my use of <span class="my">my</span> <span class="ssa">Social Security</span> services, including any
+	
+	electronic communications (such as click-to-chat or messaging). </li>
+	
+	<li>I understand that it is a federal crime to:
+	
 	<ul>
-	<li>Have a valid email address,</li>
-	<li>Have a Social Security number,</li>
-	<li>Have a U.S. mailing address, and </li>
-	<li>Be at least 18 years of age.</li>
+	
+	<li>Give false or misleading statements to obtain information in Social Security records; or</li>
+	
+	<li>Deceive the Social Security Administration about an individual&#39;s identity.</li>
+	
 	</ul>
-	<p>You can only create an account using your own personal information and for your own exclusive use. </p> <p>You cannot create an account on behalf of another person or using another person&#39;s information or identity, even if you have that person&#39;s written permission. </p> <p>For example, you cannot create an account for another person:
-	<ul>
-	<li>With whom you have a business relationship,</li>
-	<li>For whom you are a representative payee, or</li>
-	<li>For whom you are an appointed representative.</li>
+	
+	</li>
+	
+	<li>I understand that unauthorized use of <span class="my">my</span> <span class="ssa">Social Security</span> services is a misrepresentation of my identity to the federal government and could subject me to criminal or civil penalties, or both.</li>
+	
+	<li>I understand that the Social Security Administration may stop me from using <span class="my">my</span> <span class="ssa">Social Security</span> services online if it finds or suspects misuse.</li>
+	
+	<li>I accept that the responsibility to properly protect any information provided to me by the Social Security Administration is mine and that I am the responsible party should any information on or from my computer or other device be improperly disclosed.
+	
+	</li>
+	
+	<li>I agree that the Social Security Administration is not responsible for the improper disclosure of any information that the
+	
+	Social Security Adminstration has provided to me, whether due to my negligence or the wrongful acts of others.
+	
+	</li>
+	
 	</ul>
-	Unauthorized use of this service may subject you to criminal or civil penalties, or both.
-	</div>
-	</div>
 	
-	</div>
+	</p>
 	
-	<div class="uef-container-row">
-	<div class="uef-container-content">
-	
-	
-	<input type="submit" value="Create An Account" name="createAnAccount"
-	id="createanaccount" class="uef-btn"/>
-	</div>
-	</div>
-	
-	
-	<div class="uef-container-row hd uef-container-shaded">
-	<div class="uef-container-content">
-	<h4>
-	Finish Setting up Your Account</h4></div>
-	</div>
-	
-	
-	<div class="uef-container-row">
-	<div class="uef-container-content">
+	<h2>The Social Security Administration is Going &ldquo;Green&rdquo;</h2>
 	
 	<p>
-	<strong>Have an activation code? Enter your code now.</strong>
+	
+	With your <span class="my">my</span> <span class="ssa">Social Security</span> account, you can immediately view, download, or print your Social Security Statement. Your online <em>Statement</em> contains the most up-to-date information in our records about your earnings and benefit.
+	
+	</p><p>
+	
+	Remember, now that you have a <span class="my">my</span> <span class="ssa">Social Security</span> account, you will no longer receive a paper <em>Statement</em> in the mail. If you need a <em>Statement</em> by mail, please <a href="https://www.socialsecurity.gov/hlp/global/hlp-statement-7004-revi.htm" target="_blank">follow these instructions</a>.</p>
+	
 	</p>
 	</div>
 	</div>
 	
-	
 	<div class="uef-container-row">
 	<div class="uef-container-content">
 	
 	
-	<input type="submit" value="Enter Activation Code" name="enterActivationCode"
-	id="enteractivationcode" class="uef-btn"/>
-	</div>
-	</div>
+	<div class="uef-checkbox uef-checkbox--critical uef-input" data-uefID="uef-in-chkBx">
 	
+	<div class="uef-pattern-label"></div>
+	<div class="uef-pattern-content">
+	<input type="checkbox" name="agreement" id="agreement" value="Y" aria-labelledby="agreementLabel"/><label for="agreement" id="agreementLabel">
+	<div class="uef-checkbox__label">I agree to the Terms of Service.
+	</div></label>
 	
-	</div>
-	
-	
-	
-	<div class="uef-container module">
-	
-	<div class="uef-container-row">
-	<div class="uef-container-content">
-	
-	Are you now, or have you ever been a victim of domestic violence? Identity theft? Do you have other concerns?
-	</div>
 	</div>
 	
-	<div class="uef-container-row">
-	<div class="uef-container-content">
+	</div>
 	
-	You can <a href="http://www.socialsecurity.gov/blockaccess/">block electronic access</a> to your information at any time, for any reason.
+	
 	</div>
 	</div>
 	
 	
 	</div>
 	
+	
+	
+	<div class="uef-formControls" id="bottom">
+	<input type="submit" value="Next" name="next"
+	id="next" class="uef-btn uef-btn-primary"/>
+	
+	<input type="submit" value="Exit" name="exit"
+	id="exit" class="uef-btn"/>
+	
+	</div>
+	<input id="jsc" type="hidden" name="jsc" value="" />
 	</form>
-	
 	
 	
 	
@@ -294,3 +231,5 @@
 	</div>
 	</body>
 	</html>
+	
+	

