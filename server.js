@@ -91,6 +91,10 @@ app.get('/verify-phone', (request, response) => {
   response.sendFile(__dirname + '/views/verify-phone.html');
 });
 
+app.get('/verify-code', (request, response) => {
+  response.sendFile(__dirname + '/views/verify-code.html');
+});
+
 app.post('/broadcast-to-chatfuel', (request, response) => {
   const botId = process.env.CHATFUEL_BOT_ID;
   const chatfuelToken = process.env.CHATFUEL_TOKEN;
