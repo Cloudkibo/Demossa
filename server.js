@@ -95,6 +95,10 @@ app.get('/verify-code', (request, response) => {
   response.sendFile(__dirname + '/views/verify-code.html');
 });
 
+app.get('/terms', (request, response) => {
+  response.sendFile(__dirname + '/views/terms.html');
+});
+
 app.post('/broadcast-to-chatfuel', (request, response) => {
   const botId = process.env.CHATFUEL_BOT_ID;
   const chatfuelToken = process.env.CHATFUEL_TOKEN;

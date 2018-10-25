@@ -59,12 +59,6 @@ span.psw {
     float: right;
     padding-top: 16px;
 }
-  
-.info {
-    background-color: #e7f3fe;
-    border-left: 6px solid #2196F3;
-    padding: 10px;
-}
 
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
@@ -80,25 +74,21 @@ span.psw {
 </head>
 <body>
   
-<div class="info">
-  <p><strong>We sent a text message to (***) *** - 9414</strong></p>
+<h2>Terms of Service (Sample)</h2>
+  
+<form action="/verify-code">
+<div class="container">
   <p>
-    Please allow up to 2 minutes for the security code to arrive. <br/>
-    The Security code will expire 10 minutes from the time of your request.
+    <b>Is your cell phone number still (***) *** - 9414?</b>
+  </p>
+  <p>
+      <input type="radio" name="phone" value="correct" checked> Yes, it is correct. Please provide a security code now.<br>
+      <input type="radio" name="phone" value="wrong"> No, it is no longer valid and must be changed.<br>
   </p>
 </div>
   
-<h2>Please enter your security code</h2>
-  
-<form action="/terms">
-<div class="container">
-  <label for="uname"><b>Enter the security code you just received</b></label>
-    <input type="text" name="uname" required>
-</div>
-  
   <div class="container" style="background-color:#f1f1f1">
-    <button type="submit" class="nextbtn">Submit Security Code</button>
-    <button type="button" class="cancelbtn">Previous</button>
+    <button type="submit" class="nextbtn">Next</button>
     <button type="button" class="cancelbtn">Exit</button>
   </div>
 </form>
