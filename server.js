@@ -111,6 +111,10 @@ app.get('/estimatedBenefits', (request, response) => {
   response.sendFile(__dirname + '/views/estimatedBenefits.html');
 });
 
+app.get('/earningsRecord', (request, response) => {
+  response.sendFile(__dirname + '/views/earningsRecord.html');
+});
+
 app.get('/newfile', (request, response) => {
   response.sendFile(__dirname + '/views/newfile.html');
 });
