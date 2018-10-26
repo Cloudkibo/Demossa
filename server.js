@@ -103,6 +103,10 @@ app.get('/dashboard', (request, response) => {
   response.sendFile(__dirname + '/views/dashboard.html');
 });
 
+app.get('/benefitsAndPayments', (request, response) => {
+  response.sendFile(__dirname + '/views/benefitsAndPayments.html');
+});
+
 app.get('/newfile', (request, response) => {
   response.sendFile(__dirname + '/views/newfile.html');
 });
