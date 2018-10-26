@@ -107,6 +107,10 @@ app.get('/benefitsAndPayments', (request, response) => {
   response.sendFile(__dirname + '/views/benefitsAndPayments.html');
 });
 
+app.get('/estimatedBenefits', (request, response) => {
+  response.sendFile(__dirname + '/views/estimatedBenefits.html');
+});
+
 app.get('/newfile', (request, response) => {
   response.sendFile(__dirname + '/views/newfile.html');
 });
