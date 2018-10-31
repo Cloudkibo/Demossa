@@ -27,7 +27,7 @@ app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (request, response) {
-  response.sendFile(__dirname + '/views/securitySettings.html');
+  response.sendFile(__dirname + '/views/updateContactInformation.html');
 });
 
 const createButtons = (displayUrl) => {
@@ -123,7 +123,9 @@ app.get('/securitySettings', (request, response) => {
   response.sendFile(__dirname + '/views/securitySettings.html');
 });
 
-app.get('/updateContactInformation', (request, response) => {})
+app.get('/updateContactInformation', (request, response) => {
+  response.sendFile(__dirname + '/views/updateContactInformation.html');
+});
 
 app.get('/newfile', (request, response) => {
   response.sendFile(__dirname + '/views/newfile.html');
