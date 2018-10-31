@@ -27,7 +27,7 @@ app.use(express.static('public'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (request, response) {
-  response.sendFile(__dirname + '/views/estimatedBenefits.html');
+  response.sendFile(__dirname + '/views/earningsRecord.html');
 });
 
 const createButtons = (displayUrl) => {
