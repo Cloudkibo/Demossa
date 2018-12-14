@@ -147,7 +147,7 @@ app.post('/fbPost', (request, response) => {
   }
 });
 
-callDialogFlowAPI("update status")
+callDialogFlowAPI("update my status")
 .then(result => {
     console.log(result)
   })
@@ -172,7 +172,7 @@ function callDialogFlowAPI (query) {
   .then(result => {
     return new Promise((resolve, reject) => {
       if (result.status.code === 200) {
-        console.log(result.result.fulfillment)
+        console.log(result.result.fulfillment.messages)
         resolve(result)
       } else {
         reject(result)
