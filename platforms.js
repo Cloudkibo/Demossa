@@ -2,6 +2,7 @@ const util = require('./utility.js')
 
 
 exports.sendMessengerChat = (item, recipient_id) => {
+  console.log(item)
   let payload
   if (item.type === 'text') {
     payload = {
@@ -14,10 +15,26 @@ exports.sendMessengerChat = (item, recipient_id) => {
       }
     }
   }
-  console.log(payload)
-  if (payload) {
-    messengerSendApi (payload)
+  else if (item.type === 'image') {
+    payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "text": item.text
+      }
+    }
   }
+  // if (payload) {
+  //   messengerSendApi (payload)
+  //   .then(result => {
+  //     console.log("FB Message sent")
+  //   })
+  //   .catch(err => {
+  //     console.log(err)
+  //   })
+  // }
 }
 
 function messengerSendApi (payload) {
@@ -27,7 +44,7 @@ function messengerSendApi (payload) {
   return util.callApi(apiUrl, endpoint, 'post', payload)
   .then(result => {
     return new Promise((resolve, reject) => {
-      if (result.status.code === 200) {
+      if (result.recipient_id) {
         resolve(result)
       } else {
         reject(result)

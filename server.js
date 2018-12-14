@@ -149,17 +149,24 @@ app.post('/fbPost', (request, response) => {
         platforms.sendMessengerChat(item, subscriberId)
       }, 1000)
     })
+    .catch(err => {
+      console.log(err)
+    })
   } else {
     
   }
 });
 
-// queryDialogFlow("update my status")
-//     .then(result => {
-//       util.intervalForEach(result, (item) => {
-//         platforms.sendMessengerChat(item)
-//       }, 1000)
-//     })
+// 1994777573950560
+queryDialogFlow("update my status")
+    .then(result => {
+      util.intervalForEach(result, (item) => {
+        platforms.sendMessengerChat(item, '1994777573950560')
+      }, 1000)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 
 function queryDialogFlow(query) {
   return ailayer.callDialogFlowAPI(query)
