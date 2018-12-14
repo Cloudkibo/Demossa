@@ -6,7 +6,7 @@ var express = require('express');
 const bodyParser = require('body-parser');
 const url = require('url');
 const requestPromise = require('request-promise');
-const util = require('./utility.js')
+const ailayer = require('./ai-layer.js')
 
 var app = express();
 
@@ -147,58 +147,14 @@ app.post('/fbPost', (request, response) => {
   }
 });
 
-callDialogFlowAPI("update my status")
+function que()
+ailayer.callDialogFlowAPI("How do I apply for a new or replacement Social Security number card?")
 .then(result => {
     console.log(result)
   })
   .catch(err => {
     console.log(err)
   })
-
-function callDialogFlowAPI (query) {
-  let apiUrl = 'https://api.dialogflow.com/v1';
-  let accessToken = 'Bearer a8966d1db63f47a2bc79a17757c5d357';
-  let payload = {
-    "contexts": [
-    "shop"
-    ],
-    "lang": "en",
-    "query": query,
-    "sessionId": "12345",
-    "timezone": "America/New_York"
-  }
-  
-  return util.callApi(apiUrl, 'query?v=20170712', 'post', payload, accessToken)
-  .then(result => {
-    return new Promise((resolve, reject) => {
-      if (result.status.code === 200) {
-        //console.log(result.result.fulfillment.messages)
-        console.log(result)
-        let respMsgs = result.result.fulfillment.messages;
-        let finalMessages = []
-        for (let i=0; i<respMsgs.length; i++ ) {
-          if (respMsgs[i].platform === 'facebook') {
-            console.log(respMsgs[i])
-            switch (respMsgs[i].type) {
-              case 0:
-                finalMessages.push({ "type": "text", "text": respMsgs[i].speech })
-                break;
-              case 1:
-                finalMessages.push({ "type": "card", "card": respMsgs[i] })
-              case 2:
-                finalMessages.push({ "type": "quick-replies", "card": respMsgs[i] })
-            }
-          } else if (respMsgs[i].type === 0) {
-            finalMessages.push({ "type": "gen-text", "text": respMsgs[i].speech })
-          }
-        }
-        resolve(finalMessages)
-      } else {
-        reject(result)
-      }
-    })
-  })
-}
 
 app.get('/fbPost', (request, response) => {
   console.log("FB verified the webhook request.")
