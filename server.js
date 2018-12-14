@@ -19,6 +19,8 @@ app.set('views', './views');
 // Parse data from application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(bodyParser.json());
+
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
 
@@ -133,7 +135,7 @@ app.get('/newfile', (request, response) => {
 
 app.post('/fbPost', (request, response) => {
   console.log('incoming post from facebook');
-  console.log(request.body);
+  console.log(request.body.entry[0]);
 });
 
 app.get('/fbPost', (request, response) => {
