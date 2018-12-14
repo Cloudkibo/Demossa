@@ -173,7 +173,19 @@ function callDialogFlowAPI (query) {
     return new Promise((resolve, reject) => {
       if (result.status.code === 200) {
         console.log(result.result.fulfillment.messages)
-        resolve(result)
+        let respMsgs = result.result.fulfillment.messages;
+        let finalMessages = []
+        for (let i=0; i<respMsgs.length; i++ ) {
+          if (respMsgs[i].platform === 'facebook') {
+            
+          } else if (respMsgs[i].type === 0) {
+            finalMessages.push({
+              "type": "text",
+              "text": respMsgs[i].speech
+            })
+          }
+        }
+        resolve(finalMessages)
       } else {
         reject(result)
       }
