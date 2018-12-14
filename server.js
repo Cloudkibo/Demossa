@@ -147,9 +147,25 @@ app.post('/fbPost', (request, response) => {
   }
 });
 
+callDialogFlowAPI(")
+
 function callDialogFlowAPI (query) {
   let apiUrl = 'https://api.dialogflow.com/v1/';
-  util.callApi()
+  let accessToken = 'Bearer a8966d1db63f47a2bc79a17757c5d357';
+  let payload = {
+    "contexts": [
+    "shop"
+    ],
+    "lang": "en",
+    "query": "I need apples",
+    "sessionId": "12345",
+    "timezone": "America/New_York"
+  }
+  
+  util.callApi(apiUrl, 'query?v=20150910', 'post', payload, accessToken)
+  .then(result => {
+    console.log(result)
+  })
 }
 
 app.get('/fbPost', (request, response) => {
