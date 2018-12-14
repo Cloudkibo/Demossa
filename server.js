@@ -172,6 +172,7 @@ function callDialogFlowAPI (query) {
   .then(result => {
     return new Promise((resolve, reject) => {
       if (result.status.code === 200) {
+        console.log(result.result.fulfillment)
         resolve(result)
       } else {
         reject(result)
