@@ -132,12 +132,14 @@ app.get('/newfile', (request, response) => {
 });
 
 app.post('/fbPost', (request, response) => {
-  console.log(request);
+  console.log('incoming post from facebook');
+  console.log(request.body);
 });
 
 app.get('/fbPost', (request, response) => {
   console.log("FB verified the webhook request.")
-  if (request.query['hub.verify_token'] === 'VERIFY_ME') {
+  console.log(request.query)
+  if (request.query['hub.verify_token'] === 'jawaidekram') {
     response.send(request.query['hub.challenge'])
   } else {
     response.send('Error, wrong token')
