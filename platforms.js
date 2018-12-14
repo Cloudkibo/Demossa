@@ -32,15 +32,15 @@ exports.sendMessengerChat = (item, recipient_id) => {
       }
     }
   }
-  // if (payload) {
-  //   messengerSendApi (payload)
-  //   .then(result => {
-  //     console.log("FB Message sent")
-  //   })
-  //   .catch(err => {
-  //     console.log(err)
-  //   })
-  // }
+  if (payload) {
+    messengerSendApi (payload)
+    .then(result => {
+      console.log("FB Message sent")
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 }
 
 function messengerSendApi (payload) {

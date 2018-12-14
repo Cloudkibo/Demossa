@@ -143,6 +143,11 @@ app.post('/fbPost', (request, response) => {
   let subscriberId = message.sender.id
   let query = message.message.text
   if (query) {
+    // TODO: for test, remove following line
+    platforms.sendMessengerChat({
+      "type": "text",
+      "text": "This text is coming from server integrated by Sojharo. The rest of the messages are fetched by server from dialogflow and then sent here. Quick Replies and cards are remaining"
+    }, subscriberId);
     queryDialogFlow(query)
     .then(result => {
       util.intervalForEach(result, (item) => {
@@ -157,16 +162,16 @@ app.post('/fbPost', (request, response) => {
   }
 });
 
-// 1994777573950560
-queryDialogFlow("update my status")
-    .then(result => {
-      util.intervalForEach(result, (item) => {
-        platforms.sendMessengerChat(item, '1994777573950560')
-      }, 1000)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+// EXAMPLE 1994777573950560
+// queryDialogFlow("update my status")
+//     .then(result => {
+//       util.intervalForEach(result, (item) => {
+//         platforms.sendMessengerChat(item, '1994777573950560')
+//       }, 1000)
+//     })
+//     .catch(err => {
+//       console.log(err)
+//     })
 
 function queryDialogFlow(query) {
   return ailayer.callDialogFlowAPI(query)
