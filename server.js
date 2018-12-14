@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const url = require('url');
 const requestPromise = require('request-promise');
 const ailayer = require('./ai-layer.js')
+const util = require('./utility.js')
 
 var app = express();
 
@@ -143,12 +144,21 @@ app.post('/fbPost', (request, response) => {
   if (query) {
     queryDialogFlow(query)
     .then(result => {
-      console.log(result)
+      util.intervalForEach(result, (item) => {
+        console.log(item)
+      }, 1000)
     })
   } else {
     
   }
 });
+
+queryDialogFlow("update my status")
+    .then(result => {
+      util.intervalForEach(result, (item) => {
+        console.log(item)
+      }, 1000)
+    })
 
 function queryDialogFlow(query) {
   return ailayer.callDialogFlowAPI(query)

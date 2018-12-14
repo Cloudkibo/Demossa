@@ -31,3 +31,18 @@ exports.callApi = (apiUrl, endpoint, method = 'get', body, token) => {
     })
   })
 }
+
+// loop over the array using the iteratee function
+// at the specified interval
+exports.intervalForEach = (array, iteratee, delay) => {
+  let current = 0
+
+  let interval = setInterval(() => {
+    if (current === array.length) {
+      clearInterval(interval)
+    } else {
+      iteratee(array[current])
+      current++
+    }
+  }, delay)
+}
