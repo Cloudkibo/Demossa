@@ -131,6 +131,14 @@ app.get('/newfile', (request, response) => {
   response.sendFile(__dirname + '/views/newfile.html');
 });
 
+app.post('/fbPost', (request, response) => {
+  console.log(JSON.stringify(request.body));
+});
+
+app.get('/fbPost', (request, response) => {
+  console.log("sojharo is here")
+})
+
 app.post('/broadcast-to-chatfuel', (request, response) => {
   const botId = process.env.CHATFUEL_BOT_ID;
   const chatfuelToken = process.env.CHATFUEL_TOKEN;
