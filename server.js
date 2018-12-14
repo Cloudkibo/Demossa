@@ -8,6 +8,7 @@ const url = require('url');
 const requestPromise = require('request-promise');
 const ailayer = require('./ai-layer.js')
 const util = require('./utility.js')
+const platforms = require('./platforms.js')
 
 var app = express();
 
@@ -156,7 +157,7 @@ app.post('/fbPost', (request, response) => {
 queryDialogFlow("update my status")
     .then(result => {
       util.intervalForEach(result, (item) => {
-        console.log(item)
+        platforms.sendMessengerChat(item)
       }, 1000)
     })
 
