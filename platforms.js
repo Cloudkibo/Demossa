@@ -4,7 +4,7 @@ const util = require('./utility.js')
 exports.sendMessengerChat = (item, recipient_id) => {
   console.log(item)
   let payload
-  if (item.type === 'text') {
+  if (item.type === 'text' || item.type === 'gen-text') {
     payload = {
       "messaging_type": "RESPONSE",
       "recipient":{
@@ -22,7 +22,13 @@ exports.sendMessengerChat = (item, recipient_id) => {
         "id": recipient_id
       },
       "message":{
-        "text": item.text
+        "attachment":{
+          "type":"image", 
+          "payload":{
+            "url": item.url, 
+            "is_reusable":true
+          }
+        }
       }
     }
   }
