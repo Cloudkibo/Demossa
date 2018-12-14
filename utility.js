@@ -22,6 +22,7 @@ exports.callApi = (apiUrl, endpoint, method = 'get', body, token) => {
   }
   console.log('in callapi', JSON.stringify(body))
   return requestPromise(options).then(response => {
+    console.log(response)
     return new Promise((resolve, reject) => {
       if (response.status === 'success') {
         resolve(response.payload)
