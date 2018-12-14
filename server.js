@@ -146,7 +146,7 @@ app.post('/fbPost', (request, response) => {
     queryDialogFlow(query)
     .then(result => {
       util.intervalForEach(result, (item) => {
-        console.log(item)
+        platforms.sendMessengerChat(item, subscriberId)
       }, 1000)
     })
   } else {
@@ -154,12 +154,12 @@ app.post('/fbPost', (request, response) => {
   }
 });
 
-queryDialogFlow("update my status")
-    .then(result => {
-      util.intervalForEach(result, (item) => {
-        platforms.sendMessengerChat(item)
-      }, 1000)
-    })
+// queryDialogFlow("update my status")
+//     .then(result => {
+//       util.intervalForEach(result, (item) => {
+//         platforms.sendMessengerChat(item)
+//       }, 1000)
+//     })
 
 function queryDialogFlow(query) {
   return ailayer.callDialogFlowAPI(query)
