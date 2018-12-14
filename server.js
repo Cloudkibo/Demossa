@@ -141,20 +141,18 @@ app.post('/fbPost', (request, response) => {
   let subscriberId = message.sender.id
   let query = message.message.text
   if (query) {
-    console.log(query)
+    queryDialogFlow(query)
+    .then(result => {
+      console.log(result)
+    })
   } else {
     
   }
 });
 
-function que()
-ailayer.callDialogFlowAPI("How do I apply for a new or replacement Social Security number card?")
-.then(result => {
-    console.log(result)
-  })
-  .catch(err => {
-    console.log(err)
-  })
+function queryDialogFlow(query) {
+  return ailayer.callDialogFlowAPI(query)
+}
 
 app.get('/fbPost', (request, response) => {
   console.log("FB verified the webhook request.")
