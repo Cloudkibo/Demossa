@@ -132,11 +132,16 @@ app.get('/newfile', (request, response) => {
 });
 
 app.post('/fbPost', (request, response) => {
-  console.log(JSON.stringify(request.body));
+  console.log(request);
 });
 
 app.get('/fbPost', (request, response) => {
-  console.log("sojharo is here")
+  console.log("FB verified the webhook request.")
+  if (request.query['hub.verify_token'] === 'VERIFY_ME') {
+    response.send(request.query['hub.challenge'])
+  } else {
+    response.send('Error, wrong token')
+  }
 })
 
 app.post('/broadcast-to-chatfuel', (request, response) => {
