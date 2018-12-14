@@ -146,10 +146,17 @@ app.post('/fbPost', (request, response) => {
     // TODO: for test, remove following line
     platforms.sendMessengerChat({
       "type": "text",
-      "text": "This text is coming from server integrated by Sojharo. The rest of the messages are fetched by server from dialogflow and then sent here. Quick Replies and cards are remaining"
+      "text": "(TEST) This text is coming from server integrated by Sojharo. The rest of the messages are fetched by server from dialogflow and then sent here. Quick Replies and cards are remaining for mapping"
     }, subscriberId);
+    // TODO: End
     queryDialogFlow(query)
     .then(result => {
+      // todo: for test
+      result.push({
+        "type": "text",
+        "text": "(TEST) This last message is not coming from dialogflow but from our server"
+      })
+      // todo: end
       util.intervalForEach(result, (item) => {
         platforms.sendMessengerChat(item, subscriberId)
       }, 1000)
