@@ -6,6 +6,7 @@ var express = require('express');
 const bodyParser = require('body-parser');
 const url = require('url');
 const requestPromise = require('request-promise');
+const util = require('./utility.js')
 
 var app = express();
 
@@ -145,6 +146,11 @@ app.post('/fbPost', (request, response) => {
     
   }
 });
+
+function callDialogFlowAPI (query) {
+  let apiUrl = 'https://api.dialogflow.com/v1/';
+  util.callApi()
+}
 
 app.get('/fbPost', (request, response) => {
   console.log("FB verified the webhook request.")
