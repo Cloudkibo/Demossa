@@ -143,20 +143,8 @@ app.post('/fbPost', (request, response) => {
   let subscriberId = message.sender.id
   let query = message.message.text
   if (query) {
-    // TODO: for test, remove following line
-    platforms.sendMessengerChat({
-      "type": "text",
-      "text": "(TEST) This text is coming from server integrated by Sojharo. The rest of the messages are fetched by server from dialogflow and then sent here. Quick Replies and cards are remaining for mapping"
-    }, subscriberId);
-    // TODO: End
     queryDialogFlow(query)
     .then(result => {
-      // todo: for test
-      result.push({
-        "type": "text",
-        "text": "(TEST) This last message is not coming from dialogflow but from our server"
-      })
-      // todo: end
       util.intervalForEach(result, (item) => {
         platforms.sendMessengerChat(item, subscriberId)
       }, 1000)
@@ -167,7 +155,7 @@ app.post('/fbPost', (request, response) => {
   } else {
     
   }
-  return res.status(200).json({ status: 'success', description: 'got the data.' });
+  return response.status(200).json({ status: 'success', description: 'got the data.' });
 });
 
 // EXAMPLE 1994777573950560
