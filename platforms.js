@@ -38,7 +38,7 @@ exports.sendMessengerChat = (item, recipient_id) => {
       console.log("FB Message sent")
     })
     .catch(err => {
-      console.log(err)
+      console.log(err.message)
     })
   }
 }
