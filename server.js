@@ -167,6 +167,7 @@ app.post('/fbPost', (request, response) => {
   } else {
     
   }
+  return res.status(200).json({ status: 'success', description: 'got the data.' });
 });
 
 // EXAMPLE 1994777573950560
