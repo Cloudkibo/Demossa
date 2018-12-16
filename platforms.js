@@ -14,15 +14,15 @@ exports.sendMessengerChat = (item, recipient_id) => {
   } else if (item.type === 'card') {
     payload = cardPayload(item, recipient_id);
   }
-  // if (payload) {
-  //   messengerSendApi (payload)
-  //   .then(result => {
-  //     console.log("FB Message sent")
-  //   })
-  //   .catch(err => {
-  //     console.log(err.message)
-  //   })
-  // }
+  if (payload) {
+    messengerSendApi (payload)
+    .then(result => {
+      console.log("FB Message sent")
+    })
+    .catch(err => {
+      console.log(err.message)
+    })
+  }
 }
 
 function messengerSendApi (payload) {
@@ -93,7 +93,6 @@ function quickRepliesPayload (item, recipient_id) {
 }
 
 function cardPayload (item, recipient_id) {
-  console.log(item.payload.buttons)
   let payload = {
       "messaging_type": "RESPONSE",
       "recipient":{
@@ -123,29 +122,11 @@ function cardPayload (item, recipient_id) {
       }
     };
   for (let i=0; i<item.payload.buttons.length; i++) {
-    payload.message.buttons.push({{
+    payload.message.attachment.payload.elements[0].buttons.push({
                 "type":"web_url",
-                "url":"https://petersfancybrownhats.com",
-                "title":"View Website"
+                "url":item.payload.buttons[i].postback,
+                "title":item.payload.buttons[i].text
               });
   }
   return payload;
 }
-
-// cardPayload({ type: 'card',
-
-//   payload: 
-
-//    { type: 1,
-
-//      platform: 'facebook',
-
-//      title: 'First Card',
-
-//      subtitle: 'My card is very good',
-
-//      imageUrl: 'http://www.bhaviksarkhedi.com/wp-content/uploads/2017/01/digital-marketing.jpg',
-
-//      buttons: [ { text: 'My Button',
-
-//     postback: 'http://www.bhaviksarkhedi.com/wp-content/uploads/2017/01/digital-marketing.jpg' } ] } }, '23432432432')
