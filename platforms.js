@@ -13,6 +13,8 @@ exports.sendMessengerChat = (item, recipient_id) => {
     payload = quickRepliesPayload(item, recipient_id);
   } else if (item.type === 'card') {
     payload = cardPayload(item, recipient_id);
+  } else if (item.type === 'payload') {
+    payload = genericPayload(item, recipient_id)
   }
   if (payload) {
     messengerSendApi (payload)
@@ -64,11 +66,30 @@ function imagePayload (item, recipient_id) {
           "type":"image", 
           "payload":{
             "url": item.url, 
-            "is_reusable":true
+            //"is_reusable":true
           }
         }
       }
     };
+}
+
+function genericPayload (item, recipient_id) {
+  let payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "attachment":{
+          "type":"video", 
+          "payload":{
+            //"attachment_id": item.payload.payload.facebook.attachment.payload.attachment_id
+            "url": "http://techslides.com/demos/sample-videos/small.webm"
+          }
+        }
+      }
+    };
+  return payload;
 }
 
 function quickRepliesPayload (item, recipient_id) {
