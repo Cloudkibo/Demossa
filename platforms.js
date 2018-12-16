@@ -106,46 +106,46 @@ function cardPayload (item, recipient_id) {
             "template_type":"generic",
             "elements":[
               {
-                "title":"<TITLE_TEXT>",
-                "image_url":"<IMAGE_URL_TO_DISPLAY>",
-                "subtitle":"<SUBTITLE_TEXT>",
+                "title":item.payload.title,
+                "image_url":item.payload.imageUrl,
+                "subtitle":item.payload.subtitle,
                 "default_action": {
                   "type": "web_url",
-                  "url": "<DEFAULT_URL_TO_OPEN>",
+                  "url": "https://boiling-push.glitch.me/show-webview",
                   "messenger_extensions": true,
                   "webview_height_ratio": "tall"
                 },
-                "buttons":["button"]      
+                "buttons":[]      
               }
             ]
           }
         }
       }
     };
-  // for (let i=0; i<item.payload.replies.length; i++) {
-  //   payload.message.quick_replies.push({
-  //       "content_type":"text",
-  //       "title":item.payload.replies[i],
-  //       "payload":"{quickReplyTitle: \""+ item.payload.title +"\", answer: \""+ item.payload.replies[i] +"\"}",
-  //     });
-  // }
+  for (let i=0; i<item.payload.buttons.length; i++) {
+    payload.message.buttons.push({{
+                "type":"web_url",
+                "url":"https://petersfancybrownhats.com",
+                "title":"View Website"
+              });
+  }
   return payload;
 }
 
-cardPayload({ type: 'card',
+// cardPayload({ type: 'card',
 
-  payload: 
+//   payload: 
 
-   { type: 1,
+//    { type: 1,
 
-     platform: 'facebook',
+//      platform: 'facebook',
 
-     title: 'First Card',
+//      title: 'First Card',
 
-     subtitle: 'My card is very good',
+//      subtitle: 'My card is very good',
 
-     imageUrl: 'http://www.bhaviksarkhedi.com/wp-content/uploads/2017/01/digital-marketing.jpg',
+//      imageUrl: 'http://www.bhaviksarkhedi.com/wp-content/uploads/2017/01/digital-marketing.jpg',
 
-     buttons: [ { text: 'My Button',
+//      buttons: [ { text: 'My Button',
 
-    postback: 'http://www.bhaviksarkhedi.com/wp-content/uploads/2017/01/digital-marketing.jpg' } ] } }, '23432432432')
+//     postback: 'http://www.bhaviksarkhedi.com/wp-content/uploads/2017/01/digital-marketing.jpg' } ] } }, '23432432432')
