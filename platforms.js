@@ -31,6 +31,16 @@ exports.sendMessengerChat = (item, recipient_id) => {
         }
       }
     }
+  } else if (item.type === 'quick-replies') {
+    payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "text": item.text
+      }
+    }
   }
   if (payload) {
     messengerSendApi (payload)
@@ -57,4 +67,16 @@ function messengerSendApi (payload) {
       }
     })
   })
+}
+
+function textMsgPayload (item, recipient_id) {
+  return {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "text": item.text
+      }
+    };
 }
