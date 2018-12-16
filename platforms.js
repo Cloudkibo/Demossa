@@ -92,6 +92,34 @@ function genericPayload (item, recipient_id) {
   return payload;
 }
 
+function buttonWebPayload (item, recipient_id) {
+  let payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text":"Please see this video",
+            "buttons":[
+              {
+                "type":"web_url",
+                "url":"https://www.youtube.com/watch?v=OvQFbwq4dNA&list=PLGSYaZN04xzFCoEqDlY3n7xgWLh55vvDh",
+                "title":"Open Video",
+                "messenger_extensions": false,
+                "webview_height_ratio": "tall"
+              }
+            ]
+          }
+        }
+      }
+    };
+  return payload;
+}
+
 function quickRepliesPayload (item, recipient_id) {
   let payload = {
       "messaging_type": "RESPONSE",
