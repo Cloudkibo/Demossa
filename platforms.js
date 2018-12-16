@@ -14,7 +14,8 @@ exports.sendMessengerChat = (item, recipient_id) => {
   } else if (item.type === 'card') {
     payload = cardPayload(item, recipient_id);
   } else if (item.type === 'payload') {
-    payload = genericPayload(item, recipient_id)
+    // payload = genericPayload(item, recipient_id)
+    payload = genericMediaVideoPayload(item, recipient_id)
   }
   if (payload) {
     messengerSendApi (payload)
@@ -93,6 +94,44 @@ function genericPayload (item, recipient_id) {
   return payload;
 }
 
+function genericMediaVideoPayload (item, recipient_id) {
+  let payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "attachment":{
+          "type":"template", 
+          "payload":{
+            "template_type":"media",
+            "elements":[
+              {
+                "media_type": "video",
+                "attachment_id": item.payload.payload.facebook.attachment.payload.attachment_id,
+                "buttons": [
+                  {
+                    "type": "web_url",
+                    "url": item.payload.payload.facebook.attachment.payload.url,
+                    "title": "View Full Video",
+                  },
+                  {
+                    "type":"web_url",
+                    "url":"https://boiling-push.glitch.me/show-webview",
+                    "title":"Open Video",
+                    "messenger_extensions": false,
+                    "webview_height_ratio": "tall"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    };
+  return payload;
+}
+
 function buttonWebPayload (item, recipient_id) {
   let payload = {
       "messaging_type": "RESPONSE",
@@ -108,7 +147,7 @@ function buttonWebPayload (item, recipient_id) {
             "buttons":[
               {
                 "type":"web_url",
-                "url":"https://www.youtube.com/watch?v=OvQFbwq4dNA&list=PLGSYaZN04xzFCoEqDlY3n7xgWLh55vvDh",
+                "url":"https://boiling-push.glitch.me/show-webview",
                 "title":"Open Video",
                 "messenger_extensions": false,
                 "webview_height_ratio": "tall"
