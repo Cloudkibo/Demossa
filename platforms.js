@@ -84,7 +84,8 @@ function genericPayload (item, recipient_id) {
           "type":"video", 
           "payload":{
             //"attachment_id": item.payload.payload.facebook.attachment.payload.attachment_id
-            "url": "http://cdn.cloudkibo.com/public/videos/disability-process.mp4"
+            "url": "http://cdn.cloudkibo.com/public/videos/disability-process.mp4",
+            "is_reusable": true
           }
         }
       }
