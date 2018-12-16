@@ -10,15 +10,7 @@ exports.sendMessengerChat = (item, recipient_id) => {
   else if (item.type === 'image') {
     payload = imagePayload(item, recipient_id);
   } else if (item.type === 'quick-replies') {
-    payload = {
-      "messaging_type": "RESPONSE",
-      "recipient":{
-        "id": recipient_id
-      },
-      "message":{
-        "text": item.text
-      }
-    }
+    payload = quickRepliesPayload(item, recipient_id)
   }
   if (payload) {
     messengerSendApi (payload)
@@ -77,7 +69,7 @@ function imagePayload (item, recipient_id) {
     };
 }
 
-function quickRepliesPayload(item, recipient_id) {
+function quickRepliesPayload (item, recipient_id) {
   let payload = {
       "messaging_type": "RESPONSE",
       "recipient":{
@@ -92,20 +84,45 @@ function quickRepliesPayload(item, recipient_id) {
     payload.message.quick_replies.push({
         "content_type":"text",
         "title":item.payload.replies[i],
-        "payload":"{quickReplyTitle: "+ item.payload.title +"', answer: '"+ item.payload.replies[i] +"'}",
+        "payload":"{quickReplyTitle: \""+ item.payload.title +"\", answer: \""+ item.payload.replies[i] +"\"}",
       });
   }
-  console.log(payload.message.quick_replies);
+  return payload;
 }
 
-quickRepliesPayload({ type: 'quick-replies',
+function cardPayload (item, recipient_id) {
+  let payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "text": item.payload.title,
+        "quick_replies": []
+      }
+    }
+  // for (let i=0; i<item.payload.replies.length; i++) {
+  //   payload.message.quick_replies.push({
+  //       "content_type":"text",
+  //       "title":item.payload.replies[i],
+  //       "payload":"{quickReplyTitle: \""+ item.payload.title +"\", answer: \""+ item.payload.replies[i] +"\"}",
+  //     });
+  // }
+  return payload;
+}
+
+cardPayload({ type: 'card',
 
   payload: 
 
-   { type: 2,
+   { type: 1,
 
      platform: 'facebook',
 
-     title: 'Which benefit you want to updated - Please chose from below',
+     title: 'First Card',
 
-     replies: [ 'Retirement Benefits', 'Disability Benefits', 'SSI Benefits' ] } }, '3241234321')
+     subtitle: 'My card is very good',
+
+     imageUrl: 'http://www.bhaviksarkhedi.com/wp-content/uploads/2017/01/digital-marketing.jpg',
+
+     buttons: [ [Object] ] } }, '23432432432')

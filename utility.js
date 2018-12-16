@@ -20,7 +20,7 @@ exports.callApi = (apiUrl, endpoint, method = 'get', body, token) => {
     body,
     json: true
   }
-  console.log('in callapi', JSON.stringify(body))
+  // console.log('in callapi', JSON.stringify(body))
   return requestPromise(options).then(response => {
     return new Promise((resolve, reject) => {
       console.log(response)
