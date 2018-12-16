@@ -5,32 +5,10 @@ exports.sendMessengerChat = (item, recipient_id) => {
   console.log(item)
   let payload
   if (item.type === 'text' || item.type === 'gen-text') {
-    payload = {
-      "messaging_type": "RESPONSE",
-      "recipient":{
-        "id": recipient_id
-      },
-      "message":{
-        "text": item.text
-      }
-    }
+    payload = textMsgPayload(item, recipient_id);
   }
   else if (item.type === 'image') {
-    payload = {
-      "messaging_type": "RESPONSE",
-      "recipient":{
-        "id": recipient_id
-      },
-      "message":{
-        "attachment":{
-          "type":"image", 
-          "payload":{
-            "url": item.url, 
-            "is_reusable":true
-          }
-        }
-      }
-    }
+    payload = imagePayload(item, recipient_id);
   } else if (item.type === 'quick-replies') {
     payload = {
       "messaging_type": "RESPONSE",
@@ -80,3 +58,54 @@ function textMsgPayload (item, recipient_id) {
       }
     };
 }
+
+function imagePayload (item, recipient_id) {
+  return {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "attachment":{
+          "type":"image", 
+          "payload":{
+            "url": item.url, 
+            "is_reusable":true
+          }
+        }
+      }
+    };
+}
+
+function quickRepliesPayload(item, recipient_id) {
+  let payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "text": item.payload.title,
+        "quick_replies": []
+      }
+    }
+  for (let i=0; i<item.payload.replies.length; i++) {
+    payload.message.quick_replies.push({
+        "content_type":"text",
+        "title":item.payload.replies[i],
+        "payload":"{quickReplyTitle: "+ item.payload.title +"', answer: '"+ item.payload.replies[i] +"'}",
+      });
+  }
+  console.log(payload.message.quick_replies);
+}
+
+quickRepliesPayload({ type: 'quick-replies',
+
+  payload: 
+
+   { type: 2,
+
+     platform: 'facebook',
+
+     title: 'Which benefit you want to updated - Please chose from below',
+
+     replies: [ 'Retirement Benefits', 'Disability Benefits', 'SSI Benefits' ] } }, '3241234321')
