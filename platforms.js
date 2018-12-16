@@ -10,17 +10,19 @@ exports.sendMessengerChat = (item, recipient_id) => {
   else if (item.type === 'image') {
     payload = imagePayload(item, recipient_id);
   } else if (item.type === 'quick-replies') {
-    payload = quickRepliesPayload(item, recipient_id)
+    payload = quickRepliesPayload(item, recipient_id);
+  } else if (item.type === 'card') {
+    payload = cardPayload(item, recipient_id);
   }
-  if (payload) {
-    messengerSendApi (payload)
-    .then(result => {
-      console.log("FB Message sent")
-    })
-    .catch(err => {
-      console.log(err.message)
-    })
-  }
+  // if (payload) {
+  //   messengerSendApi (payload)
+  //   .then(result => {
+  //     console.log("FB Message sent")
+  //   })
+  //   .catch(err => {
+  //     console.log(err.message)
+  //   })
+  // }
 }
 
 function messengerSendApi (payload) {
@@ -91,16 +93,35 @@ function quickRepliesPayload (item, recipient_id) {
 }
 
 function cardPayload (item, recipient_id) {
+  console.log(item.payload.buttons)
   let payload = {
       "messaging_type": "RESPONSE",
       "recipient":{
         "id": recipient_id
       },
       "message":{
-        "text": item.payload.title,
-        "quick_replies": []
+        "attachment":{
+          "type":"template", 
+          "payload": {
+            "template_type":"generic",
+            "elements":[
+              {
+                "title":"<TITLE_TEXT>",
+                "image_url":"<IMAGE_URL_TO_DISPLAY>",
+                "subtitle":"<SUBTITLE_TEXT>",
+                "default_action": {
+                  "type": "web_url",
+                  "url": "<DEFAULT_URL_TO_OPEN>",
+                  "messenger_extensions": true,
+                  "webview_height_ratio": "tall"
+                },
+                "buttons":["button"]      
+              }
+            ]
+          }
+        }
       }
-    }
+    };
   // for (let i=0; i<item.payload.replies.length; i++) {
   //   payload.message.quick_replies.push({
   //       "content_type":"text",
@@ -125,4 +146,6 @@ cardPayload({ type: 'card',
 
      imageUrl: 'http://www.bhaviksarkhedi.com/wp-content/uploads/2017/01/digital-marketing.jpg',
 
-     buttons: [ [Object] ] } }, '23432432432')
+     buttons: [ { text: 'My Button',
+
+    postback: 'http://www.bhaviksarkhedi.com/wp-content/uploads/2017/01/digital-marketing.jpg' } ] } }, '23432432432')
