@@ -118,8 +118,8 @@ function genericMediaVideoPayload (item, recipient_id) {
                   {
                     "type":"web_url",
                     "url":"https://boiling-push.glitch.me/show-webview",
-                    "title":"Open Video",
-                    "messenger_extensions": false,
+                    "title":"SSA Dashboard",
+                    "messenger_extensions": true,
                     "webview_height_ratio": "tall"
                   }
                 ]
