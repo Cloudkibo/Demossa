@@ -18,6 +18,7 @@ exports.callDialogFlowAPI = (query) => {
     return new Promise((resolve, reject) => {
       if (result.status.code === 200) {
         let respMsgs = result.result.fulfillment.messages;
+        console.log(respMsgs)
         let finalMessages = []
         for (let i=0; i<respMsgs.length; i++ ) {
           if (respMsgs[i].platform === 'facebook') {
@@ -33,6 +34,10 @@ exports.callDialogFlowAPI = (query) => {
                 break;
               case 3:
                 finalMessages.push({ "type": "image", "url": respMsgs[i].imageUrl })
+                break;
+              case 4:
+                finalMessages.push({ "type": "payload", "payload": respMsgs[i] })
+                break;
             }
           } else if (respMsgs[i].type === 0) {
             finalMessages.push({ "type": "gen-text", "text": respMsgs[i].speech })

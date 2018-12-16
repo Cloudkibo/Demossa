@@ -159,7 +159,7 @@ app.post('/fbPost', (request, response) => {
 });
 
 // EXAMPLE 1994777573950560
-queryDialogFlow("update my status")
+queryDialogFlow("disability process")
     .then(result => {
       util.intervalForEach(result, (item) => {
         platforms.sendMessengerChat(item, '1994777573950560')
