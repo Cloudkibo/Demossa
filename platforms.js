@@ -14,8 +14,8 @@ exports.sendMessengerChat = (item, recipient_id) => {
   } else if (item.type === 'card') {
     payload = cardPayload(item, recipient_id);
   } else if (item.type === 'payload') {
-    payload = genericPayload(item, recipient_id)
-    // payload = genericMediaVideoPayload(item, recipient_id)
+    // payload = genericPayload(item, recipient_id)
+    payload = genericMediaVideoPayload(item, recipient_id)
   }
   if (payload) {
     messengerSendApi (payload)
