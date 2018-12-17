@@ -159,7 +159,7 @@ app.post('/fbPost', (request, response) => {
 });
 
 // EXAMPLE 1994777573950560
-// queryDialogFlow("where do I get earning benefits")
+// queryDialogFlow("Can you send me the tutorial on Quality Review")
 //     .then(result => {
 //       util.intervalForEach(result, (item) => {
 //         platforms.sendMessengerChat(item, '1994777573950560')

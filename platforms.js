@@ -14,8 +14,8 @@ exports.sendMessengerChat = (item, recipient_id) => {
   } else if (item.type === 'card') {
     payload = cardPayload(item, recipient_id);
   } else if (item.type === 'payload') {
-    // payload = genericPayload(item, recipient_id)
-    payload = genericMediaVideoPayload(item, recipient_id)
+    payload = genericPayload(item, recipient_id)
+    // payload = genericMediaVideoPayload(item, recipient_id)
   }
   if (payload) {
     messengerSendApi (payload)
@@ -85,7 +85,7 @@ function genericPayload (item, recipient_id) {
           "type":"video", 
           "payload":{
             //"attachment_id": item.payload.payload.facebook.attachment.payload.attachment_id
-            "url": "http://cdn.cloudkibo.com/public/videos/disability-claim.mp4",
+            "url": "http://cdn.cloudkibo.com/public/videos/quality-review.mp4",
             "is_reusable": true
           }
         }
