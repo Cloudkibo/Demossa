@@ -159,15 +159,15 @@ app.post('/fbPost', (request, response) => {
 });
 
 // EXAMPLE 1994777573950560
-queryDialogFlow("where do I get salary benefits")
-    .then(result => {
-      util.intervalForEach(result, (item) => {
-        platforms.sendMessengerChat(item, '1994777573950560')
-      }, 1000)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+// queryDialogFlow("where do I get earning benefits")
+//     .then(result => {
+//       util.intervalForEach(result, (item) => {
+//         platforms.sendMessengerChat(item, '1994777573950560')
+//       }, 1000)
+//     })
+//     .catch(err => {
+//       console.log(err)
+//     })
 
 function queryDialogFlow(query) {
   return ailayer.callDialogFlowAPI(query)
