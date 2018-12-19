@@ -56,3 +56,7 @@ exports.isUrl = (str) => {
     return false
   }
 }
+
+exports.randomItem = (items) => {
+  return items[Math.floor(Math.random()*items.length)]
+}

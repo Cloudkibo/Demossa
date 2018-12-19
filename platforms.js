@@ -46,9 +46,12 @@ function messengerSendApi (payload) {
 
 function textMsgPayload (item, recipient_id) {
   if (util.isUrl(item.text)) {
+    let answers = ["Visiting the following link would help you more",
+                  "Please visit the given link to know more",
+                  "I think you should visit this link"]
     return buttonWebPayload({
-      "text": "Please login into or create a new account on our SSA online portal",
-      "btnText": "Visit Portal",
+      "text": util.randomItem(answers),
+      "btnText": "Visit Website",
       "url": item.text
     }, recipient_id)
   }
