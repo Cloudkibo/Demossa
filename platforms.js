@@ -45,6 +45,13 @@ function messengerSendApi (payload) {
 }
 
 function textMsgPayload (item, recipient_id) {
+  if (util.isUrl(item.text)) {
+    return buttonWebPayload({
+      "text": "Please login into or create a new account on our SSA online portal",
+      "btnText": "Visit Portal",
+      "url": item.text
+    }, recipient_id)
+  }
   return {
       "messaging_type": "RESPONSE",
       "recipient":{
@@ -143,12 +150,12 @@ function buttonWebPayload (item, recipient_id) {
           "type":"template",
           "payload":{
             "template_type":"button",
-            "text":"Please see this video",
+            "text": item.text,
             "buttons":[
               {
                 "type":"web_url",
-                "url":"https://boiling-push.glitch.me/show-webview",
-                "title":"Open Video",
+                "url": item.url,
+                "title": item.btnText,
                 "messenger_extensions": false,
                 "webview_height_ratio": "tall"
               }

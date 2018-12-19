@@ -39,7 +39,8 @@ exports.callDialogFlowAPI = (query) => {
                 break;
             }
           } else if (respMsgs[i].type === 0) {
-            finalMessages.push({ "type": "gen-text", "text": respMsgs[i].speech })
+            // only including messenger messages right now, commenting this out
+            // finalMessages.push({ "type": "gen-text", "text": respMsgs[i].speech })
           }
         }
         resolve(finalMessages)
