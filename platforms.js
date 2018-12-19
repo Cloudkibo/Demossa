@@ -45,6 +45,15 @@ function messengerSendApi (payload) {
 }
 
 function textMsgPayload (item, recipient_id) {
+  if (util.isYouTubeUrl(item.text)) {
+    let answersYt = ["Please watch this video",
+                  "Watching this video will help"]
+    return buttonWebPayload({
+      "text": util.randomItem(answersYt),
+      "btnText": "Watch Video",
+      "url": item.text
+    }, recipient_id)
+  }
   if (util.isUrl(item.text)) {
     let answers = ["Visiting the following link would help you more",
                   "Please visit the given link to know more"]
