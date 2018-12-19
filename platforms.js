@@ -47,8 +47,7 @@ function messengerSendApi (payload) {
 function textMsgPayload (item, recipient_id) {
   if (util.isUrl(item.text)) {
     let answers = ["Visiting the following link would help you more",
-                  "Please visit the given link to know more",
-                  "I think you should visit this link"]
+                  "Please visit the given link to know more"]
     return buttonWebPayload({
       "text": util.randomItem(answers),
       "btnText": "Visit Website",

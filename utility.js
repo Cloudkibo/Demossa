@@ -60,3 +60,8 @@ exports.isUrl = (str) => {
 exports.randomItem = (items) => {
   return items[Math.floor(Math.random()*items.length)]
 }
+
+exports.isYouTubeUrl = (url) => {
+  var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+  return (url.match(p)) ? RegExp.$1 : false;
+}
