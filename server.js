@@ -147,7 +147,7 @@ app.post('/fbPost', (request, response) => {
     .then(result => {
       util.intervalForEach(result, (item) => {
         platforms.sendMessengerChat(item, subscriberId)
-      }, 1000)
+      }, 500)
     })
     .catch(err => {
       console.log(err)
