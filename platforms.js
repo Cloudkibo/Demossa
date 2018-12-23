@@ -1,4 +1,5 @@
 const util = require('./utility.js')
+const url = require('url');
 
 
 exports.sendMessengerChat = (item, recipient_id) => {
@@ -60,10 +61,9 @@ function textMsgPayload (item, recipient_id) {
   if (util.isUrl(item.text)) {
     let answers = ["Visiting the following link would help you more",
                   "Please visit the given link to know more"]
-    const myURL = new URL(item.text);
-    console.log(myURL.host);
-    myURL.host = 'boiling-push.glitch.me';
-    console.log(myURL.href);
+    let myURL = url.parse(item.text);
+    myURL = url.parse('https://boiling-push.glitch.me' + myURL.pathname);
+    console.log(myURL.href)
     return buttonWebPayload({
       "text": util.randomItem(answers),
       "btnText": "Visit Website",
