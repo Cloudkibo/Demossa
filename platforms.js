@@ -51,7 +51,8 @@ function textMsgPayload (item, recipient_id) {
     return buttonWebPayload({
       "text": util.randomItem(answersYt),
       "btnText": "Watch Video",
-      "url": item.text
+      "url": item.text,
+      "webViewEnabled": false
     }, recipient_id)
   }
   if (util.isUrl(item.text)) {
@@ -60,7 +61,8 @@ function textMsgPayload (item, recipient_id) {
     return buttonWebPayload({
       "text": util.randomItem(answers),
       "btnText": "Visit Website",
-      "url": item.text
+      "url": item.text,
+      "webViewEnabled": true
     }, recipient_id)
   }
   return {
@@ -92,6 +94,7 @@ function imagePayload (item, recipient_id) {
     };
 }
 
+// for uploading videos to facebook and attachment id
 function genericPayload (item, recipient_id) {
   let payload = {
       "messaging_type": "RESPONSE",
@@ -167,7 +170,7 @@ function buttonWebPayload (item, recipient_id) {
                 "type":"web_url",
                 "url": item.url,
                 "title": item.btnText,
-                "messenger_extensions": false,
+                "messenger_extensions": item.webViewEnabled,
                 "webview_height_ratio": "tall"
               }
             ]
