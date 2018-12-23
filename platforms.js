@@ -45,6 +45,7 @@ function messengerSendApi (payload) {
 }
 
 function textMsgPayload (item, recipient_id) {
+  // handling youtube url in response
   if (util.isYouTubeUrl(item.text)) {
     let answersYt = ["Please watch this video",
                   "Watching this video will help"]
@@ -55,13 +56,18 @@ function textMsgPayload (item, recipient_id) {
       "webViewEnabled": false
     }, recipient_id)
   }
+  // handling simple url in response
   if (util.isUrl(item.text)) {
     let answers = ["Visiting the following link would help you more",
                   "Please visit the given link to know more"]
+    const myURL = new URL(item.text);
+    console.log(myURL.host);
+    myURL.host = 'boiling-push.glitch.me';
+    console.log(myURL.href);
     return buttonWebPayload({
       "text": util.randomItem(answers),
       "btnText": "Visit Website",
-      "url": item.text,
+      "url": myURL.href,
       "webViewEnabled": true
     }, recipient_id)
   }
