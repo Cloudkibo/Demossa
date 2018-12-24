@@ -166,6 +166,7 @@ app.post('/fbPost', (request, response) => {
 
 app.post('/webPost', (request, response) => {
   console.log('incoming post from web client');
+  console.log(request.body)
   let query = request.body.message.text
   if (query) {
     queryDialogFlow(query)
