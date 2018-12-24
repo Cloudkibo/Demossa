@@ -22,12 +22,12 @@ exports.sendWebChat = (request, response, items) => {
     if (payload) {
       messengerSendApi (payload)
         .then(result => {
-      console.log("FB Message sent")
-    })
-    .catch(err => {
-      console.log(err.message)
-    })
-  }
+        console.log("FB Message sent")
+      })
+        .catch(err => {
+        console.log(err.message)
+      })
+    }
   }
 }
 
