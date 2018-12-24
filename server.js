@@ -158,26 +158,20 @@ app.post('/fbPost', (request, response) => {
   return response.status(200).json({ status: 'success', description: 'got the data.' });
 });
 
-app.post('/fbPost', (request, response) => {
-  console.log('incoming post from facebook');
-  let message = request.body.entry[0].messaging[0];
-  let pageId = message.recipient.id
-  let subscriberId = message.sender.id
-  let query = message.message.text
+app.post('/webPost', (request, response) => {
+  console.log('incoming post from web client');
+  let query = request.body.message.text
   if (query) {
     queryDialogFlow(query)
     .then(result => {
-      util.intervalForEach(result, (item) => {
-        platforms.sendMessengerChat(item, subscriberId)
-      }, 500)
+      platforms.sendWebChat(request, response, result)
     })
     .catch(err => {
       console.log(err)
     })
   } else {
-    
+    response.status(501).json({ status: 'error', description: 'Query not found' });
   }
-  return response.status(200).json({ status: 'success', description: 'got the data.' });
 });
 
 // EXAMPLE 1994777573950560
