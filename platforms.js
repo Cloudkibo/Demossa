@@ -7,17 +7,17 @@ exports.sendWebChat = (request, response, items) => {
   for (let i = 0; i < items.length; i++) {
     let item = items[i];
     if (item.type === 'text' || item.type === 'gen-text') {
-      payload = textMsgPayload(item, recipient_id);
+      payload.push(textMsgPayload(item, 'web recipient'));
     }
     else if (item.type === 'image') {
-      payload = imagePayload(item, recipient_id);
+      payload.push(imagePayload(item, 'web recipient'));
     } else if (item.type === 'quick-replies') {
-      payload = quickRepliesPayload(item, recipient_id);
+      payload = quickRepliesPayload(item, 'web recipient');
     } else if (item.type === 'card') {
-      payload = cardPayload(item, recipient_id);
+      payload = cardPayload(item, 'web recipient');
     } else if (item.type === 'payload') {
       // payload = genericPayload(item, recipient_id)
-      payload = genericMediaVideoPayload(item, recipient_id)
+      payload = genericMediaVideoPayload(item, 'web recipient')
     }
     if (payload) {
       messengerSendApi (payload)
