@@ -19,9 +19,9 @@ exports.sendWebChat = (request, response, items) => {
       // payload = genericPayload(item, recipient_id)
       payload.push(genericMediaVideoPayload(item, 'web recipient'))
     }
-    if (payload) {
-      response.status(200).json({answer: payload})
-    }
+  }
+  if (payload) {
+    response.status(200).json({answer: payload})
   }
 }
 
