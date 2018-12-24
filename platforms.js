@@ -12,21 +12,15 @@ exports.sendWebChat = (request, response, items) => {
     else if (item.type === 'image') {
       payload.push(imagePayload(item, 'web recipient'));
     } else if (item.type === 'quick-replies') {
-      payload = quickRepliesPayload(item, 'web recipient');
+      payload.push(quickRepliesPayload(item, 'web recipient'));
     } else if (item.type === 'card') {
-      payload = cardPayload(item, 'web recipient');
+      payload.push(cardPayload(item, 'web recipient'));
     } else if (item.type === 'payload') {
       // payload = genericPayload(item, recipient_id)
-      payload = genericMediaVideoPayload(item, 'web recipient')
+      payload.push(genericMediaVideoPayload(item, 'web recipient'))
     }
     if (payload) {
-      messengerSendApi (payload)
-        .then(result => {
-        console.log("FB Message sent")
-      })
-        .catch(err => {
-        console.log(err.message)
-      })
+      response.status(200).json({answer: payload})
     }
   }
 }
