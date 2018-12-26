@@ -144,6 +144,7 @@ app.get('/newfile', (request, response) => {
 
 app.post('/fbPost', (request, response) => {
   console.log('incoming post from facebook');
+  console.log(request.body)
   let message = request.body.entry[0].messaging[0];
   let pageId = message.recipient.id
   let subscriberId = message.sender.id
