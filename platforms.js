@@ -25,7 +25,7 @@ exports.sendWebChat = (request, response, items) => {
   }
 }
 
-exports.sendMessengerChat = (item, recipient_id) => {
+exports.sendMessengerChat = (item, recipient_id, product_name) => {
   console.log(item)
   let payload
   if (item.type === 'text' || item.type === 'gen-text') {
@@ -42,7 +42,7 @@ exports.sendMessengerChat = (item, recipient_id) => {
     payload = genericMediaVideoPayload(item, recipient_id)
   }
   if (payload) {
-    messengerSendApi (payload)
+    messengerSendApi (payload, product_name)
     .then(result => {
       console.log("FB Message sent")
     })
