@@ -65,3 +65,11 @@ exports.isYouTubeUrl = (url) => {
   var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
   return (url.match(p)) ? RegExp.$1 : false;
 }
+
+exports.fbAccessToken(page) {
+  if (page === 'demossa1') {
+    return '?access_token=EAAEfZAUNcph4BAHhGy2lAjYHpZA0y1nrcUZAELNPosZA8cPxiEoEvUXZCp2zIHNwEyuVLSWsYV9XRCAuupnJighZC1ynYe2LoKjXrZCUpdY55SeZCCIYfdCgNPr4jeyumLG3HfLOLpUiOwS4m6Ml0f6TeEECDiNe9rj6YRisCZAKRWAZDZD'
+  } else {
+    return '?access_token=EAAfeYCgiwQwBAM4ZCYUxtbMEOTAF7dCutKFHH0IYFnXme8AAofwnc3otTgOjEI5Or5ruztCwvM23QRgSXZCTIwsSopnIaploZAZAJatsSXNZBicDESOoxAKEzuqF4nuZA6uvwaeICGkhr5kZC5KxmNG1F5b2ZA3phxxUzYLDPavBvgZDZD'
+  }
+}
