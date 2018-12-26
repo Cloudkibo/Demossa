@@ -206,6 +206,12 @@ app.get('/fbPost', (request, response) => {
   }
 })
 
+app.get('/redirect', (request, response) => {
+  console.log(request.query)
+  response.redirect(request.query.continue)
+  //response.send('This page is not yet implemented in our demo.')
+})
+
 app.get('/*', (request, response) => {
   response.send('This page is not yet implemented in our demo.')
 })

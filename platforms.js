@@ -85,7 +85,7 @@ function textMsgPayload (item, recipient_id) {
     let answers = ["Visiting the following link would help you more",
                   "Please visit the given link to know more"]
     let myURL = url.parse(item.text);
-    myURL = url.parse('https://boiling-push.glitch.me' + myURL.pathname);
+    myURL = url.parse('https://boiling-push.glitch.me/redirect?continue=' + item.text);
     console.log(myURL.href)
     return buttonWebPayload({
       "text": util.randomItem(answers),
