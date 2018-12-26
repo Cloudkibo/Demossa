@@ -1,8 +1,8 @@
 const util = require('./utility.js')
 
-exports.callDialogFlowAPI = (query) => {
+exports.callDialogFlowAPI = (query, pageId) => {
   let apiUrl = 'https://api.dialogflow.com/v1';
-  let accessToken = 'Bearer a8966d1db63f47a2bc79a17757c5d357';
+  let accessToken = 'Bearer ' + util.dialogFlowBotToken(pageId);
   let payload = {
     "contexts": [
     "shop"
