@@ -66,10 +66,18 @@ exports.isYouTubeUrl = (url) => {
   return (url.match(p)) ? RegExp.$1 : false;
 }
 
-exports.fbAccessToken = (page) => {
-  if (page === 'demossa1') {
+exports.fbAccessToken = (pageId) => {
+  if (pageId === '382154169188869') {
     return '?access_token=EAAEfZAUNcph4BAHhGy2lAjYHpZA0y1nrcUZAELNPosZA8cPxiEoEvUXZCp2zIHNwEyuVLSWsYV9XRCAuupnJighZC1ynYe2LoKjXrZCUpdY55SeZCCIYfdCgNPr4jeyumLG3HfLOLpUiOwS4m6Ml0f6TeEECDiNe9rj6YRisCZAKRWAZDZD'
-  } else {
+  } else if (pageId === '350372502408394') {
+    return '?access_token=EAAEfZAUNcph4BALoTq1P9ohOXKcs1TJVZCONr2ryW83BO8IdmXtuQ1UIv0CeeHQZAejPDKJD3J68pP4BllFRhWcvHJNQZBLTpop7W3lLxFisWldtAQ9QfZCazdxOZBgVZCWxhicbutvx03iSZAtGAh0ZAqLXtNVHsF2TGsElt0kwe3QZDZD'
+  }
+}
+
+exports.dialogFlowBotToken = (pageId) => {
+  if (pageId === '382154169188869') {
+    return 'a8966d1db63f47a2bc79a17757c5d357'
+  } else if (pageId === '350372502408394') {
     return '?access_token=EAAEfZAUNcph4BALoTq1P9ohOXKcs1TJVZCONr2ryW83BO8IdmXtuQ1UIv0CeeHQZAejPDKJD3J68pP4BllFRhWcvHJNQZBLTpop7W3lLxFisWldtAQ9QfZCazdxOZBgVZCWxhicbutvx03iSZAtGAh0ZAqLXtNVHsF2TGsElt0kwe3QZDZD'
   }
 }

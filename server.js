@@ -149,7 +149,7 @@ app.post('/fbPost', (request, response) => {
   let subscriberId = message.sender.id
   let query = message.message.text
   if (query) {
-    queryDialogFlow(query)
+    queryDialogFlow(query, pageId)
     .then(result => {
       util.intervalForEach(result, (item) => {
         platforms.sendMessengerChat(item, subscriberId, pageId)
@@ -192,8 +192,8 @@ app.post('/webPost', (request, response) => {
 //       console.log(err)
 //     })
 
-function queryDialogFlow(query) {
-  return ailayer.callDialogFlowAPI(query)
+function queryDialogFlow(query, pageId) {
+  return ailayer.callDialogFlowAPI(query, pageId)
 }
 
 app.get('/fbPost', (request, response) => {
