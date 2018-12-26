@@ -66,7 +66,7 @@ exports.isYouTubeUrl = (url) => {
   return (url.match(p)) ? RegExp.$1 : false;
 }
 
-exports.fbAccessToken(page) {
+exports.fbAccessToken = (page) => {
   if (page === 'demossa1') {
     return '?access_token=EAAEfZAUNcph4BAHhGy2lAjYHpZA0y1nrcUZAELNPosZA8cPxiEoEvUXZCp2zIHNwEyuVLSWsYV9XRCAuupnJighZC1ynYe2LoKjXrZCUpdY55SeZCCIYfdCgNPr4jeyumLG3HfLOLpUiOwS4m6Ml0f6TeEECDiNe9rj6YRisCZAKRWAZDZD'
   } else {
