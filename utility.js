@@ -73,3 +73,6 @@ exports.fbAccessToken = (page) => {
     return '?access_token=EAAEfZAUNcph4BALoTq1P9ohOXKcs1TJVZCONr2ryW83BO8IdmXtuQ1UIv0CeeHQZAejPDKJD3J68pP4BllFRhWcvHJNQZBLTpop7W3lLxFisWldtAQ9QfZCazdxOZBgVZCWxhicbutvx03iSZAtGAh0ZAqLXtNVHsF2TGsElt0kwe3QZDZD'
   }
 }
+
+// demossa1 382154169188869
+// demossa2 350372502408394
