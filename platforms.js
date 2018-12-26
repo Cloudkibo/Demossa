@@ -54,7 +54,7 @@ exports.sendMessengerChat = (item, recipient_id) => {
 
 function messengerSendApi (payload, product_name) {
   let apiUrl = 'https://graph.facebook.com/v2.6';
-  let endpoint = 'me/messages' + util.fbAccessToken();
+  let endpoint = 'me/messages' + util.fbAccessToken(product_name);
   
   return util.callApi(apiUrl, endpoint, 'post', payload)
   .then(result => {
