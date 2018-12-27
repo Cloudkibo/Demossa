@@ -289,7 +289,7 @@ function listPayload (item, recipient_id) {
               {
                 "title": "View More",
                 "type": "postback",
-                "payload": "payload"            
+                "payload": "{type: 'more', title: '"+ item.payload.title +"'}"            
               }
             ]
           }
@@ -302,9 +302,9 @@ function listPayload (item, recipient_id) {
       "image_url": "http://www.balinlaw.com/wp-content/uploads/2016/03/social-security-administration-logo.png",
       "buttons": [
         {
-          "title": "View More",
+          "title": "Select",
           "type": "postback",
-          "payload": "payload" 
+          "payload": "{type: 'selected', title: \""+ item.payload.title +"\", answer: \""+ item.payload.replies[i] +"\"}" 
         }
       ]
     });
