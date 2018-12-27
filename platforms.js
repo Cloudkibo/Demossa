@@ -297,6 +297,7 @@ function listPayload (item, recipient_id) {
       }
     };
   for (let i=0; i<item.payload.replies.length; i++) {
+    
     payload.message.attachment.payload.elements.push({
       "title": item.payload.replies[i],
       "image_url": "http://www.balinlaw.com/wp-content/uploads/2016/03/social-security-administration-logo.png",
@@ -304,7 +305,7 @@ function listPayload (item, recipient_id) {
         {
           "title": "Select",
           "type": "postback",
-          "payload": "{\"type\": \"selected\", \"title\": \""+ item.payload.title +"\", \"answer\": \""+ item.payload.replies[i] +"'}" 
+          "payload": "{\"type\": \"selected\", \"title\": \""+ item.payload.title +"\", \"answer\": \""+ item.payload.replies[i] +"\"}" 
         }
       ]
     });

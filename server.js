@@ -149,20 +149,14 @@ app.post('/fbPost', (request, response) => {
   let subscriberId = message.sender.id
   if (message.message) {
     let query = message.message.text
-  queryDialogFlow(query, pageId)
-    .then(result => {
-      util.intervalForEach(result, (item) => {
-        platforms.sendMessengerChat(item, subscriberId, pageId)
-      }, 500)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    queryAIMessenger(query, subscriberId, pageId);
   } else if (message.postback) {
-    console.log(message)
     let postback = JSON.parse(message.postback.payload)
     let postbackTitle = message.postback.title
     console.log(postback)
+    if (postback.type === 'selected') {
+      queryAIMessenger(postback.answer, subscriberId, pageId)
+    }
   }
   return response.status(200).json({ status: 'success', description: 'got the data.' });
 });
@@ -183,6 +177,18 @@ app.post('/webPost', (request, response) => {
     response.status(501).json({ status: 'error', description: 'Query not found' });
   }
 });
+
+function queryAIMessenger (query, subscriberId, pageId) {
+  queryDialogFlow(query, pageId)
+    .then(result => {
+      util.intervalForEach(result, (item) => {
+        platforms.sendMessengerChat(item, subscriberId, pageId)
+      }, 500)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
 
 // EXAMPLE 1994777573950560
 // queryDialogFlow("Can you send me the tutorial on end of a claim")
