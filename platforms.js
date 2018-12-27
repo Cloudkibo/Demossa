@@ -34,7 +34,8 @@ exports.sendMessengerChat = (item, recipient_id, product_name) => {
   else if (item.type === 'image') {
     payload = imagePayload(item, recipient_id);
   } else if (item.type === 'quick-replies') {
-    payload = quickRepliesPayload(item, recipient_id);
+    payload = listPayload(item, recipient_id);
+    // payload = quickRepliesPayload(item, recipient_id);
   } else if (item.type === 'card') {
     payload = cardPayload(item, recipient_id);
   } else if (item.type === 'payload') {
@@ -265,6 +266,39 @@ function cardPayload (item, recipient_id) {
                 "type":"web_url",
                 "url":item.payload.buttons[i].postback,
                 "title":item.payload.buttons[i].text
+              });
+  }
+  return payload;
+}
+
+function listPayload (item, recipient_id) {
+  let payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "attachment":{
+          "type":"template", 
+          "payload": {
+            "template_type":"list",
+            "top_element_style": "compact",
+            "shareable": true,
+            "elements":[],
+            "buttons": [
+              {
+                "title": "View More",
+                "type": "postback",
+                "payload": "payload"            
+              }
+            ]
+          }
+        }
+      }
+    };
+  for (let i=0; i<item.payload.replies.length; i++) {
+    payload.message.attachment.payload.elements.push({
+                "title": item.payload.replies[i]
               });
   }
   return payload;
