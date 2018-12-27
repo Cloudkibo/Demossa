@@ -18,6 +18,7 @@ exports.callDialogFlowAPI = (query, pageId) => {
     return new Promise((resolve, reject) => {
       if (result.status.code === 200) {
         let respMsgs = result.result.fulfillment.messages;
+        console.log(respMsgs)
         let finalMessages = []
         for (let i=0; i<respMsgs.length; i++ ) {
           if (respMsgs[i].platform === 'facebook') {
