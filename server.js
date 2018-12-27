@@ -160,7 +160,9 @@ app.post('/fbPost', (request, response) => {
     })
   } else if (message.postback) {
     console.log(message)
-    let postback = JSON.parse()
+    let postback = JSON.parse(message.postback.payload)
+    let postbackTitle = message.postback.title
+    console.log(postback)
   }
   return response.status(200).json({ status: 'success', description: 'got the data.' });
 });

@@ -226,7 +226,7 @@ function quickRepliesPayload (item, recipient_id) {
     payload.message.quick_replies.push({
         "content_type":"text",
         "title":item.payload.replies[i],
-        "payload":"{quickReplyTitle: \""+ item.payload.title +"\", answer: \""+ item.payload.replies[i] +"\"}",
+        "payload":"{\"quickReplyTitle\": \""+ item.payload.title +"\", \"answer\": \""+ item.payload.replies[i] +"\"}",
       });
   }
   return payload;
@@ -289,7 +289,7 @@ function listPayload (item, recipient_id) {
               {
                 "title": "View More",
                 "type": "postback",
-                "payload": "{type: 'more', title: '"+ item.payload.title +"', options: '"+ item.payload.replies +"'}"            
+                "payload": "{\"type\": \"more\", \"title\": \""+ item.payload.title +"\", \"options\": \""+ item.payload.replies +"\"}"            
               }
             ]
           }
@@ -304,7 +304,7 @@ function listPayload (item, recipient_id) {
         {
           "title": "Select",
           "type": "postback",
-          "payload": "{type: 'selected', title: '"+ item.payload.title +"', answer: '"+ item.payload.replies[i] +"'}" 
+          "payload": "{\"type\": \"selected\", \"title\": \""+ item.payload.title +"\", \"answer\": \""+ item.payload.replies[i] +"'}" 
         }
       ]
     });
