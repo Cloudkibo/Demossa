@@ -145,12 +145,11 @@ app.get('/newfile', (request, response) => {
 app.post('/fbPost', (request, response) => {
   console.log('incoming post from facebook');
   let message = request.body.entry[0].messaging[0];
-  console.log(message)
   let pageId = message.recipient.id
   let subscriberId = message.sender.id
-  let query = message.message.text
-  if (query) {
-    queryDialogFlow(query, pageId)
+  if (message.message) {
+    let query = message.message.text
+  queryDialogFlow(query, pageId)
     .then(result => {
       util.intervalForEach(result, (item) => {
         platforms.sendMessengerChat(item, subscriberId, pageId)
@@ -159,8 +158,8 @@ app.post('/fbPost', (request, response) => {
     .catch(err => {
       console.log(err)
     })
-  } else {
-    
+  } else if (message.postback) {
+    console.log(message)
   }
   return response.status(200).json({ status: 'success', description: 'got the data.' });
 });
