@@ -289,7 +289,7 @@ function listPayload (item, recipient_id) {
               {
                 "title": "View More",
                 "type": "postback",
-                "payload": "{type: 'more', title: '"+ item.payload.title +"', options: ["+ item.payload.replies +"]}"            
+                "payload": "{type: 'more', title: '"+ item.payload.title +"', options: '"+ item.payload.replies +"'}"            
               }
             ]
           }
