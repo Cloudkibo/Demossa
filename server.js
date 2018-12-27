@@ -153,7 +153,6 @@ app.post('/fbPost', (request, response) => {
   } else if (message.postback) {
     let postback = JSON.parse(message.postback.payload)
     let postbackTitle = message.postback.title
-    console.log(postback)
     if (postback.type === 'selected') {
       queryAIMessenger(postback.answer, subscriberId, pageId)
     }
