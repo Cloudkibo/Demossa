@@ -297,10 +297,11 @@ function listPayload (item, recipient_id) {
       }
     };
   for (let i=0; i<item.payload.replies.length; i++) {
-    if (i === 3) break;
+    if (i === 4) break;
     payload.message.attachment.payload.elements.push({
       "title": item.payload.replies[i],
       "image_url": "http://www.balinlaw.com/wp-content/uploads/2016/03/social-security-administration-logo.png",
+      "subtitle": "this is the test subtitle. this is new test subtitle.",
       "buttons": [
         {
           "title": "Select",
