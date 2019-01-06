@@ -86,7 +86,9 @@ function textMsgPayload (item, recipient_id, query) {
     let answers = ["Visiting the following link would help you more",
                   "Please visit the given link to know more"]
     let myURL = url.parse(item.text);
-    myURL = url.parse(process.env.DOMAIN + '/redirect?continue=' + item.text);
+    // Note: website of ssa doesn't support embedding in web view, so sending our webview on all links
+    // myURL = url.parse(process.env.DOMAIN + '/redirect?continue=' + item.text);
+    myURL = url.parse(process.env.DOMAIN + '/show-webview');
     console.log(myURL.href)
     return buttonWebPayload({
       "text": util.randomItem(answers),
