@@ -25,11 +25,11 @@ exports.sendWebChat = (request, response, items) => {
   }
 }
 
-exports.sendMessengerChat = (item, recipient_id, product_name) => {
+exports.sendMessengerChat = (item, recipient_id, product_name, query) => {
   console.log(item)
   let payload
   if (item.type === 'text' || item.type === 'gen-text') {
-    payload = textMsgPayload(item, recipient_id);
+    payload = textMsgPayload(item, recipient_id, query);
   }
   else if (item.type === 'image') {
     payload = imagePayload(item, recipient_id);
@@ -69,7 +69,7 @@ function messengerSendApi (payload, product_name) {
   })
 }
 
-function textMsgPayload (item, recipient_id) {
+function textMsgPayload (item, recipient_id, query) {
   // handling youtube url in response
   if (util.isYouTubeUrl(item.text)) {
     let answersYt = ["Please watch this video",
@@ -86,7 +86,7 @@ function textMsgPayload (item, recipient_id) {
     let answers = ["Visiting the following link would help you more",
                   "Please visit the given link to know more"]
     let myURL = url.parse(item.text);
-    myURL = url.parse('https://boiling-push.glitch.me/redirect?continue=' + item.text);
+    myURL = url.parse(process.env.DOMAIN + '/redirect?continue=' + item.text);
     console.log(myURL.href)
     return buttonWebPayload({
       "text": util.randomItem(answers),
@@ -95,6 +95,15 @@ function textMsgPayload (item, recipient_id) {
       "webViewEnabled": true
     }, recipient_id)
   }
+  if (query) {
+    return simpleTextWithSeeMoreButton(item, recipient_id, query);
+  }
+  else {
+    return simpleTextPayload(item, recipient_id);
+  }
+}
+
+function simpleTextPayload (item, recipient_id) {
   return {
       "messaging_type": "RESPONSE",
       "recipient":{
@@ -104,6 +113,32 @@ function textMsgPayload (item, recipient_id) {
         "text": item.text
       }
     };
+}
+
+function simpleTextWithSeeMoreButton (item, recipient_id, query) {
+  let payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"button",
+            "text": item.text,
+            "buttons":[
+              {
+                "title": "Read More",
+                "type": "postback",
+                "payload":"{\"type\": \"see more\", \"query\": \""+ query +"\"}"
+              }
+            ]
+          }
+        }
+      }
+    };
+  return payload;
 }
 
 function imagePayload (item, recipient_id) {
@@ -168,7 +203,7 @@ function genericMediaVideoPayload (item, recipient_id) {
                   },
                   {
                     "type":"web_url",
-                    "url":"https://boiling-push.glitch.me/show-webview",
+                    "url":process.env.DOMAIN + "/show-webview",
                     "title":"SSA Dashboard",
                     "messenger_extensions": true,
                     "webview_height_ratio": "tall"
@@ -250,7 +285,7 @@ function cardPayload (item, recipient_id) {
                 "subtitle":item.payload.subtitle,
                 "default_action": {
                   "type": "web_url",
-                  "url": "https://boiling-push.glitch.me/show-webview",
+                  "url": process.env.DOMAIN + "/show-webview",
                   "messenger_extensions": true,
                   "webview_height_ratio": "tall"
                 },
@@ -285,13 +320,7 @@ function listPayload (item, recipient_id) {
             "top_element_style": "compact",
             "sharable": true,
             "elements":[],
-            "buttons": [
-              {
-                "title": "View More",
-                "type": "postback",
-                "payload": "{\"type\": \"more\", \"title\": \""+ item.payload.title +"\", \"options\": \""+ item.payload.replies +"\"}"            
-              }
-            ]
+            "buttons": []
           }
         }
       }
@@ -311,5 +340,11 @@ function listPayload (item, recipient_id) {
       ]
     });
   }
+  let newArray = item.payload.replies.slice(4);;
+  payload.message.attachment.payload.buttons.push({
+    "title": "View More",
+    "type": "postback",
+    "payload": "{\"type\": \"more\", \"title\": \""+ item.payload.title +"\", \"options\": \""+ newArray +"\"}"
+  })
   return payload;
 }

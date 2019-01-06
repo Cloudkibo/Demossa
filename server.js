@@ -89,7 +89,7 @@ const createButtons = (displayUrl) => {
 
 app.get('/show-buttons', (request, response) => {
   const {userId} = request.query;
-  const displayUrl = 'https://boiling-push.glitch.me/show-webview';
+  const displayUrl = process.env.DOMAIN + '/show-webview';
   response.json(createButtons(displayUrl)); 
 });
 
@@ -152,12 +152,28 @@ app.post('/fbPost', (request, response) => {
   let subscriberId = message.sender.id
   if (message.message) {
     let query = message.message.text
-    queryAIMessenger(query, subscriberId, pageId);
+    queryAIMessenger(query, subscriberId, pageId, true);
   } else if (message.postback) {
     let postback = JSON.parse(message.postback.payload)
     let postbackTitle = message.postback.title
+    console.log(postback)
     if (postback.type === 'selected') {
-      queryAIMessenger(postback.answer, subscriberId, pageId)
+      queryAIMessenger(postback.answer, subscriberId, pageId, false, postback.type)
+    } else if (postback.type === 'see more') {
+      queryAIMessenger(postback.query, subscriberId, pageId, false, postback.type)
+    } else if (postback.type === 'more') {
+      let options = postback.options;
+      if (options !== '') {
+        let items = options.split(',')
+        let payload = {
+          "type" : "quick-replies",
+          "payload" : {
+            "title": "Please select from following",
+            "replies": items
+          }
+        }
+        platforms.sendMessengerChat(payload, subscriberId, pageId)
+      }
     }
   }
   return response.status(200).json({ status: 'success', description: 'got the data.' });
@@ -180,12 +196,20 @@ app.post('/webPost', (request, response) => {
   }
 });
 
-function queryAIMessenger (query, subscriberId, pageId) {
+function queryAIMessenger (query, subscriberId, pageId, simpleQueryNotPostBack, postBackType) {
   queryDialogFlow(query, pageId)
     .then(result => {
-      util.intervalForEach(result, (item) => {
-        platforms.sendMessengerChat(item, subscriberId, pageId)
-      }, 500)
+      if (simpleQueryNotPostBack) {
+        if (result.length > 1) // if repsonse contains more than one paragraphs
+          platforms.sendMessengerChat(result[0], subscriberId, pageId, query)
+        else
+          platforms.sendMessengerChat(result[0], subscriberId, pageId)
+      } else { // if query is coming from postback
+        if (postBackType === 'see more') result.shift(); // only faqs reponses should hide the first paragraph
+        util.intervalForEach(result, (item) => {
+          platforms.sendMessengerChat(item, subscriberId, pageId)
+        }, 500)
+      }
     })
     .catch(err => {
       console.log(err)
@@ -254,17 +278,17 @@ const httpsServer = https.createServer(options, httpsApp)
 
   if (process.env.NODE_ENV === 'production') {
     httpApp.get('*', (req, res) => {
-      res.redirect(`https://www.synaps3webrtc.com${req.url}`)
+      res.redirect(`${process.env.DOMAIN}${req.url}`)
     })
   }
 
 // listen for requests :)
 server.listen(process.env.PORT, process.env.IP, () => {
     console.log(`DEMOSSA server STARTED on ${
-      process.env.PORT} in ${process.env.NODE_ENV} mode`)
+      process.env.PORT} in ${process.env.NODE_ENV} mode on domain ${process.env.DOMAIN}`)
   })
 
-  httpsServer.listen(process.env.SECURE_PORT, () => {
-    console.log(`DEMOSSA server STARTED on ${
-      process.env.SECURE_PORT} in ${process.env.NODE_ENV} mode`)
-  })
+httpsServer.listen(process.env.SECURE_PORT, () => {
+  console.log(`DEMOSSA server STARTED on ${
+    process.env.SECURE_PORT} in ${process.env.NODE_ENV} mode on domain ${process.env.DOMAIN}`)
+})
