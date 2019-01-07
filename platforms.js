@@ -16,8 +16,7 @@ exports.sendWebChat = (request, response, items) => {
     } else if (item.type === 'card') {
       payload.push(cardPayload(item, 'web recipient'));
     } else if (item.type === 'payload') {
-      // payload = genericPayload(item, recipient_id)
-      payload.push(genericMediaVideoPayload(item, 'web recipient'))
+      payload.push(genericPayload(item, 'web recipient'))
     }
   }
   if (payload) {
@@ -39,8 +38,7 @@ exports.sendMessengerChat = (item, recipient_id, product_name, query) => {
   } else if (item.type === 'card') {
     payload = cardPayload(item, recipient_id);
   } else if (item.type === 'payload') {
-    // payload = genericPayload(item, recipient_id)
-    payload = genericMediaVideoPayload(item, recipient_id)
+    payload = genericPayload(item, recipient_id)
   }
   if (payload) {
     messengerSendApi (payload, product_name)
@@ -162,7 +160,7 @@ function imagePayload (item, recipient_id) {
 }
 
 // for uploading videos to facebook and attachment id
-function genericPayload (item, recipient_id) {
+function videoUploadToFb (item, recipient_id) {
   let payload = {
       "messaging_type": "RESPONSE",
       "recipient":{
@@ -180,6 +178,19 @@ function genericPayload (item, recipient_id) {
       }
     };
   return payload;
+}
+
+function genericPayload (item, recipient_id) {
+  if (item.payload.payload.facebook.attachment.payload.attachment_id) {
+    return genericMediaVideoPayload(item, recipient_id)
+  } else if (item.payload.payload.facebook.attachment.payload.external-link) {
+    return buttonWebPayload({
+      "text": "Please click on Read More to know more about this.",
+      "btnText": "Read More",
+      "url": item.payload.payload.facebook.attachment.payload.external-link,
+      "webViewEnabled": false
+    }, recipient_id)
+  }
 }
 
 function genericMediaVideoPayload (item, recipient_id) {
@@ -206,7 +217,7 @@ function genericMediaVideoPayload (item, recipient_id) {
                   {
                     "type":"web_url",
                     "url":process.env.DOMAIN + "/show-webview",
-                    "title":"SSA Dashboard",
+                    "title":"Visit \"my Social Security\" Account",
                     "messenger_extensions": true,
                     "webview_height_ratio": "tall"
                   }
