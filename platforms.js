@@ -332,7 +332,7 @@ function listPayload (item, recipient_id) {
     payload.message.attachment.payload.elements.push({
       "title": item.payload.replies[i],
       "image_url": "http://www.balinlaw.com/wp-content/uploads/2016/03/social-security-administration-logo.png",
-      "subtitle": "this is the test subtitle. this is new test subtitle.",
+      "subtitle": "Please click on Select to modify " + item.payload.replies[i],
       "buttons": [
         {
           "title": "Select",
