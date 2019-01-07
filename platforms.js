@@ -301,7 +301,7 @@ function cardPayload (item, recipient_id) {
   for (let i=0; i<item.payload.buttons.length; i++) {
     payload.message.attachment.payload.elements[0].buttons.push({
                 "type":"web_url",
-                "url":item.payload.buttons[i].postback,
+                "url": process.env.DOMAIN + "/show-webview",
                 "title":item.payload.buttons[i].text,
                 "messenger_extensions": true,
                 "webview_height_ratio": "tall"
@@ -334,7 +334,7 @@ function listPayload (item, recipient_id) {
     payload.message.attachment.payload.elements.push({
       "title": item.payload.replies[i],
       "image_url": "http://cdn.cloudkibo.com/public/img/logo-SSA.png",
-      "subtitle": "Please click on Select below to modify " + item.payload.replies[i],
+      "subtitle": "Please click on \"Select\" below to modify " + item.payload.replies[i],
       "buttons": [
         {
           "title": "Select",
