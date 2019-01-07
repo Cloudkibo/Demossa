@@ -183,11 +183,11 @@ function videoUploadToFb (item, recipient_id) {
 function genericPayload (item, recipient_id) {
   if (item.payload.payload.facebook.attachment.payload.attachment_id) {
     return genericMediaVideoPayload(item, recipient_id)
-  } else if (item.payload.payload.facebook.attachment.payload.external-link) {
+  } else if (item.payload.payload.facebook.attachment.payload.external_link) {
     return buttonWebPayload({
       "text": "Please click on Read More to know more about this.",
       "btnText": "Read More",
-      "url": item.payload.payload.facebook.attachment.payload.external-link,
+      "url": item.payload.payload.facebook.attachment.payload.external_link,
       "webViewEnabled": false
     }, recipient_id)
   }
