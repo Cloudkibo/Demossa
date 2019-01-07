@@ -302,7 +302,9 @@ function cardPayload (item, recipient_id) {
     payload.message.attachment.payload.elements[0].buttons.push({
                 "type":"web_url",
                 "url":item.payload.buttons[i].postback,
-                "title":item.payload.buttons[i].text
+                "title":item.payload.buttons[i].text,
+                "messenger_extensions": true,
+                "webview_height_ratio": "tall"
               });
   }
   return payload;
