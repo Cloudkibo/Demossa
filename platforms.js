@@ -333,8 +333,8 @@ function listPayload (item, recipient_id) {
     if (i === 4) break;
     payload.message.attachment.payload.elements.push({
       "title": item.payload.replies[i],
-      "image_url": "https://www.ssa.gov/framework/images/icons/svg/logo-red.svg",
-      "subtitle": "Please click on Select to modify " + item.payload.replies[i],
+      "image_url": "http://cdn.cloudkibo.com/public/img/logo-SSA.png",
+      "subtitle": "Please click on Select below to modify " + item.payload.replies[i],
       "buttons": [
         {
           "title": "Select",
