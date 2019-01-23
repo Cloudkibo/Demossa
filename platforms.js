@@ -184,11 +184,11 @@ function genericPayload (item, recipient_id) {
   if (item.payload.payload.facebook.attachment.payload.attachment_id) {
     return genericMediaVideoPayload(item, recipient_id)
   } else if (item.payload.payload.facebook.attachment.payload.external_link) {
-    let btnText = item.payload.payload.facebook.attachment.payload.button_text || "Read More";
+    let btnText = item.payload.payload.facebook.attachment.payload.btnTxt || "Read More";
     let text = item.payload.payload.facebook.attachment.payload.text || "Please click on Read More to know more about this.";
     return buttonWebPayload({
       "text": text,
-      "btnText": "Read More",
+      "btnText": btnText,
       "url": item.payload.payload.facebook.attachment.payload.external_link,
       "webViewEnabled": false
     }, recipient_id)
