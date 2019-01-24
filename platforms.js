@@ -54,7 +54,7 @@ exports.sendMessengerChat = (item, recipient_id, product_name, query) => {
 function messengerSendApi (payload, product_name) {
   let apiUrl = 'https://graph.facebook.com/v2.6';
   let endpoint = 'me/messages' + util.fbAccessToken(product_name);
-  
+
   return util.callApi(apiUrl, endpoint, 'post', payload)
   .then(result => {
     return new Promise((resolve, reject) => {
@@ -149,9 +149,9 @@ function imagePayload (item, recipient_id) {
       },
       "message":{
         "attachment":{
-          "type":"image", 
+          "type":"image",
           "payload":{
-            "url": item.url, 
+            "url": item.url,
             //"is_reusable":true
           }
         }
@@ -168,7 +168,7 @@ function videoUploadToFb (item, recipient_id) {
       },
       "message":{
         "attachment":{
-          "type":"video", 
+          "type":"video",
           "payload":{
             //"attachment_id": item.payload.payload.facebook.attachment.payload.attachment_id
             "url": "http://cdn.cloudkibo.com/public/videos/appeals-end.mp4",
@@ -192,6 +192,8 @@ function genericPayload (item, recipient_id) {
       "url": item.payload.payload.facebook.attachment.payload.external_link,
       "webViewEnabled": false
     }, recipient_id)
+  } else if (item.payload.payload.facebook.attachment.payload.gallery) {
+    return galleryPayload(item, recipient_id)
   }
 }
 
@@ -203,7 +205,7 @@ function genericMediaVideoPayload (item, recipient_id) {
       },
       "message":{
         "attachment":{
-          "type":"template", 
+          "type":"template",
           "payload":{
             "template_type":"media",
             "elements":[
@@ -290,7 +292,7 @@ function cardPayload (item, recipient_id) {
       },
       "message":{
         "attachment":{
-          "type":"template", 
+          "type":"template",
           "payload": {
             "template_type":"generic",
             "elements":[
@@ -304,7 +306,7 @@ function cardPayload (item, recipient_id) {
                   "messenger_extensions": true,
                   "webview_height_ratio": "tall"
                 },
-                "buttons":[]      
+                "buttons":[]
               }
             ]
           }
@@ -331,7 +333,7 @@ function listPayload (item, recipient_id) {
       },
       "message":{
         "attachment":{
-          "type":"template", 
+          "type":"template",
           "payload": {
             "template_type":"list",
             "top_element_style": "compact",
@@ -352,7 +354,7 @@ function listPayload (item, recipient_id) {
         {
           "title": "Select",
           "type": "postback",
-          "payload": "{\"type\": \"selected\", \"title\": \""+ item.payload.title +"\", \"answer\": \""+ item.payload.replies[i] +"\"}" 
+          "payload": "{\"type\": \"selected\", \"title\": \""+ item.payload.title +"\", \"answer\": \""+ item.payload.replies[i] +"\"}"
         }
       ]
     });
@@ -363,5 +365,43 @@ function listPayload (item, recipient_id) {
     "type": "postback",
     "payload": "{\"type\": \"more\", \"title\": \""+ item.payload.title +"\", \"options\": \""+ newArray +"\"}"
   })
+  return payload;
+}
+
+function galleryPayload (item, recipient_id) {
+  let gallery = item.payload.payload.facebook.attachment.payload.gallery
+  let length = gallery.length > 10 ? 10 : gallery.length
+  let galleryElements = []
+  for (let i = 0; i < length; i++) {
+    galleryElements.push(
+      {
+        "title":gallery[i],
+        "image_url":"http://cdn.cloudkibo.com/public/img/logo-SSA.png",
+        "subtitle":"Please click on \"Select\" below to modify " + gallery[i],
+        "buttons":[
+          {
+            "title": "Select",
+            "type": "postback",
+            "payload": "{\"type\": \"selected\", \"title\": \""+ item.payload.title +"\", \"answer\": \""+ gallery[i] +"\"}"
+          }
+        ]
+      }
+    )
+  }
+  let payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload": {
+            "template_type":"generic",
+            "elements":galleryElements
+          }
+        }
+      }
+    };
   return payload;
 }
