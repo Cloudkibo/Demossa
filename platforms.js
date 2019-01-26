@@ -194,7 +194,44 @@ function genericPayload (item, recipient_id) {
     }, recipient_id)
   } else if (item.payload.payload.facebook.attachment.payload.gallery) {
     return galleryPayload(item, recipient_id)
+  } else if (item.payload.payload.facebook.attachment.payload.postback_buttons) {
+    return postbackButtonsPayload(item, recipient_id)
   }
+}
+
+function postbackButtonsPayload (item, recipient_id) {
+  let buttons = item.payload.payload.facebook.attachment.payload.postback_buttons
+  let title = item.payload.payload.facebook.attachment.payload.title
+  let text = item.payload.payload.facebook.attachment.payload.text
+  let postbackButtons = []
+
+  for (let i = 0; i < buttons.length; i++) {
+    postbackButtons.push(
+      {
+        "title": buttons[i],
+        "type": "postback",
+        "payload": "{\"type\": \"selected\", \"title\": \""+ title +"\", \"answer\": \""+ title + " - " + buttons[i] +"\"}"
+      }
+    )
+  }
+
+  let payload = {
+    "messaging_type": "RESPONSE",
+    "recipient":{
+      "id": recipient_id
+    },
+    "message":{
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text":text,
+          "buttons":postbackButtons
+        }
+      }
+    }
+  }
+  return payload
 }
 
 function genericMediaVideoPayload (item, recipient_id) {
