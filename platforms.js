@@ -167,6 +167,7 @@ function imageWithQuickRepliesPayload (item, recipient_id) {
         "id": recipient_id
       },
       "message":{
+        "text": "Please select a option",
         "attachment":{
           "type":"image",
           "payload":{
