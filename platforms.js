@@ -416,7 +416,7 @@ function listPayload (item, recipient_id) {
     payload.message.attachment.payload.elements.push({
       "title": item.payload.replies[i],
       "image_url": "http://cdn.cloudkibo.com/public/img/logo-SSA.png",
-      "subtitle": "Please click on \"Select\" below to modify " + item.payload.replies[i],
+      // "subtitle": "Please click on \"Select\" below to modify " + item.payload.replies[i],
       "buttons": [
         {
           "title": "Select",
