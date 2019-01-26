@@ -33,8 +33,8 @@ exports.sendMessengerChat = (item, recipient_id, product_name, query) => {
   else if (item.type === 'image') {
     payload = imagePayload(item, recipient_id);
   } else if (item.type === 'quick-replies') {
-    payload = listPayload(item, recipient_id);
-    // payload = quickRepliesPayload(item, recipient_id);
+    // payload = listPayload(item, recipient_id);
+    payload = quickRepliesPayload(item, recipient_id);
     // payload = imageWithQuickRepliesPayload(item, recipient_id);
   } else if (item.type === 'card') {
     payload = cardPayload(item, recipient_id);
