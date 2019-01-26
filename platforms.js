@@ -403,9 +403,14 @@ function listPayload (item, recipient_id) {
           "type":"template",
           "payload": {
             "template_type":"list",
-            "top_element_style": "compact",
+            "top_element_style": "large",
             "sharable": true,
-            "elements":[],
+            "elements":[
+              {
+                "title": "Select one of the benefits",
+                "image_url": "https://bipartisanpolicy.org/wp-content/uploads/2015/05/Social-Security-Administration.jpg"
+              }
+            ],
             "buttons": []
           }
         }
@@ -416,7 +421,7 @@ function listPayload (item, recipient_id) {
     payload.message.attachment.payload.elements.push({
       "title": item.payload.replies[i],
       "image_url": "http://cdn.cloudkibo.com/public/img/logo-SSA.png",
-      // "subtitle": "Please click on \"Select\" below to modify " + item.payload.replies[i],
+      "subtitle": "Please click on \"Select\" below to modify " + item.payload.replies[i],
       "buttons": [
         {
           "title": "Select",
