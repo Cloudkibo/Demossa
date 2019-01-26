@@ -196,6 +196,8 @@ function genericPayload (item, recipient_id) {
     return galleryPayload(item, recipient_id)
   } else if (item.payload.payload.facebook.attachment.payload.postback_buttons) {
     return postbackButtonsPayload(item, recipient_id)
+  } else if (item.payload.payload.facebook.attachment.payload.generic_gallery) {
+    return genericGalleryPayload(item, recipient_id)
   }
 }
 
@@ -422,6 +424,46 @@ function galleryPayload (item, recipient_id) {
             "payload": "{\"type\": \"selected\", \"title\": \""+ "gallery" +"\", \"answer\": \""+ gallery[i] +"\"}"
           }
         ]
+      }
+    )
+  }
+  let payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload": {
+            "template_type":"generic",
+            "elements":galleryElements
+          }
+        }
+      }
+    };
+  return payload;
+}
+
+function genericGalleryPayload (item, recipient_id) {
+  let gallery = item.payload.payload.facebook.attachment.payload.generic_gallery
+  let length = gallery.length > 10 ? 10 : gallery.length
+  let galleryElements = []
+  for (let i = 0; i < length; i++) {
+    galleryElements.push(
+      {
+        "title":gallery[i].title,
+        "image_url":gallery[i].image,
+        "subtitle":gallery[i].subtitle,
+        "buttons":gallery[i].button ? [
+          {
+            "type":"web_url",
+            "url": gallery[i].button.url,
+            "title": gallery[i].button.text,
+            "messenger_extensions": gallery[i].button.webViewEnabled ? gallery[i].button.webViewEnabled : false,
+            "webview_height_ratio": "tall"
+          }
+        ] : []
       }
     )
   }
