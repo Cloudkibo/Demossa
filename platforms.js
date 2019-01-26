@@ -382,7 +382,7 @@ function galleryPayload (item, recipient_id) {
           {
             "title": "Select",
             "type": "postback",
-            "payload": "{\"type\": \"selected\", \"title\": \""+ item.payload.title +"\", \"answer\": \""+ gallery[i] +"\"}"
+            "payload": "{\"type\": \"selected\", \"title\": \""+ "gallery" +"\", \"answer\": \""+ gallery[i] +"\"}"
           }
         ]
       }
