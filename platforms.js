@@ -415,7 +415,7 @@ function galleryPayload (item, recipient_id) {
     galleryElements.push(
       {
         "title":gallery[i],
-        "image_url":"http://cdn.cloudkibo.com/public/img/logo-SSA.png",
+        // "image_url":"http://cdn.cloudkibo.com/public/img/logo-SSA.png",
         "subtitle":"Please click on \"Select\" below to modify " + gallery[i],
         "buttons":[
           {
