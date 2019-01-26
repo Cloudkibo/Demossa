@@ -201,10 +201,13 @@ function queryAIMessenger (query, subscriberId, pageId, simpleQueryNotPostBack, 
   queryDialogFlow(query, pageId)
     .then(result => {
       if (simpleQueryNotPostBack) {
-        if (result.length > 1 && config.viewMorePageIds.indexOf(pageId) > -1) // if repsonse contains more than one paragraphs
+        if (result.length > 1 && config.viewMorePageIds.indexOf(pageId) > -1) { // if repsonse contains more than one paragraphs
           platforms.sendMessengerChat(result[0], subscriberId, pageId, query)
-        else
-          platforms.sendMessengerChat(result[0], subscriberId, pageId)
+        } else {
+          util.intervalForEach(result, (item) => {
+            platforms.sendMessengerChat(item, subscriberId, pageId)
+          }, 500)
+        }
       } else { // if query is coming from postback
         if (postBackType === 'see more') result.shift(); // only faqs reponses should hide the first paragraph
         util.intervalForEach(result, (item) => {
