@@ -431,12 +431,14 @@ function listPayload (item, recipient_id) {
       ]
     });
   }
-  let newArray = item.payload.replies.slice(4);;
-  payload.message.attachment.payload.buttons.push({
-    "title": "View More",
-    "type": "postback",
-    "payload": "{\"type\": \"more\", \"title\": \""+ item.payload.title +"\", \"options\": \""+ newArray +"\"}"
-  })
+  let newArray = item.payload.replies.slice(4);
+  if (item.payload.replies.length > 3) {
+    payload.message.attachment.payload.buttons.push({
+      "title": "View More",
+      "type": "postback",
+      "payload": "{\"type\": \"more\", \"title\": \""+ item.payload.title +"\", \"options\": \""+ newArray +"\"}"
+    })
+  }
   return payload;
 }
 
