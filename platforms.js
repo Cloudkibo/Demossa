@@ -170,7 +170,7 @@ function imageWithQuickRepliesPayload (item, recipient_id) {
         "attachment":{
           "type":"image",
           "payload":{
-            "url": item.url
+            "url": "http://cdn.cloudkibo.com/public/img/logo-SSA.png"
           }
         },
         "quick_replies": []
