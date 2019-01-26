@@ -160,7 +160,7 @@ app.post('/fbPost', (request, response) => {
     console.log(postback)
     if (postback.type === 'selected') {
       let query = postback.answer
-      if (postback.title.includes('gallery')) {
+      if (postback.title === 'gallery') {
         query = query + ' gallery'
       }
       queryAIMessenger(query, subscriberId, pageId, false, postback.type)
