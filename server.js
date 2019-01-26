@@ -210,7 +210,7 @@ function queryAIMessenger (query, subscriberId, pageId, simpleQueryNotPostBack, 
         } else {
           util.intervalForEach(result, (item) => {
             platforms.sendMessengerChat(item, subscriberId, pageId)
-          }, 500)
+          }, 1500)
         }
       } else { // if query is coming from postback
         if (postBackType === 'see more') result.shift(); // only faqs reponses should hide the first paragraph
