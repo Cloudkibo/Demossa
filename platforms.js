@@ -34,7 +34,8 @@ exports.sendMessengerChat = (item, recipient_id, product_name, query) => {
     payload = imagePayload(item, recipient_id);
   } else if (item.type === 'quick-replies') {
     // payload = listPayload(item, recipient_id);
-    payload = quickRepliesPayload(item, recipient_id);
+    // payload = quickRepliesPayload(item, recipient_id);
+    payload = imageWithQuickRepliesPayload(item, recipient_id);
   } else if (item.type === 'card') {
     payload = cardPayload(item, recipient_id);
   } else if (item.type === 'payload') {
@@ -157,6 +158,32 @@ function imagePayload (item, recipient_id) {
         }
       }
     };
+}
+
+function imageWithQuickRepliesPayload (item, recipient_id) {
+  let payload = {
+      "messaging_type": "RESPONSE",
+      "recipient":{
+        "id": recipient_id
+      },
+      "message":{
+        "attachment":{
+          "type":"image",
+          "payload":{
+            "url": item.url
+          }
+        },
+        "quick_replies": []
+      }
+    };
+  for (let i=0; i<item.payload.replies.length; i++) {
+    payload.message.quick_replies.push({
+        "content_type":"text",
+        "title":item.payload.replies[i],
+        "payload":"{\"quickReplyTitle\": \""+ item.payload.title +"\", \"answer\": \""+ item.payload.replies[i] +"\"}",
+      });
+  }
+  return payload;
 }
 
 // for uploading videos to facebook and attachment id
