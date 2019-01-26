@@ -431,7 +431,7 @@ function listPayload (item, recipient_id) {
       ]
     });
   }
-  let newArray = item.payload.replies.slice(4);
+  let newArray = item.payload.replies.slice(3);
   if (item.payload.replies.length > 3) {
     payload.message.attachment.payload.buttons.push({
       "title": "View More",
