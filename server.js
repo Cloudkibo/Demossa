@@ -9,6 +9,7 @@ const requestPromise = require('request-promise');
 const ailayer = require('./ai-layer.js')
 const util = require('./utility.js')
 const platforms = require('./platforms.js')
+const config = require('./config.js')
 
 var httpsApp = express();
 var httpApp = express()
@@ -27,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(bodyParser.json());
 
-// we've started you off with Express, 
+// we've started you off with Express,
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
 
 // http://expressjs.com/en/starter/static-files.html
@@ -90,7 +91,7 @@ const createButtons = (displayUrl) => {
 app.get('/show-buttons', (request, response) => {
   const {userId} = request.query;
   const displayUrl = process.env.DOMAIN + '/show-webview';
-  response.json(createButtons(displayUrl)); 
+  response.json(createButtons(displayUrl));
 });
 
 app.get('/show-webview', (request, response) => {
@@ -200,7 +201,7 @@ function queryAIMessenger (query, subscriberId, pageId, simpleQueryNotPostBack, 
   queryDialogFlow(query, pageId)
     .then(result => {
       if (simpleQueryNotPostBack) {
-        if (result.length > 1) // if repsonse contains more than one paragraphs
+        if (result.length > 1 && config.viewMorePageIds.indexOf(pageId) > -1) // if repsonse contains more than one paragraphs
           platforms.sendMessengerChat(result[0], subscriberId, pageId, query)
         else
           platforms.sendMessengerChat(result[0], subscriberId, pageId)
