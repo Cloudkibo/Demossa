@@ -417,7 +417,7 @@ function listPayload (item, recipient_id) {
       }
     };
   for (let i=0; i<item.payload.replies.length; i++) {
-    if (i === 4) break;
+    if (i === 3) break;
     payload.message.attachment.payload.elements.push({
       "title": item.payload.replies[i],
       "image_url": "http://cdn.cloudkibo.com/public/img/logo-SSA.png",
