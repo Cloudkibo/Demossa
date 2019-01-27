@@ -276,9 +276,9 @@ function methodOfChangePayload (item, recipient_id) {
     buttons.push(
       {
         "type":"web_url",
-        "url":"https://www.ssa.gov/",
+        "url":process.env.DOMAIN + "/show-webview",
         "title":"Online",
-        "messenger_extensions": true,
+        "messenger_extensions": false,
         "webview_height_ratio": "tall"
       }
     )
