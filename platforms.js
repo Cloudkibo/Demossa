@@ -226,6 +226,8 @@ function genericPayload (item, recipient_id) {
     return postbackButtonsPayload(item, recipient_id)
   } else if (item.payload.payload.facebook.attachment.payload.generic_gallery) {
     return genericGalleryPayload(item, recipient_id)
+  } else if (item.payload.payload.facebook.attachment.payload.list) {
+    return listPayload(item, recipient_id)
   }
 }
 
@@ -393,6 +395,7 @@ function cardPayload (item, recipient_id) {
 }
 
 function listPayload (item, recipient_id) {
+  let list = item.payload.payload.facebook.attachment.payload.list
   let payload = {
       "messaging_type": "RESPONSE",
       "recipient":{
@@ -416,27 +419,27 @@ function listPayload (item, recipient_id) {
         }
       }
     };
-  for (let i=0; i<item.payload.replies.length; i++) {
+  for (let i=0; i<list.length; i++) {
     if (i === 3) break;
     payload.message.attachment.payload.elements.push({
-      "title": item.payload.replies[i],
+      "title": list[i],
       "image_url": "http://cdn.cloudkibo.com/public/img/logo-SSA.png",
-      "subtitle": "Please click on \"Select\" below to modify " + item.payload.replies[i],
+      "subtitle": "Please click on \"Select\" below to modify " + list[i],
       "buttons": [
         {
           "title": "Select",
           "type": "postback",
-          "payload": "{\"type\": \"selected\", \"title\": \""+ item.payload.title +"\", \"answer\": \""+ item.payload.replies[i] +"\"}"
+          "payload": "{\"type\": \"selected\", \"title\": \""+ list[i] +"\", \"answer\": \""+ list[i] +"\"}"
         }
       ]
     });
   }
-  let newArray = item.payload.replies.slice(3);
-  if (item.payload.replies.length > 3) {
+  let newArray = list.slice(3);
+  if (list.length > 3) {
     payload.message.attachment.payload.buttons.push({
       "title": "View More",
       "type": "postback",
-      "payload": "{\"type\": \"more\", \"title\": \""+ item.payload.title +"\", \"options\": \""+ newArray +"\"}"
+      "payload": "{\"type\": \"more\", \"title\": \""+ list[i] +"\", \"options\": \""+ newArray +"\"}"
     })
   }
   return payload;
