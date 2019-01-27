@@ -228,6 +228,8 @@ function genericPayload (item, recipient_id) {
     return genericGalleryPayload(item, recipient_id)
   } else if (item.payload.payload.facebook.attachment.payload.list) {
     return listPayload(item, recipient_id)
+  } else if (item.payload.payload.facebook.attachment.payload.method_of_change) {
+    return methodOfChangePayload(item, recipient_id)
   }
 }
 
@@ -259,6 +261,59 @@ function postbackButtonsPayload (item, recipient_id) {
           "template_type":"button",
           "text":text,
           "buttons":postbackButtons
+        }
+      }
+    }
+  }
+  return payload
+}
+
+function methodOfChangePayload (item, recipient_id) {
+  let methods = item.payload.payload.facebook.attachment.payload.method_of_change
+  let buttons = []
+
+  if (methods.online) {
+    buttons.push(
+      {
+        "type":"web_url",
+        "url":"https://www.ssa.gov/",
+        "title":"Online",
+        "messenger_extensions": true,
+        "webview_height_ratio": "tall"
+      }
+    )
+  }
+  if (methods.phone) {
+    buttons.push(
+      {
+        "title": 'Phone',
+        "type": "postback",
+        "payload": "{\"type\": \"selected\", \"title\": \""+ "Phone" +"\", \"answer\": \""+ "Method of Change - Phone" +"\"}"
+      }
+    )
+  }
+  if (methods.address) {
+    buttons.push(
+      {
+        "title": 'Address (Mail/Visit)',
+        "type": "postback",
+        "payload": "{\"type\": \"selected\", \"title\": \""+ "Address" +"\", \"answer\": \""+ "Method of Change - Address" +"\"}"
+      }
+    )
+  }
+
+  let payload = {
+    "messaging_type": "RESPONSE",
+    "recipient":{
+      "id": recipient_id
+    },
+    "message":{
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"button",
+          "text": methods.text,
+          "buttons": buttons
         }
       }
     }
