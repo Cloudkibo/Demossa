@@ -278,7 +278,7 @@ function methodOfChangePayload (item, recipient_id) {
         "type":"web_url",
         "url":process.env.DOMAIN + "/show-webview",
         "title":"Online",
-        "messenger_extensions": false,
+        "messenger_extensions": true,
         "webview_height_ratio": "tall"
       }
     )
