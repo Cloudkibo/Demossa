@@ -451,6 +451,8 @@ function cardPayload (item, recipient_id) {
 
 function listPayload (item, recipient_id) {
   let list = item.payload.payload.facebook.attachment.payload.list
+  let title = item.payload.payload.facebook.attachment.payload.title ? item.payload.payload.facebook.attachment.payload.title : "Social Security Administration"
+  let subtitle = item.payload.payload.facebook.attachment.payload.subtitle ? item.payload.payload.facebook.attachment.payload.subtitle : "Select one of the benefits"
   let payload = {
       "messaging_type": "RESPONSE",
       "recipient":{
@@ -465,7 +467,8 @@ function listPayload (item, recipient_id) {
             "sharable": true,
             "elements":[
               {
-                "title": "Select one of the benefits",
+                "title": title,
+                "subtitle": subtitle,
                 "image_url": "https://bipartisanpolicy.org/wp-content/uploads/2015/05/Social-Security-Administration.jpg"
               }
             ],
