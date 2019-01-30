@@ -148,7 +148,13 @@ app.get('/newfile', (request, response) => {
 
 app.post('/fbPost', (request, response) => {
   console.log('incoming post from facebook');
-  let message = request.body.entry[0].messaging[0];
+  let body = {}
+  if (request.fromKiboPush) {
+    body = request
+  } else {
+    body = request.body
+  }
+  let message = body.entry[0].messaging[0];
   let pageId = message.recipient.id
   let subscriberId = message.sender.id
   if (message.message) {
