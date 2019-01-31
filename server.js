@@ -185,6 +185,29 @@ app.post('/fbPost', (request, response) => {
         }
         platforms.sendMessengerChat(payload, subscriberId, pageId)
       }
+    } else if (postback.type === 'list-more') {
+      let options = postback.options;
+      if (options !== '') {
+        let items = options.split(',')
+        let payload = {
+          "type": "payload",
+          "payload": {
+            "payload": {
+              "facebook": {
+                "attachment": {
+                  "type": "",
+                  "payload": {
+                    "title": "Disability Benefits",
+                    "subtitle": "Please select from the following",
+                    "list": items
+                  }
+                }
+              }
+            }
+          }
+        }
+        platforms.sendMessengerChat(payload, subscriberId, pageId)
+      }
     }
   }
   return response.status(200).json({ status: 'success', description: 'got the data.' });
