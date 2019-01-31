@@ -296,8 +296,9 @@ function methodOfChangePayload (item, recipient_id) {
     buttons.push(
       {
         "title": 'Address (Mail/Visit)',
-        "type": "postback",
-        "payload": "{\"type\": \"selected\", \"title\": \""+ "Address" +"\", \"answer\": \""+ "Method of Change - Address" +"\"}"
+        "type":"web_url",
+        "url":"https://secure.ssa.gov/ICON/main.jsp",
+        "messenger_extensions": false
       }
     )
   }
