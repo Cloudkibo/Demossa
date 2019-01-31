@@ -298,7 +298,8 @@ function methodOfChangePayload (item, recipient_id) {
         "title": 'Address (Mail/Visit)',
         "type":"web_url",
         "url":"https://secure.ssa.gov/ICON/main.jsp",
-        "messenger_extensions": false
+        "messenger_extensions": false,
+        "webview_height_ratio": "tall"
       }
     )
   }
@@ -494,6 +495,7 @@ function listPayload (item, recipient_id) {
     });
   }
   let newArray = list.slice(3);
+  console.log(list.length)
   if (list.length > 3) {
     payload.message.attachment.payload.buttons.push({
       "title": "View More",
