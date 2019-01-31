@@ -500,7 +500,7 @@ function listPayload (item, recipient_id) {
     payload.message.attachment.payload.buttons.push({
       "title": "View More",
       "type": "postback",
-      "payload": "{\"type\": \"more\", \"title\": \""+ list[i] +"\", \"options\": \""+ newArray +"\"}"
+      "payload": "{\"type\": \"more\", \"title\": \""+ "list" +"\", \"options\": \""+ newArray +"\"}"
     })
   }
   return payload;
