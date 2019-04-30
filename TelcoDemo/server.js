@@ -13,8 +13,7 @@ const platforms = require('./platforms.js')
 var httpsApp = express();
 var httpApp = express()
 
-// const app = (process.env.NODE_ENV === 'production') ? httpsApp : httpApp
-const app = httpApp
+const app = (process.env.NODE_ENV === 'production') ? httpsApp : httpApp
 
 // Setup template engine - add pug
 app.set('view engine', 'pug');
@@ -218,11 +217,11 @@ if (process.env.NODE_ENV === 'production') {
 const server = http.createServer(httpApp)
 const httpsServer = https.createServer(options, httpsApp)
 
-// if (process.env.NODE_ENV === 'production') {
-//   httpApp.get('*', (req, res) => {
-//     res.redirect(`${process.env.DOMAIN}${req.url}`)
-//   })
-// }
+if (process.env.NODE_ENV === 'production') {
+  httpApp.get('*', (req, res) => {
+    res.redirect(`${process.env.DOMAIN}${req.url}`)
+  })
+}
 
 // listen for requests :)
 server.listen(process.env.PORT, process.env.IP, () => {
