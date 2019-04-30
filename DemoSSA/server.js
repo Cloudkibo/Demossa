@@ -14,8 +14,8 @@ const config = require('./config.js')
 var httpsApp = express();
 var httpApp = express()
 
-// const app = (process.env.NODE_ENV === 'production') ? httpsApp : httpApp
-const app = httpApp
+const app = (process.env.NODE_ENV === 'production') ? httpsApp : httpApp
+
 // Setup template engine - add pug
 app.set('view engine', 'pug');
 

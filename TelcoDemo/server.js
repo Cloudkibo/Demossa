@@ -13,8 +13,8 @@ const platforms = require('./platforms.js')
 var httpsApp = express();
 var httpApp = express()
 
-const app = (process.env.NODE_ENV === 'production') ? httpsApp : httpApp
-
+// const app = (process.env.NODE_ENV === 'production') ? httpsApp : httpApp
+const app = httpApp
 
 // Setup template engine - add pug
 app.set('view engine', 'pug');
