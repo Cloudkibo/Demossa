@@ -218,11 +218,11 @@ if (process.env.NODE_ENV === 'production') {
 const server = http.createServer(httpApp)
 const httpsServer = https.createServer(options, httpsApp)
 
-if (process.env.NODE_ENV === 'production') {
-  httpApp.get('*', (req, res) => {
-    res.redirect(`${process.env.DOMAIN}${req.url}`)
-  })
-}
+// if (process.env.NODE_ENV === 'production') {
+//   httpApp.get('*', (req, res) => {
+//     res.redirect(`${process.env.DOMAIN}${req.url}`)
+//   })
+// }
 
 // listen for requests :)
 server.listen(process.env.PORT, process.env.IP, () => {
