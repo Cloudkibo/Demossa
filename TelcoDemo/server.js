@@ -5,6 +5,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
 // init project
 var express = require('express');
+const mongoose = require('mongoose')
 const bodyParser = require('body-parser');
 const url = require('url');
 const requestPromise = require('request-promise');
@@ -16,6 +17,8 @@ const config = require('./config/environment/index')
 var httpsApp = express()
 var httpApp = express()
 
+mongoose.connect(config.mongo.uri, config.mongo.options)
+
 const app = (config.env === 'production') ? httpsApp : httpApp
 
 // Setup template engine - add pug
@@ -23,7 +26,6 @@ app.set('view engine', 'pug');
 
 // Tell Express where our templates are
 app.set('views', './views');
-
 
 // Parse data from application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));

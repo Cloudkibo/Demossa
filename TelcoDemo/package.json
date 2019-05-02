@@ -10,11 +10,12 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.16.3",
     "body-parser": "1.18.2",
+    "express": "^4.16.3",
+    "mongoose": "^5.5.5",
+    "pug": "^2.0.3",
     "request": "^2.85.0",
-    "request-promise": "^4.2.2",
-    "pug": "^2.0.3"
+    "request-promise": "^4.2.2"
   },
   "engines": {
     "node": "8.x"
