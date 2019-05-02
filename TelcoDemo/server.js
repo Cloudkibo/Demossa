@@ -1,26 +1,31 @@
 // server.js
 // where your node app starts
 
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+
 // init project
 var express = require('express');
+const mongoose = require('mongoose')
 const bodyParser = require('body-parser');
 const url = require('url');
 const requestPromise = require('request-promise');
 const ailayer = require('./ai-layer.js')
 const util = require('./utility.js')
 const platforms = require('./platforms.js')
+const config = require('./config/environment/index')
 
-var httpsApp = express();
+var httpsApp = express()
 var httpApp = express()
 
-const app = (process.env.NODE_ENV === 'production') ? httpsApp : httpApp
+mongoose.connect(config.mongo.uri, config.mongo.options)
+
+const app = (config.env === 'production') ? httpsApp : httpApp
 
 // Setup template engine - add pug
 app.set('view engine', 'pug');
 
 // Tell Express where our templates are
 app.set('views', './views');
-
 
 // Parse data from application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -203,7 +208,7 @@ let options = {
     cert: ''
 }
 
-if (process.env.NODE_ENV === 'production') {
+if (config.env === 'production') {
   try {
     options = {
       ca: fs.readFileSync('/root/certs/ca_bundle.crt'),
@@ -217,19 +222,19 @@ if (process.env.NODE_ENV === 'production') {
 const server = http.createServer(httpApp)
 const httpsServer = https.createServer(options, httpsApp)
 
-if (process.env.NODE_ENV === 'production') {
+if (config.env === 'production') {
   httpApp.get('*', (req, res) => {
-    res.redirect(`${process.env.DOMAIN}${req.url}`)
+    res.redirect(`${config.domain}${req.url}`)
   })
 }
 
 // listen for requests :)
-server.listen(process.env.PORT, process.env.IP, () => {
+server.listen(config.port, config.ip, () => {
   console.log(`DEMOSSA server STARTED on ${
-    process.env.PORT} in ${process.env.NODE_ENV} mode on domain ${process.env.DOMAIN}`)
+    config.port} in ${config.env} mode on domain ${config.domain}`)
 })
 
-httpsServer.listen(process.env.SECURE_PORT, () => {
+httpsServer.listen(config.secure_port, () => {
 console.log(`DEMOSSA server STARTED on ${
-  process.env.SECURE_PORT} in ${process.env.NODE_ENV} mode on domain ${process.env.DOMAIN}`)
+  config.secure_port} in ${config.env} mode on domain ${config.domain}`)
 })
