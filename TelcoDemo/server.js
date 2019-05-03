@@ -21,6 +21,10 @@ mongoose.connect(config.mongo.uri, config.mongo.options)
 
 const app = (config.env === 'production') ? httpsApp : httpApp
 
+const seed = require('./scripts/seeds')
+
+seed()
+
 // Setup template engine - add pug
 app.set('view engine', 'pug');
 
