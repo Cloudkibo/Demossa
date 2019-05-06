@@ -15,12 +15,12 @@ var servicesData= [
         bill_cycle: 'monthly'
     },
     {
-        name: '2000 Jazz + Warid Minutes',
-        onNet: '300 Other Network Minutes',
+        name: 'J600',
+        onNet: '2500 Other Network Minutes',
         offNet: '500 Other Network Minutes',
-        internet: '1000 MB',
-        sms: '300',
-        price: 599,
+        internet: '2000 MB',
+        sms: '600',
+        price: 600,
         bill_cycle: 'monthly'
     },
     {
@@ -33,12 +33,12 @@ var servicesData= [
         bill_cycle: 'monthly'
     },
     {
-        name: 'J999',
+        name: 'J1500',
         onNet: 'Unlimited Jazz + Warid Minutes',
         offNet: '500 Other Network Minutes',
         internet: '7000 MB',
-        sms: '7000',
-        price: 899,
+        sms: '7000 SMS',
+        price: 800,
         bill_cycle: 'monthly'
     }
 ]
