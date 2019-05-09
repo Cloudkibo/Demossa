@@ -66,16 +66,19 @@ var customersData = [
 
 var complainsData = [
     {
+        complaintId: generate(6),
         status: 'open',
-        description: 'description of the complaint',
+        description: 'description of the complaint'
     },
     {
+        complaintId: generate(6),
         status: 'processing',
-        description: 'description of the complaint',
+        description: 'description of the complaint'
     },
     {
+        complaintId: generate(6),
         status: 'closed',
-        description: 'description of the complaint',
+        description: 'description of the complaint'
     }
 ]
 
@@ -119,3 +122,13 @@ function seedDb() {
 }
 
 module.exports = seedDb
+
+function generate(count) {
+    var _sym = '1234567890',
+    var str = '';
+
+    for(var i = 0; i < count; i++) {
+        str += _sym[parseInt(Math.random() * (_sym.length))];
+    }
+    return str
+}

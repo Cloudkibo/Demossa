@@ -1,4 +1,6 @@
 const util = require('./../utility')
+const Complaint = require('./../api/complaint.controller')
+
 exports.currentPackageRoman = function (request, response) {
     let message = 'Sorry, I am unable to answer this for now. Please contact admin'
     let otp = request.body.queryResult.parameters.otp
@@ -46,4 +48,13 @@ exports.showServices = function (request, response) {
     let message = 'Sorry, I am unable to answer this for now. Please contact admin'
     console.log(request.body.queryResult.parameters)
     response.status(200).json({ fulfillmentText: message });
+}
+
+exports.checkComplaintStatus = function(request, response) {
+  let message = 'Sorry, I am unable to answer this for now. Please contact admin'
+  let complaintId = request.body.queryResult.parameters.complaintId
+  Complaint.fetchcomplaint(complaintId)
+  .then((message) => {
+    response.status(200).json({ fulfillmentText: message })
+  })
 }
