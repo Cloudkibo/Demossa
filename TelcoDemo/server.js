@@ -114,6 +114,8 @@ app.post('/dialogFlowWebhook', (request, response) => {
     responseHelpers.findBundleInfoRoman(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.1.welcome.select.language') {
     responseHelpers.showServices(request, response)
+  } else if (request.body.queryResult.intent.displayName === 'check.complaint.status.english') {
+    responseHelpers.checkComplaintStatus(request, response)
   }
 })
 
