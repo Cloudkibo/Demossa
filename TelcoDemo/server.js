@@ -13,6 +13,7 @@ const ailayer = require('./ai-layer.js')
 const util = require('./utility.js')
 const platforms = require('./platforms.js')
 const config = require('./config/environment/index')
+const responseHelpers = require('./helpers/responses')
 
 var httpsApp = express()
 var httpApp = express()
@@ -107,46 +108,13 @@ app.post('/webPost', (request, response) => {
 
 app.post('/dialogFlowWebhook', (request, response) => {
   console.log(request.body);
-  let message = 'Sorry, I am unable to answer this for now. Please contact admin'
   if (request.body.queryResult.intent.displayName === '0.1.my.current.package.roman') {
-    let otp = request.body.queryResult.parameters.otp
-    let phone = request.body.queryResult.parameters.phone
-    if (util.customerDb.otps.indexOf(otp) < 0) {
-      message = 'Wrong OTP, Please start again.'
-    } else {
-      let customer = util.customerDb.customers[phone]
-      console.log(customer)
-      message = `Your package is ${customer.current_package}. Your remaining sms are ${customer.Usage.Sms}, on-net minutes are ${customer.Usage.Onnet} and off-net minutes are ${customer.Usage.Offnet}. While your remaining data is ${customer.Usage.Data}`
-    }
+    responseHelpers.currentPackageRoman(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.2.1.find.bundle.roman') {
-    let packagePayload = util.package_db[request.body.queryResult.parameters.package]
-    message = 'Information on ' + request.body.queryResult.parameters.package +
-      '\n \n On-net Minutes: ' + packagePayload.onNet +
-      '\n Off-net Minutes: ' + packagePayload.offNet +
-      '\n Internet: ' + packagePayload.Internet + 
-      '\n SMS: ' + packagePayload.SMS
-    response.status(200).json({ fulfillmentMessages: [
-      {
-        platform: 'FACEBOOK',
-        text: {
-          text: [
-            message
-          ]
-        }
-      },
-      {
-        platform: 'FACEBOOK',
-        quickReplies: {
-          title: 'Package ko activate keejye',
-          quickReplies: [
-            'Activate ' + request.body.queryResult.parameters.package
-          ]
-        }
-      }
-    ] });
-    return ;
+    responseHelpers.findBundleInfoRoman(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.1.welcome.select.language') {
+    responseHelpers.showServices(request, response)
   }
-  response.status(200).json({ fulfillmentText: message });
 })
 
 function queryAIMessenger (query, subscriberId, pageId, simpleQueryNotPostBack, postBackType) {
@@ -172,17 +140,6 @@ function queryAIMessenger (query, subscriberId, pageId, simpleQueryNotPostBack, 
       console.log(err)
     })
 }
-
-// EXAMPLE 1994777573950560
-// queryDialogFlow("Can you send me the tutorial on end of a claim")
-//     .then(result => {
-//       util.intervalForEach(result, (item) => {
-//         platforms.sendMessengerChat(item, '1994777573950560')
-//       }, 1000)
-//     })
-//     .catch(err => {
-//       console.log(err)
-//     })
 
 function queryDialogFlow(query, pageId) {
   return ailayer.callDialogFlowAPIV2(query, pageId)
