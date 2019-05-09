@@ -53,6 +53,8 @@ exports.showServices = function (request, response) {
 exports.checkComplaintStatus = function(request, response) {
   let message = 'Sorry, I am unable to answer this for now. Please contact admin'
   let complaintId = request.body.queryResult.parameters.complaintId
-  message = Complaint.fetchcomplaint(complaintId)
-  response.status(200).json({ fulfillmentText: message })
+  Complaint.fetchcomplaint(complaintId)
+  .then((message) => {
+    response.status(200).json({ fulfillmentText: message })
+  })
 }
