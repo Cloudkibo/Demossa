@@ -112,8 +112,12 @@ app.post('/dialogFlowWebhook', (request, response) => {
     responseHelpers.currentPackageRoman(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.2.1.find.bundle.roman') {
     responseHelpers.findBundleInfoRoman(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.1.welcome.select.language') {
-    responseHelpers.showServices(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.0.2.welcome.sign.up.english') {
+    responseHelpers.signUpTheCustomer(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.0.1.welcome.sign.up.urdu') {
+    responseHelpers.signUpTheCustomer(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.0.3.welcome.sign.up.roman.urdu') {
+    responseHelpers.signUpTheCustomer(request, response)
   }
 })
 
