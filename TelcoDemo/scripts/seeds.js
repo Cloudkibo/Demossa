@@ -124,7 +124,7 @@ function seedDb() {
 module.exports = seedDb
 
 function generate(count) {
-    var _sym = '1234567890',
+    var _sym = '1234567890';
     var str = '';
 
     for(var i = 0; i < count; i++) {
