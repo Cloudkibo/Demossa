@@ -1,5 +1,7 @@
 const util = require('./../utility')
+const customers = require('./../api/customers.controller')
 const Complaint = require('./../api/complaint.controller')
+const statements = require('./i13n').statements
 
 exports.currentPackageRoman = function (request, response) {
     let message = 'Sorry, I am unable to answer this for now. Please contact admin'
@@ -44,10 +46,39 @@ exports.findBundleInfoRoman = function (request, response) {
     ] });
 }
 
+exports.signUpTheCustomer = function (request, response) {
+    let message = 'thank you for sign up'
+    let otp = request.body.queryResult.parameters.otp
+    let phone = request.body.queryResult.parameters.phone
+    let language = request.body.queryResult.parameters.Language
+    let languageCode = 'urdu'
+    if (language === 'Roman Urdu') languageCode = 'romanurdu'
+    if (language === 'English') languageCode = 'english'
+    if (util.customerDb.otps.indexOf(otp) < 0) {
+      message = statements.wrongotp[languageCode]
+      return simpleMessageResponse(response, message)
+    }
+    customers.insertNewCustomer({
+      phone, language
+    }, (err, customer) => {
+      if (err) {
+        message = statements.globalerror[languageCode]
+        return simpleMessageResponse(response, message)
+      }
+      if (customer.exists) {
+        message = statements.signup.exists[languageCode]
+        return simpleMessageResponse(response, message)
+      } else {
+        message = statements.signup.success[languageCode]
+        return simpleMessageResponse(response, message)
+      }
+    })
+}
+
 exports.showServices = function (request, response) {
     let message = 'Sorry, I am unable to answer this for now. Please contact admin'
     console.log(request.body.queryResult.parameters)
-    response.status(200).json({ fulfillmentText: message });
+    return simpleMessageResponse(response, message)
 }
 
 exports.checkComplaintStatus = function(request, response) {
@@ -55,6 +86,19 @@ exports.checkComplaintStatus = function(request, response) {
   let complaintId = request.body.queryResult.parameters.complaintId
   Complaint.fetchcomplaint(complaintId)
   .then((message) => {
-    response.status(200).json({ fulfillmentText: message })
+    return simpleMessageResponse(response, message)
   })
+}
+
+function simpleMessageResponse (response, message) {
+  response.status(200).json({ fulfillmentMessages: [
+    {
+      platform: 'FACEBOOK',
+      text: {
+        text: [
+          message
+        ]
+      }
+    }
+  ] });
 }

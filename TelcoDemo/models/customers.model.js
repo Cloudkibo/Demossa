@@ -6,7 +6,7 @@ let customerDb = new Schema({
     phone: String,
     current_service: {type: Schema.ObjectId, ref: 'services'},
     service_usage: Object,
-    language: {type: String, default: "english"}
+    language: {type: String, default: "English"}
   })
 
   module.exports = mongoose.model('customers', customerDb)
