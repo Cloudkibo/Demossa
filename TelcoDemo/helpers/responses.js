@@ -1,5 +1,6 @@
 const util = require('./../utility')
 const customers = require('./../api/customers.controller')
+const Complaint = require('./../api/complaint.controller')
 const statements = require('./i13n').statements
 
 exports.currentPackageRoman = function (request, response) {
@@ -72,6 +73,21 @@ exports.signUpTheCustomer = function (request, response) {
         return simpleMessageResponse(response, message)
       }
     })
+}
+
+exports.showServices = function (request, response) {
+    let message = 'Sorry, I am unable to answer this for now. Please contact admin'
+    console.log(request.body.queryResult.parameters)
+    return simpleMessageResponse(response, message)
+}
+
+exports.checkComplaintStatus = function(request, response) {
+  let message = 'Sorry, I am unable to answer this for now. Please contact admin'
+  let complaintId = request.body.queryResult.parameters.complaintId
+  Complaint.fetchcomplaint(complaintId)
+  .then((message) => {
+    return simpleMessageResponse(response, message)
+  })
 }
 
 function simpleMessageResponse (response, message) {
