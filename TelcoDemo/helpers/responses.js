@@ -84,7 +84,8 @@ exports.showServices = function (request, response) {
 exports.checkComplaintStatus = function(request, response) {
   let message = 'Sorry, I am unable to answer this for now. Please contact admin'
   let complaintId = request.body.queryResult.parameters.complaintId
-  Complaint.fetchcomplaint(complaintId)
+  var promise = Complaint.fetchcomplaint(complaintId)
+  promise
   .then((message) => {
     return simpleMessageResponse(response, message)
   })
