@@ -1,12 +1,18 @@
 const Customer = require('../models/customers.model')
 
 exports.editLanguage = function (phone, newLanguage) {
-    Customer.findOneAndUpdate({phone: phone}, {language: newLanguage}, (err, doc) => {
-        if (err) {
-            console.log(err)
-        }
-        console.log('Updated the language of customer')
-        console.log(done)
+    return new Promise(function(resolve, reject) {
+        Customer.findOneAndUpdate({phone: phone}, {language: newLanguage}, (err, updated) => {
+            if (err) {
+                reject('No phone found in our system')
+            } 
+            else if (!updated) {
+                resolve('No phone number found in our system, kindly signUp first')
+            } else {
+                message = `your language is updated to' ${newLanguage}.`
+                resolve(message)
+            }
+        })
     })
 }
 

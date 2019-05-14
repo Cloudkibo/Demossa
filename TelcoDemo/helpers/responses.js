@@ -91,6 +91,17 @@ exports.checkComplaintStatus = function(request, response) {
   })
 }
 
+exports.updateCustomerLanguage = function(request, response) {
+  let message = 'Sorry, I am unable to answer this for now. Please contact admin'
+  let phone = request.body.queryResult.parameters.phone
+  let language = request.body.queryResult.parameters.Language
+  var promise = customers.editLanguage(phone, language)
+  promise
+  .then((message) => {
+    return simpleMessageResponse(response, message)
+  })
+}
+
 function simpleMessageResponse (response, message) {
   response.status(200).json({ fulfillmentMessages: [
     {

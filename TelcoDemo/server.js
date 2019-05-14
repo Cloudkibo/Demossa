@@ -122,8 +122,8 @@ app.post('/dialogFlowWebhook', (request, response) => {
     responseHelpers.showServices(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.3.check.complaint.status.english') {
     responseHelpers.checkComplaintStatus(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.4.update.customer.data.english') {
-    responseHelpers.updateCustomerData(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.4.1.update.language.english') {
+    responseHelpers.updateCustomerLanguage(request, response)
   }
 })
 
