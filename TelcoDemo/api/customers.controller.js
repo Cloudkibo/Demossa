@@ -7,9 +7,9 @@ exports.editLanguage = function (phone, newLanguage) {
                 reject('No phone found in our system')
             } 
             else if (!updated) {
-                resolve('No phone number found in our system, kindly signUp first')
+                resolve('No phone number found in our system, kindly sign up first')
             } else {
-                message = `your language is updated to' ${newLanguage}.`
+                message = `Your language is updated to' ${newLanguage}.`
                 resolve(message)
             }
         })
