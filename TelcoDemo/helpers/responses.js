@@ -102,6 +102,36 @@ exports.updateCustomerLanguage = function(request, response) {
   })
 }
 
+exports.registerComplaint = function (request, response) {
+  let message = 'Thank you.'
+  let otp = request.body.queryResult.parameters.otp
+  let phone = request.body.queryResult.parameters.phone
+  let complaint = request.body.queryResult.parameters.complain
+  let language = 'English' // for now, change it later
+  let languageCode = 'urdu'
+  if (language === 'Roman Urdu') languageCode = 'romanurdu'
+  if (language === 'English') languageCode = 'english'
+  if (util.customerDb.otps.indexOf(otp) < 0) {
+    message = statements.wrongotp[languageCode]
+    return simpleMessageResponse(response, message)
+  }
+  Complaint.insertNewComplaint({
+    phone, complaint
+  }, (err, result) => {
+    if (err) {
+      message = statements.globalerror[languageCode]
+      return simpleMessageResponse(response, message)
+    }
+    if (!result.exists) {
+      message = statements.nocustomer[languageCode]
+      return simpleMessageResponse(response, message)
+    } else {
+      message = 'Complaint Id: ' + result.complaintId
+      return simpleMessageResponse(response, message)
+    }
+  })
+}
+
 function simpleMessageResponse (response, message) {
   response.status(200).json({ fulfillmentMessages: [
     {

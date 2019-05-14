@@ -5,6 +5,9 @@ exports.statements = {
         urdu: 'او ٹی پی درست نہیں ہے دوبارہ کوشش کیجیے',
         romanurdu: 'OTP durust nahi. Dubara koshish keejiye'
     },
+    nocustomer: {
+        english: 'This phone number does not exist in our database. Please signup by saying hi.'
+    },
     signup: {
         exists: {
             english: 'You are already in our database as a registered customer. You can ask us any question here or update your services or information.',
