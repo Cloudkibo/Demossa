@@ -124,6 +124,8 @@ app.post('/dialogFlowWebhook', (request, response) => {
     responseHelpers.checkComplaintStatus(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.4.1.update.language.english') {
     responseHelpers.updateCustomerLanguage(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.3.register.complaint') {
+    responseHelpers.registerComplaint(request, response)
   }
 })
 

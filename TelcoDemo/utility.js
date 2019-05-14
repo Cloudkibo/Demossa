@@ -78,6 +78,16 @@ exports.dialogFlowBotTokenV2 = (pageId) => {
   return '118160434535920668412-3c64ce2dcf98d44a72bbc1bb360f5079b92617ce'
 }
 
+exports.generateId = (count) => {
+  var _sym = '1234567890';
+  var str = '';
+
+  for(var i = 0; i < count; i++) {
+      str += _sym[parseInt(Math.random() * (_sym.length))];
+  }
+  return str
+}
+
 exports.customerDb = {
   otps: [1234, 5678, 9123],
   customers: {
