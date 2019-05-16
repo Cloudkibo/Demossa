@@ -14,4 +14,27 @@ exports.findService = function (serviceId) {
         })
     })
 }
+exports.findBundles = function () {
+    return new Promise(function(resolve, reject) {
+        Service.find({}, (err, found) => {
+            if(err) {
+                reject('filhal, koi bi package available nahi hain')
+            } else {
+                resolve(found)
+            }
+        })
+    })
+}
+
+exports.findServiceByName = function (packageName) {
+    return new Promise(function(resolve, reject) {
+        Service.findOne({name: packageName}, (err, found) => {
+            if(err) {
+                reject('filhal, moojoda number per koi package activated nahi hy')
+            } else {
+                resolve(found)
+            }
+        })
+    })
+}
 
