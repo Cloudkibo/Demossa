@@ -10,11 +10,13 @@ exports.currentPackageRoman = function (request, response) {
     if (util.customerDb.otps.indexOf(otp) < 0) {
       message = 'Wrong OTP, Please start again.'
     } else {
-      let customer = util.customerDb.customers[phone]
-      console.log(customer)
-      message = `Your package is ${customer.current_package}. Your remaining sms are ${customer.Usage.Sms}, on-net minutes are ${customer.Usage.Onnet} and off-net minutes are ${customer.Usage.Offnet}. While your remaining data is ${customer.Usage.Data}`
-    }
-    response.status(200).json({ fulfillmentText: message });
+
+      var promise = customers.currentPackage(phone)
+  promise
+  .then((message) => {
+    return simpleMessageResponse(response, message)
+  })
+}
 }
 
 exports.findBundleInfoRoman = function (request, response) {

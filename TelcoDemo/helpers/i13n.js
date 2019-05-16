@@ -24,5 +24,15 @@ exports.statements = {
         english: 'Sorry, due to some error, we could not complete your request. Contact Admin.',
         urdu: 'معذرت کسی فنی خرابی کے سبب ہم آپ کی درخواست پوری نہیں کر سکے',
         romanurdu: 'Maazrat, kisi fani kharaabi kay sabab hum aapki darkhuwaast poori nahein kar sakay.'
+    },
+    findUser: {
+        romanurdu: 'Hamary system main is phone number ka koi user moojood nahi, ap abhi "Hi" likh ker sign up kerskty hain',
+        Urdu: '',
+        english: "No user found with this phone number in our system, You can signup now by typing 'Hi' Here"
+    }, 
+    findServiceOfCustomer: {
+        romanurdu: "'filhal, moojoda number per koi package activated nahi hy'",
+        Urdu: "",
+        english: "Currently, there is no package activated on this number"
     }
 }

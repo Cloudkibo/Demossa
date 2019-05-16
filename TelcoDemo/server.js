@@ -108,8 +108,10 @@ app.post('/webPost', (request, response) => {
 
 app.post('/dialogFlowWebhook', (request, response) => {
   console.log(request.body);
-  if (request.body.queryResult.intent.displayName === '0.1.my.current.package.roman') {
+  if (request.body.queryResult.intent.displayName === '0.1.1.my.current.package.roman') {
     responseHelpers.currentPackageRoman(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.1.2.my.current.package.english') {
+    responseHelpers.currentPackageEnglish(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.2.1.find.bundle.roman') {
     responseHelpers.findBundleInfoRoman(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.0.2.welcome.sign.up.english') {
