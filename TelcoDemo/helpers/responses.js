@@ -1,6 +1,7 @@
 const util = require('./../utility')
 const customers = require('./../api/customers.controller')
 const Complaint = require('./../api/complaint.controller')
+const services = require('./../api/services.controller')
 const statements = require('./i13n').statements
 
 exports.currentPackageRoman = function (request, response) {
@@ -10,40 +11,48 @@ exports.currentPackageRoman = function (request, response) {
     if (util.customerDb.otps.indexOf(otp) < 0) {
       message = 'Wrong OTP, Please start again.'
     } else {
-      let customer = util.customerDb.customers[phone]
-      console.log(customer)
-      message = `Your package is ${customer.current_package}. Your remaining sms are ${customer.Usage.Sms}, on-net minutes are ${customer.Usage.Onnet} and off-net minutes are ${customer.Usage.Offnet}. While your remaining data is ${customer.Usage.Data}`
-    }
-    response.status(200).json({ fulfillmentText: message });
+
+      var promise = customers.currentPackage(phone)
+  promise
+  .then((message) => {
+    return simpleMessageResponse(response, message)
+  })
+}
 }
 
 exports.findBundleInfoRoman = function (request, response) {
     let message = 'Sorry, I am unable to answer this for now. Please contact admin'
-    let packagePayload = util.package_db[request.body.queryResult.parameters.package]
-    message = 'Information on ' + request.body.queryResult.parameters.package +
-      '\n \n On-net Minutes: ' + packagePayload.onNet +
-      '\n Off-net Minutes: ' + packagePayload.offNet +
-      '\n Internet: ' + packagePayload.Internet + 
-      '\n SMS: ' + packagePayload.SMS
-    response.status(200).json({ fulfillmentMessages: [
-      {
-        platform: 'FACEBOOK',
-        text: {
-          text: [
-            message
-          ]
-        }
-      },
-      {
-        platform: 'FACEBOOK',
-        quickReplies: {
-          title: 'Package ko activate keejye',
-          quickReplies: [
-            'Activate ' + request.body.queryResult.parameters.package
-          ]
-        }
-      }
-    ] });
+    let packageName = request.body.queryResult.parameters.package
+    var promise = services.findServiceByName(packageName)
+    promise
+    .then((found) => {
+      message = 'Information on ' + found.name +
+      '\n \n On-net Minutes: ' + found.onNet +
+      '\n Off-net Minutes: ' + found.offNet +
+      '\n Internet: ' + found.internet + 
+      '\n SMS: ' + found.sms +
+      '\n Price: ' + found.price +
+      '\n Bill Cycle: ' + found.bill_cycle
+      return quickRepliesResponse(response, message, '', ['Activate ' + found.name] )
+    })
+}
+
+exports.findBundlesRoman = function (request, response) {
+  let message = 'Sorry, I am unable to answer this for now. Please contact admin'
+  var promise = services.findBundles()
+  promise
+  .then((bundles) => {
+    if(bundles.length > 0) {
+      let quickReplies = []
+      bundles.forEach(element => {
+        quickReplies.push(`${element.name}`)
+      })
+      return quickRepliesResponse(response, '', 'Jazz k packages ka intikhaab keejye', quickReplies )
+    } else {
+      message = 'filhal, koi package available nahi hain'
+    }
+    return simpleMessageResponse(response, message)
+  })
 }
 
 exports.signUpTheCustomer = function (request, response) {
@@ -143,4 +152,25 @@ function simpleMessageResponse (response, message) {
       }
     }
   ] });
+}
+
+function quickRepliesResponse (response, message , title , quickReplies) {
+  response.status(200).json({ fulfillmentMessages: [
+    {
+      platform: 'FACEBOOK',
+      text: {
+        text: [
+          message
+        ]
+      }
+    },
+    {
+      platform: 'FACEBOOK',
+      quickReplies: {
+        title: title,
+        quickReplies: quickReplies
+      }
+    }
+  ]
+})
 }

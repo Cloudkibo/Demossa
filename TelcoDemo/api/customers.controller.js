@@ -1,4 +1,6 @@
 const Customer = require('../models/customers.model')
+const services = require('./../api/services.controller')
+
 
 exports.editLanguage = function (phone, newLanguage) {
     return new Promise(function(resolve, reject) {
@@ -43,6 +45,29 @@ exports.insertNewCustomer = function (body, cb) {
                 cb(err)
             }
             return cb(null, {exists: false})
+        })
+    })
+}
+
+exports.currentPackage = function (phone) {
+    return new Promise(function(resolve, reject) {
+        Customer.findOne({phone: phone}, (err, found) => {
+            if (err) {
+                reject('Hamary system main is phone number ka koi user moojood nahi')
+            } else if (!found) {
+                resolve('Hamary system main is phone number ka koi user moojood nahi, ap abhi "Hi" likh ker sign up kerskty hain')
+            } else {
+                var promise = services.findService(found.current_service)
+                promise
+                .then((message) => {
+                    if(found.service_usage) {
+                        message = message + `ap ky baqaya sms hain ${found.service_usage.Sms}, baqaya on-net minutes hain ${found.service_usage.Onnet} or baqaya off-net minutes hain ${found.service_usage.Offnet}. jab k ap ka baqaya data hy ${found.service_usage.Data}`
+                        resolve(message)
+                    } else {
+                        resolve(message)
+                    }
+                })
+            }
         })
     })
 }

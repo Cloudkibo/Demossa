@@ -48,19 +48,19 @@ var customersData = [
     {
         phone: '+923004132126',
         service_usage: {
-            Sms: 3948,
-            Data: 3847732,
-            Onnet: 400,
-            Offnet: 397,
+            Sms: '3948',
+            Data: '4500 MB',
+            Onnet: '400',
+            Offnet: '397',
           },
     },
     {
         phone: '+923008769876',
         service_usage: {
-            Sms: 3948,
-            Data: 3847732,
-            Onnet: 400,
-            Offnet:397,
+            Sms: "3948",
+            Data: "2600 MB",
+            Onnet: "400",
+            Offnet:'397',
           },
     }
 ]
