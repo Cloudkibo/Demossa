@@ -132,6 +132,8 @@ app.post('/dialogFlowWebhook', (request, response) => {
     responseHelpers.updateCustomerLanguage(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.3.register.complaint') {
     responseHelpers.registerComplaint(request, response)
+  }  else if (request.body.queryResult.intent.displayName === '0.5.deactivate.bundle.roman') {
+    responseHelpers.deActivateBundleRoman(request, response)
   }
 })
 

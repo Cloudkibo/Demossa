@@ -19,6 +19,24 @@ exports.currentPackageRoman = function (request, response) {
 }
 }
 
+exports.findBundlesRoman = function (request, response) {
+  let message = 'Sorry, I am unable to answer this for now. Please contact admin'
+  var promise = services.findBundles()
+  promise
+  .then((bundles) => {
+    if(bundles.length > 0) {
+      let quickReplies = []
+      bundles.forEach(element => {
+        quickReplies.push(`${element.name}`)
+      })
+      return quickRepliesResponse(response, '', 'Jazz k packages ka intikhaab keejye', quickReplies )
+    } else {
+      message = 'filhal, koi package available nahi hain'
+    }
+    return simpleMessageResponse(response, message)
+  })
+}
+
 exports.findBundleInfoRoman = function (request, response) {
     let message = 'Sorry, I am unable to answer this for now. Please contact admin'
     let packageName = request.body.queryResult.parameters.package
@@ -48,8 +66,6 @@ exports.activateBundleInfoRoman = function (request, response) {
     var servicePromise = services.findServiceByName(packageName)
     servicePromise
     .then((found) => {
-      console.log(found)
-      console.log('----i am here')
       var userPromise = customers.updatePackageRoman(phone, found._id)
       userPromise.then((updated) => {
         message = 'Ap ky mojooda number ' + phone +
@@ -61,22 +77,22 @@ exports.activateBundleInfoRoman = function (request, response) {
   }
 }
 
-exports.findBundlesRoman = function (request, response) {
+exports.deActivateBundleRoman = function (request, response) {
   let message = 'Sorry, I am unable to answer this for now. Please contact admin'
-  var promise = services.findBundles()
-  promise
-  .then((bundles) => {
-    if(bundles.length > 0) {
-      let quickReplies = []
-      bundles.forEach(element => {
-        quickReplies.push(`${element.name}`)
-      })
-      return quickRepliesResponse(response, '', 'Jazz k packages ka intikhaab keejye', quickReplies )
-    } else {
-      message = 'filhal, koi package available nahi hain'
-    }
+  let phone =  request.body.queryResult.parameters.phone
+  let otp =  request.body.queryResult.parameters.otp
+
+  if (util.customerDb.otps.indexOf(otp) < 0) {
+    message = statements.wrongotp['romanurdu']
     return simpleMessageResponse(response, message)
-  })
+  } else {
+    var Promise = customers.updatePackageRoman(phone, 'deActivatePackage')
+    Promise.then((deleted) => {
+      message = 'Ap ky mojooda number ' + phone +
+      '\n sy package de-activate kerdia gaya hy'
+      return simpleMessageResponse(response, message)
+    })
+  }
 }
 
 exports.signUpTheCustomer = function (request, response) {

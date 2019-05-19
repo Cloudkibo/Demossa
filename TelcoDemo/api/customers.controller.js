@@ -4,15 +4,27 @@ const services = require('./../api/services.controller')
 
 exports.updatePackageRoman = function(phone, newPackageId) {
     return new Promise(function(resolve, reject) {
-        Customer.findOneAndUpdate({phone: phone}, {current_service: newPackageId}, (err, updated) => {
-            if (err) {
-                reject('Hamary system main is phone number ka koi user moojood nahi')
-            } else if (!updated) {
-                resolve('Hamary system main is phone number ka koi user moojood nahi, ap abhi "Hi" likh ker sign up kerskty hain')
-            } else {
-                resolve(updated)
-            }
-        })
+        if (newPackageId == 'deActivatePackage') {
+            Customer.findOneAndUpdate({phone: phone}, {$unset: {current_service: ''}}, (err, deleted) => {
+                if (err) {
+                    reject('Hamary system main is phone number ka koi user moojood nahi')
+                } else if (!deleted) {
+                    resolve('Hamary system main is phone number ka koi user moojood nahi, ap abhi "Hi" likh ker sign up kerskty hain')
+                } else {
+                    resolve(deleted)
+                }
+            })
+        } else {
+            Customer.findOneAndUpdate({phone: phone}, {current_service: newPackageId}, (err, updated) => {
+                if (err) {
+                    reject('Hamary system main is phone number ka koi user moojood nahi')
+                } else if (!updated) {
+                    resolve('Hamary system main is phone number ka koi user moojood nahi, ap abhi "Hi" likh ker sign up kerskty hain')
+                } else {
+                    resolve(updated)
+                }
+            })   
+        }
     })
 }
 
