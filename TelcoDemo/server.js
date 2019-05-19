@@ -116,6 +116,8 @@ app.post('/dialogFlowWebhook', (request, response) => {
     responseHelpers.findBundlesRoman(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.2.1.find.bundle.roman') {
     responseHelpers.findBundleInfoRoman(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.2.1.1.activate.bundle.roman') {
+    responseHelpers.activateBundleInfoRoman(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.0.2.welcome.sign.up.english') {
     responseHelpers.signUpTheCustomer(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.0.1.welcome.sign.up.urdu') {
