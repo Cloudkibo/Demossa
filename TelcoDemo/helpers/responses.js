@@ -132,12 +132,43 @@ exports.showServices = function (request, response) {
 
 exports.checkComplaintStatus = function(request, response) {
   let message = 'Sorry, I am unable to answer this for now. Please contact admin'
-  let complaintId = request.body.queryResult.parameters.complaintId
-  var promise = Complaint.fetchcomplaint(complaintId)
-  promise
-  .then((message) => {
-    return simpleMessageResponse(response, message)
-  })
+  let phone = request.body.queryResult.parameters.phone
+  let otp = request.body.queryResult.parameters.otp
+
+  if (util.customerDb.otps.indexOf(otp) < 0) {
+    message = statements.wrongotp['romanurdu']
+  } else {
+    var promise = customers.findCustomer(phone)
+    promise.then(found => {
+      if(!found) {
+        message = 'We dont have any customer in our system with this number'
+        return simpleMessageResponse(response, message)
+      }
+      return promiseComplaints = Complaint.fetchComplaintByCustomer(found._id)
+    })
+    .then(complaints => {
+      if(complaints.length > 0) {
+      let quickReplies = []
+      complaints.forEach(complain => {
+        quickReplies.push(complain.complaintId)
+      })
+      return quickRepliesResponse(response, '', 'Please select One of yours Complaint ID', quickReplies )
+    } else {
+      message = 'currently there is no registered complaint with this phone number'
+      return simpleMessageResponse(response, message)
+    }
+    })
+    .catch((err) => {
+      message = 'We dont have any customer in our system with this number'
+      return simpleMessageResponse(response, message)
+    })
+  }
+  // let complaintId = request.body.queryResult.parameters.complaintId
+  // var promise = Complaint.fetchcomplaint(complaintId)
+  // promise
+  // .then((message) => {
+  //   return simpleMessageResponse(response, message)
+  // })
 }
 
 exports.updateCustomerLanguage = function(request, response) {
