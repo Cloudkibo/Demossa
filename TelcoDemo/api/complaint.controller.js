@@ -18,6 +18,18 @@ exports.fetchcomplaint = (complaintId) => {
     });   
 }
 
+exports.fetchComplaintByCustomer = function(customerId) {
+    return new Promise(function(resolve, reject) {
+        Complaint.find({customer: customerId}, (err, complaints) => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(complaints)
+            }
+        })
+    })
+}
+
 exports.insertNewComplaint = function (body, cb) {
     Customer.findOne({phone: body.phone}, (err, customer) => {
         if (err) {

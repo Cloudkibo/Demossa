@@ -1,7 +1,17 @@
 const Customer = require('../models/customers.model')
 const services = require('./../api/services.controller')
 
-
+exports.findCustomer = function(phone) {
+    return new Promise(function(resolve, reject){
+        Customer.findOne({phone: phone}, (err, found) => {
+            if(err) {
+                reject(err)
+            } else {
+                resolve(found)
+            }
+        })
+    })
+}
 exports.updatePackageRoman = function(phone, newPackageId) {
     return new Promise(function(resolve, reject) {
         if (newPackageId == 'deActivatePackage') {
@@ -17,7 +27,7 @@ exports.updatePackageRoman = function(phone, newPackageId) {
         } else {
             Customer.findOneAndUpdate({phone: phone}, {current_service: newPackageId}, (err, updated) => {
                 if (err) {
-                    reject('Hamary system main is phone number ka koi user moojood nahi')
+                    resolve('Hamary system main is phone number ka koi user moojood nahi')
                 } else if (!updated) {
                     resolve('Hamary system main is phone number ka koi user moojood nahi, ap abhi "Hi" likh ker sign up kerskty hain')
                 } else {
