@@ -166,12 +166,6 @@ exports.fetchComplaintIds = function(request, response) {
       return simpleMessageResponse(response, message)
     })
   }
-  // let complaintId = request.body.queryResult.parameters.complaintId
-  // var promise = Complaint.fetchcomplaint(complaintId)
-  // promise
-  // .then((message) => {
-  //   return simpleMessageResponse(response, message)
-  // })
 }
 
 exports.checkComplaintStatus = function(request, response) {
@@ -179,7 +173,35 @@ exports.checkComplaintStatus = function(request, response) {
   let complaintId = request.body.queryResult.parameters.complaintid
   var promise = Complaint.fetchcomplaint(complaintId)
     promise
-    .then((message) => {
+    .then(complaint => {
+      if(!complaint) {
+        message = 'No complaint found with the given complaint id'
+        return simpleMessageResponse(response, message)
+      }
+      message = 'your complain: ' +complaint.description+
+                 '\n and your complaint status: ' +complaint.status
+      var promiseComplaints = Complaint.fetchComplaintByCustomer(complaint.customer)
+      promiseComplaints
+      .then(complaints => {
+        if(complaints.length > 0) {
+          let quickReplies = []
+        complaints.forEach(complain => {
+          if(complain.complaintId != complaint.complaintId) {
+            quickReplies.push(complain.complaintId) 
+          }
+        })
+        if(quickReplies.length <= 0)
+          return simpleMessageResponse(response, message)
+        else 
+          return quickRepliesResponse(response, message, 'your complaints', quickReplies )
+      } else {
+        message = 'currently there is no registered complaint with this phone number'
+        return simpleMessageResponse(response, message)
+      }
+      })
+    })
+    .catch(err => {
+      message = 'error'
       return simpleMessageResponse(response, message)
     })
 }
