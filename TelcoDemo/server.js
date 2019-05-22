@@ -126,8 +126,10 @@ app.post('/dialogFlowWebhook', (request, response) => {
     responseHelpers.signUpTheCustomer(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.1.welcome.select.language') {
     responseHelpers.showServices(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.3.check.complaint.status.english') {
+  } else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaint-status') {
     responseHelpers.checkComplaintStatus(request, response)
+  }else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaintId.english') {
+    responseHelpers.fetchComplaintIds(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.4.1.update.language.english') {
     responseHelpers.updateCustomerLanguage(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.3.register.complaint') {

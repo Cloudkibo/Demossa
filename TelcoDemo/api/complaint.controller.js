@@ -3,6 +3,7 @@ const Customer = require('../models/customers.model')
 const util = require('../utility')
 
 exports.fetchcomplaint = (complaintId) => {
+    console.log(complaintId)
     return new Promise(function(resolve, reject) {
         Complaint.findOne({complaintId: complaintId}, (err, complaint) => {
             if (err) {
