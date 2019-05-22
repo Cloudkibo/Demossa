@@ -213,6 +213,8 @@ exports.registerComplaint = function (request, response) {
 }
 
 function simpleMessageResponse (response, message) {
+  console.log('Response going to Dialogflow')
+  console.log(message)
   response.status(200).json({ fulfillmentMessages: [
     {
       platform: 'FACEBOOK',
