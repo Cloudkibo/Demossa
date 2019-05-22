@@ -130,7 +130,7 @@ exports.showServices = function (request, response) {
     return simpleMessageResponse(response, message)
 }
 
-exports.checkComplaintStatus = function(request, response) {
+exports.fetchComplaintIds = function(request, response) {
   let message = 'Sorry, I am unable to answer this for now. Please contact admin'
   let phone = request.body.queryResult.parameters.phone
   let otp = request.body.queryResult.parameters.otp
@@ -148,13 +148,16 @@ exports.checkComplaintStatus = function(request, response) {
     })
     .then(complaints => {
       if(complaints.length > 0) {
+        message = `your complaint ID's are : `
       let quickReplies = []
       complaints.forEach(complain => {
         quickReplies.push(complain.complaintId)
+        // message += complain.complaintId+', '
       })
-      return quickRepliesResponse(response, '', 'Please select One of yours Complaint ID', quickReplies )
+      message += 'please type update on my complaint to see the status of any complaint.'
+      return quickRepliesResponse(response, '', 'Please select complaint Id', quickReplies )
     } else {
-      message = 'currently there is no registered complaint with this phone number'
+      // message = 'currently there is no registered complaint with this phone number'
       return simpleMessageResponse(response, message)
     }
     })
@@ -169,6 +172,16 @@ exports.checkComplaintStatus = function(request, response) {
   // .then((message) => {
   //   return simpleMessageResponse(response, message)
   // })
+}
+
+exports.checkComplaintStatus = function(request, response) {
+  let message = 'Sorry, I am unable to answer this for now. Please contact admin'
+  let complaintId = request.body.queryResult.parameters.complaintId
+  var promise = Complaint.fetchcomplaint(complaintId)
+    promise
+    .then((message) => {
+      return simpleMessageResponse(response, message)
+    })
 }
 
 exports.updateCustomerLanguage = function(request, response) {
