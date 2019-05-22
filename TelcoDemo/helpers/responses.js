@@ -154,10 +154,10 @@ exports.fetchComplaintIds = function(request, response) {
         quickReplies.push(complain.complaintId)
         // message += complain.complaintId+', '
       })
-      message += 'please type update on my complaint to see the status of any complaint.'
+      // message += 'please type update on my complaint to see the status of any complaint.'
       return quickRepliesResponse(response, '', 'Please select complaint Id', quickReplies )
     } else {
-      // message = 'currently there is no registered complaint with this phone number'
+      message = 'currently there is no registered complaint with this phone number'
       return simpleMessageResponse(response, message)
     }
     })
@@ -176,8 +176,8 @@ exports.fetchComplaintIds = function(request, response) {
 
 exports.checkComplaintStatus = function(request, response) {
   let message = 'Sorry, I am unable to answer this for now. Please contact admin'
-  let complaintId = request.body.queryResult.parameters.complaintId
-  var promise = Complaint.fetchcomplaint(complaintId)
+  let complaintId = request.body.queryResult.parameters.complaintid
+  var promise = Complaint.fetchcomplaint(complaintid)
     promise
     .then((message) => {
       return simpleMessageResponse(response, message)
