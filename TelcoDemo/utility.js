@@ -79,7 +79,7 @@ exports.dialogFlowBotTokenV2 = (pageId) => {
 }
 
 exports.generateId = (count) => {
-  var _sym = '1234567890';
+  var _sym = '123456789';
   var str = '';
 
   for(var i = 0; i < count; i++) {
