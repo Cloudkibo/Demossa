@@ -24,7 +24,7 @@ const app = (config.env === 'production') ? httpsApp : httpApp
 
 const seed = require('./scripts/seeds')
 
-seed()
+// seed()
 
 // Setup template engine - add pug
 app.set('view engine', 'pug');
