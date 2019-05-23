@@ -127,11 +127,11 @@ app.post('/dialogFlowWebhook', (request, response) => {
   } else if (request.body.queryResult.intent.displayName === '0.1.welcome.select.language') {
     responseHelpers.showServices(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaint-status') {
-    responseHelpers.checkComplaintStatus(request, response)
+    responseHelpers.checkComplaintStatusEnglish(request, response)
   }else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaintId.english') {
-    responseHelpers.fetchComplaintIds(request, response)
+    responseHelpers.fetchComplaintIdsEnglish(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.4.1.update.language.english') {
-    responseHelpers.updateCustomerLanguage(request, response)
+    responseHelpers.updateCustomerLanguageEnglish(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.3.register.complaint') {
     responseHelpers.registerComplaint(request, response)
   }  else if (request.body.queryResult.intent.displayName === '0.5.deactivate.bundle.roman') {

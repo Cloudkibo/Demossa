@@ -1,51 +1,31 @@
-const Complaint = require('../models/complains.model')
-const Customer = require('../models/customers.model')
+const datalayer = require('./complaint.datalayer')
+const customerDatalayer = require('./customers.datalayer')
 const util = require('../utility')
 
 exports.fetchcomplaint = (complaintId) => {
-    return new Promise(function(resolve, reject) {
-        Complaint.findOne({complaintId: complaintId}, (err, complaint) => {
-            if (err) {
-                reject(err)
-            } else {
-                resolve(complaint)
-            }
-        })
-    });   
+    return datalayer.findComplaint(complaintId)
 }
 
 exports.fetchComplaintByCustomer = function(customerId) {
-    return new Promise(function(resolve, reject) {
-        Complaint.find({customer: customerId}, (err, complaints) => {
-            if (err) {
-                reject(err)
-            } else {
-                resolve(complaints)
-            }
-        })
-    })
+    return datalayer.findComplaintByCustomer(customerId)
 }
 
 exports.insertNewComplaint = function (body, cb) {
-    Customer.findOne({phone: body.phone}, (err, customer) => {
-        if (err) {
-            cb(err)
-        }
+    customerDatalayer.findCustomer(body.phone)
+    .then(customer => {
         if (!customer) {
             return cb(null, {exists: false})
         }
         let complaintId = util.generateId(6)
-        let newComplaint = new Complaint({
+        return datalayer.createComplaint({
             customer: customer._id,
             description: body.complaint,
             complaintId: complaintId,
             status: 'open'
         })
-        newComplaint.save((err, createdComplaint) => {
-            if (err) {
-                cb(err)
-            }
-            return cb(null, {exists: true, complaintId})
-        })
     })
+    .then(complaint => {
+        cb(null, {exists: true, complaintId: complaint.complaintId})
+    })
+    .catch(err => cb(err))
 }

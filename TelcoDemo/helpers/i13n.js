@@ -25,14 +25,57 @@ exports.statements = {
         urdu: 'معذرت کسی فنی خرابی کے سبب ہم آپ کی درخواست پوری نہیں کر سکے',
         romanurdu: 'Maazrat, kisi fani kharaabi kay sabab hum aapki darkhuwaast poori nahein kar sakay.'
     },
-    findUser: {
+    findCustomer: {
         romanurdu: 'Hamary system main is phone number ka koi user moojood nahi, ap abhi "Hi" likh ker sign up kerskty hain',
-        Urdu: '',
+        urdu: '',
         english: "No user found with this phone number in our system, You can signup now by typing 'Hi' Here"
     }, 
     findServiceOfCustomer: {
         romanurdu: "'filhal, moojoda number per koi package activated nahi hy'",
-        Urdu: "",
+        urdu: "",
         english: "Currently, there is no package activated on this number"
+    },
+    complain: {
+        exists: {
+            english: 'your complaint status is ',
+            urdu: '',
+            romanurdu: 'apki shikayat ka status '
+        },
+        notExists: {
+            english: 'No complaint found with the given complaint id',
+            urdu: '',
+            romanurdu: 'Matloba, compalaint id ki koi bi complain register nahi hy'
+        }
+    },
+    compalaints: {
+        english: 'currently there is no registered complaint with this phone number',
+        urdu: '',
+        romanurdu: 'filhal, is number sy koi bi complaint register nahi hy'
+    },
+    findBundles: {
+        english: 'Currently, there is no package available',
+        urdu: '',
+        romanurdu: 'filhal, koi bi package available nahi hain'
+    },
+    findBundleInfo: {
+        english: 'We have no service of this name in our system',
+        urdu: '',
+        romanurdu: 'hamary pass is naam ki koi service mojood nahi hy'
+    },
+    updatePackage: {
+        english: 'We can not activate this package into your number',
+        urdu: '',
+        romanurdu: 'Hum apky number per filhal package activate nahi kerskty'
+    },
+    deletePackage: {
+        english: 'We can not de-activate this package into your number',
+        urdu: '',
+        romanurdu: 'Hum apky number per filhal ye package de-activate nahi kerskty'
+    },
+    updateLanguage: {
+        english: 'We can not update this Language to your number',
+        urdu: '',
+        romanurdu: 'Hum apky number per filhal Language update nahi kerskty'
     }
+    
 }
