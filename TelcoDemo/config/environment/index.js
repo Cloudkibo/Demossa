@@ -29,6 +29,16 @@ const all = {
 
   domain: `${process.env.DOMAIN || 'http://localhost:3000'}`,
 
+  dataSource: 'mongo', // or api
+
+  api_auth: {
+    strategy: 'local',
+    email: 'admin@omnisell.pk',
+    password: 'wordpass'
+  },
+
+  api_domain: 'http://bot.omnisell.pk',
+
   mongo: {
     options: {
       db: {
