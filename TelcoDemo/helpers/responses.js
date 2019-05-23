@@ -230,10 +230,32 @@ exports.checkComplaintStatusEnglish = function (request, response) {
     .then(complaint => {
       if(!complaint) {
         message = statements.complain.notExists.english
+        return simpleMessageResponse(response, message)
       } else {
-        message =  statements.complain.exists.english + complaint.status
-      }
-      return simpleMessageResponse(response, message)
+        message =  'your complain description is: ' +complaint.description+
+        '\n and your complaint status: ' +complaint.status
+        Complaint.fetchComplaintByCustomer(complaint.customer)
+        .then(complaints => {
+          console.log(complaints)
+          if (complaints.length > 0) {
+            let quickReplies = []
+            complaints.forEach(complain => {
+              if(complain.complaintId != complaint.complaintId) {
+                quickReplies.push(complain.complaintId)
+              }
+            })
+            return quickRepliesResponse(response, message, 'Your other complaints are', quickReplies)
+          } else {
+            message = statements.complaints.english
+            return simpleMessageResponse(response, message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          message = statements.globalerror.english
+          return simpleMessageResponse(response, message)
+        })
+      } 
     })
     .catch(err => {
       console.log(err)
