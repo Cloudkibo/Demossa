@@ -1,5 +1,10 @@
 
 exports.statements = {
+    fallback : {
+        english: {title: 'Other Actions', quickReplies:['Language', 'Complaints', 'Packages']},
+        urdu: {title: 'دیگر اعمال', quickReplies:['زبان', 'شکایات', 'پیکجز' ]},
+        romanurdu: {title: 'Deegar aamaal', quickReplies:['Zaban', 'Shikayaat', 'Packages']}
+    },
     wrongotp: {
         english: 'Wrong OTP, Please start again.',
         urdu: 'او ٹی پی درست نہیں ہے دوبارہ کوشش کیجیے',
