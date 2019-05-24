@@ -21,7 +21,10 @@ exports.findComplaintByIdApi = function (complaintId) {
     return new Promise(function(resolve, reject) {
         util.callApi(domain, 'authentication', 'post', config.api_auth)
         .then(token => {
-            return util.callApi(domain, 'tickets', 'get', {}, token.accessToken)
+            return util.callApi(domain, `tickets?complaintId=${complaintId}`, 'get', {}, token.accessToken)
+        })
+        .then(complaints => {
+            return complaints = complaints.data[0]
         })
         .then(complaints => {
             resolve(complaints)
@@ -36,7 +39,10 @@ exports.findComplaintByCustomerApi = function (customerId) {
     return new Promise(function(resolve, reject) {
         util.callApi(domain, 'authentication', 'post', config.api_auth)
         .then(token => {
-            return util.callApi(domain, 'tickets', 'get', {}, token.accessToken)
+            return util.callApi(domain, `tickets?customer=${customerId}`, 'get', {}, token.accessToken)
+        })
+        .then(complaints => {
+            return complaints = complaints.data[0]
         })
         .then(complaints => {
             resolve(complaints)
