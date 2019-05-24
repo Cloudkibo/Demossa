@@ -25,3 +25,20 @@ exports.createComplaint = function (payload) {
         return mongo_datasource.create(payload)
     }
 }
+
+// api_datasource.create({
+//     customer: 'xIXndPUZyOYyeIcn',
+//     complaintId: '32423423',
+//     status: 'open',
+//     description: 'I am not having the network',
+//   })
+//   .then(complaint => console.log(complaint))
+//   .catch(err => console.log(err))
+
+// api_datasource.findComplaintByIdApi('32423423')
+// .then(complaint => console.log(complaint))
+// .catch(err => console.log(err))
+
+// api_datasource.findComplaintByCustomerApi('xIXndPUZyOYyeIcn')
+// .then(complaint => console.log(complaint))
+// .catch(err => console.log(err))

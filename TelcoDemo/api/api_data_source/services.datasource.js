@@ -6,7 +6,23 @@ exports.findServiceByIdAPI = function (serviceId) {
     return new Promise(function(resolve, reject) {
         util.callApi(domain, 'authentication', 'post', config.api_auth)
         .then(token => {
-            return util.callApi(domain, 'packages', 'get', {}, token.accessToken)
+            return util.callApi(domain, `packages?_id=${serviceId}`, 'get', {}, token.accessToken)
+        })
+        .then(services => {
+            return services = services.data[0]
+        })
+        .then(services => {
+            let tempServices = {
+                _id: services._id,
+                name: services.name,
+                onNet: services['onnet-minutes'],
+                offNet: services['offnet-minutes'],
+                internet: services.internet,
+                sms: services.sms,
+                price: services.price,
+                bill_cycle: services['bill-cycle']
+              }
+            return tempServices
         })
         .then(services => {
             resolve(services)
@@ -24,6 +40,25 @@ exports.findServicesAPI = function () {
             return util.callApi(domain, 'packages', 'get', {}, token.accessToken)
         })
         .then(services => {
+            return services = services.data
+        })
+        .then(services => {
+            let tempServices = []
+            for (let i=0; i<services.length; i++) {
+                tempServices.push({
+                    _id: services[i]._id,
+                    name: services[i].name,
+                    onNet: services[i]['onnet-minutes'],
+                    offNet: services[i]['offnet-minutes'],
+                    internet: services[i].internet,
+                    sms: services[i].sms,
+                    price: services[i].price,
+                    bill_cycle: services[i]['bill-cycle']
+                  })
+            }
+            return tempServices
+        })
+        .then(services => {
             resolve(services)
         })
         .catch(err => {
@@ -36,7 +71,23 @@ exports.findServiceByNameAPI = function (packageName) {
     return new Promise(function(resolve, reject) {
         util.callApi(domain, 'authentication', 'post', config.api_auth)
         .then(token => {
-            return util.callApi(domain, 'packages', 'get', {}, token.accessToken)
+            return util.callApi(domain, `packages?name=${packageName}`, 'get', {}, token.accessToken)
+        })
+        .then(services => {
+            return services = services.data[0]
+        })
+        .then(services => {
+            let tempServices = {
+                _id: services._id,
+                name: services.name,
+                onNet: services['onnet-minutes'],
+                offNet: services['offnet-minutes'],
+                internet: services.internet,
+                sms: services.sms,
+                price: services.price,
+                bill_cycle: services['bill-cycle']
+              }
+            return tempServices
         })
         .then(services => {
             resolve(services)

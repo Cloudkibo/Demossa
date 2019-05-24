@@ -33,3 +33,19 @@ exports.findCustomerWithService = function (phone, populateString) {
         return mongo_datasource.findCustomerWithService(phone, populateString)
     }
 }
+
+// api_datasource.create({phone: '+923323800399'}) // _id: xIXndPUZyOYyeIcn
+// .then(customer => console.log(customer))
+// .catch(err => console.log(err))
+
+// api_datasource.findCustomerByIdApi('+923323800399')
+// .then(customer => console.log(customer))
+// .catch(err => console.log(err))
+
+// api_datasource.findCustomerWithService('+923323800399', 'current_service')
+// .then(customer => console.log(customer))
+// .catch(err => console.log(err))
+
+api_datasource.findOneAndUpdate({phone: '+923323800399'}, {language: 'English'})
+.then(customer => console.log(customer))
+.catch(err => console.log(err.error))

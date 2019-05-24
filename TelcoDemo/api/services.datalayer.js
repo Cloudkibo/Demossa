@@ -25,3 +25,15 @@ exports.findServiceByName = function (packageName) {
         return mongo_datasource.findServiceByNameMongo(packageName)
     }
 }
+
+// api_datasource.findServicesAPI()
+// .then(services => console.log(services))
+// .catch(err => console.log(err))
+
+// api_datasource.findServiceByIdAPI('uMORBVEaT8ypVeZ6')
+// .then(services => console.log(services))
+// .catch(err => console.log(err))
+
+// api_datasource.findServiceByNameAPI('J600')
+// .then(services => console.log(services))
+// .catch(err => console.log(err))
