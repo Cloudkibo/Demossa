@@ -21,9 +21,7 @@ exports.findOneAndUpdate = function (query, payload) {
     return new Promise(function(resolve, reject) {
         Customer.findOneAndUpdate(query, payload, (err, updated) => {
             if (err) {
-                reject('Hamary system main is phone number ka koi user moojood nahi')
-            } else if (!updated) {
-                resolve('Hamary system main is phone number ka koi user moojood nahi, ap abhi "Hi" likh ker sign up kerskty hain')
+                reject(err)
             } else {
                 resolve(updated)
             }
