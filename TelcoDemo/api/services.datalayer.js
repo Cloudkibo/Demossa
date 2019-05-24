@@ -34,6 +34,6 @@ exports.findServiceByName = function (packageName) {
 // .then(services => console.log(services))
 // .catch(err => console.log(err))
 
-// api_datasource.findServiceByNameAPI('J600')
+// api_datasource.findServiceByNameAPI('J600') // id uMORBVEaT8ypVeZ6
 // .then(services => console.log(services))
 // .catch(err => console.log(err))

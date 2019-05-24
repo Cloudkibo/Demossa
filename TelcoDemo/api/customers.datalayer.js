@@ -46,7 +46,6 @@ exports.findCustomerWithService = function (phone, populateString) {
 // .then(customer => console.log(customer))
 // .catch(err => console.log(err))
 
-// TODO
-// api_datasource.findOneAndUpdate({phone: '+923323800399'}, {language: 'English'})
+// api_datasource.findOneAndUpdate({phone: '+923323800399'}, {$unset: {current_service: ''}})
 // .then(customer => console.log(customer))
 // .catch(err => console.log(err.error))

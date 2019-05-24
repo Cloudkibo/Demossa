@@ -51,30 +51,26 @@ exports.findOneAndUpdate = function (query, payload) {
         })
         .then(users => users.data[0])
         .then(users => {
-            users.phone = '+' + users.phone
             if (payload.language) {
                 users.language = payload.language
             } else if (payload.current_service) {
                 users.current_service = payload.current_service
-            } else if (payload.$unset && payload.$unset.current_service) {
+            } else if (payload.$unset && payload.$unset.current_service === '') {
                 users.current_service = ''
             }
             return users
         })
         .then(users => {
-            tempUserPayload.phone = users.phone.substring(1)
-            if (payload.language || users.language) {
-                tempUserPayload.language = payload.language
-            } else if (payload.current_service || users.current_service) {
-                tempUserPayload.current_service = payload.current_service
-            } else if (payload.$unset && payload.$unset.current_service) {
-                tempUserPayload.current_service = ''
+            for (let key in users) {
+                tempUserPayload[key] = users[key];
             }
+            delete tempUserPayload['_id']
             console.log(tempUserPayload)
             return users
         })
-        .then(users => util.callApi(domain, `users/?_id=${users._id}`, 'patch', tempUserPayload, token.accessToken))
+        .then(users => util.callApi(domain, `users/${users._id}`, 'put', tempUserPayload, token.accessToken))
         .then(users => {
+            users.phone = '+' + users.phone
             resolve(users)
         })
         .catch(err => {
