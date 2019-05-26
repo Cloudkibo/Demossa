@@ -26,11 +26,11 @@ exports.updateCustomer = function (query, payload) {
     }
 }
 
-exports.findCustomerWithService = function (phone, populateString) {
+exports.findCustomerBySessionId = function (sessionId, populateString) {
     if (config.dataSource === 'api') {
-        return api_datasource.findCustomerWithService(phone, populateString)
+        return api_datasource.findCustomerBySessionId(sessionId, populateString)
     } else {
-        return mongo_datasource.findCustomerWithService(phone, populateString)
+        return mongo_datasource.findCustomerBySessionId(sessionId, populateString)
     }
 }
 
