@@ -33,3 +33,19 @@ exports.findCustomerBySessionId = function (sessionId, populateString) {
         return mongo_datasource.findCustomerBySessionId(sessionId, populateString)
     }
 }
+
+// api_datasource.create({phone: '+923323800399'}) // _id: xIXndPUZyOYyeIcn
+// .then(customer => console.log(customer))
+// .catch(err => console.log(err))
+
+// api_datasource.findCustomerByIdApi('+923323800399')
+// .then(customer => console.log(customer))
+// .catch(err => console.log(err))
+
+// api_datasource.findCustomerWithService('+923323800399', 'current_service')
+// .then(customer => console.log(customer))
+// .catch(err => console.log(err))
+
+// api_datasource.findOneAndUpdate({phone: '+923323800399'}, {$unset: {current_service: ''}})
+// .then(customer => console.log(customer))
+// .catch(err => console.log(err.error))

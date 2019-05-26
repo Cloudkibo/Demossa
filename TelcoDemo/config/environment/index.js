@@ -29,7 +29,7 @@ const all = {
 
   domain: `${process.env.DOMAIN || 'http://localhost:3000'}`,
 
-  dataSource: 'mongo', // or api
+  dataSource: 'mongo', // mongo or api
 
   api_auth: {
     strategy: 'local',
