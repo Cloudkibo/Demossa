@@ -29,9 +29,9 @@ exports.findOneAndUpdate = function (query, payload) {
     })
 }
 
-exports.findCustomerWithService = function (phone, populateString) {
-    return new Promise(function(resolve, reject) {
-        Customer.findOne({phone}).populate(populateString).exec((err, found) => {
+exports.findCustomerBySessionId = function (sessionId, populateString)  {
+    return new Promise(function (resolve, reject) {
+        Customer.findOne({sessionId}).populate(populateString).exec((err, found) => {
             if(err) {
                 reject(err)
             } else {

@@ -52,7 +52,7 @@ exports.statements = {
             romanurdu: 'Matloba, compalaint id ki koi bi complain register nahi hy'
         }
     },
-    compalaints: {
+    complaints: {
         english: 'currently there is no registered complaint with this phone number',
         urdu: '',
         romanurdu: 'filhal, is number sy koi bi complaint register nahi hy'

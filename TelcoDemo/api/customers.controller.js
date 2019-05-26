@@ -12,19 +12,20 @@ exports.updatePackageRoman = function(phone, newPackageId) {
     }
 }
 
-exports.editLanguage = function (phone, newLanguage) {
-    return datalayer.updateCustomer({phone: phone}, {language: newLanguage})
+exports.editLanguage = function (sessionId, newLanguage) {
+    return datalayer.updateCustomer({sessionId: sessionId}, {language: newLanguage})
 }
 
 exports.insertNewCustomer = function (body, cb) {
-    datalayer.findCustomer(body.phone)
+    datalayer.findCustomerBySessionId(body.sessionId, 'current_service')
     .then(customer => {
         if (customer) {
             return cb(null, {exists: true})
         }
         return datalayer.createCustomer({
             phone: body.phone,
-            language: body.language
+            language: body.language,
+            sessionId: body.sessionId
         })
     })
     .then(customer => {
@@ -33,6 +34,6 @@ exports.insertNewCustomer = function (body, cb) {
     .catch(err => cb(err))
 }
 
-exports.currentPackage = function (phone) {
-    return datalayer.findCustomerWithService(phone, 'current_service')
+exports.findCustomerBySessionId = function (sessionId) {
+    return datalayer.findCustomerBySessionId(sessionId, 'current_service')
 }
