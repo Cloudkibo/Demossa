@@ -488,17 +488,6 @@ exports.checkComplaintStatus = function (request, response) {
                 quickReplies.push(complain.complaintId)
               }
             })
-            if(languageCode === 'english') {
-              quickReplies.push('Main Menu')
-            }
-            if(languageCode === 'romanurdu') {
-              message =  'apki shikayat hy: ' +complaint.description+
-            '\n or apki shikyat ka status: ' +complaint.status
-            }
-            if(languageCode === 'urdu') {
-              message =  'آپکی شکایت ہے : ' +complaint.description+
-            '\n اور آپکی شکایت کا سٹیٹس ہے : ' +complaint.status
-            }
             return quickRepliesResponse(response, message, quickReplyTitle, quickReplies)
           } else {
             message = statements.complaints[languageCode]
