@@ -32,54 +32,54 @@ exports.statements = {
     },
     findCustomer: {
         romanurdu: 'Hamary system main is phone number ka koi user moojood nahi, ap abhi "Hi" likh ker sign up kerskty hain',
-        urdu: '',
+        urdu: "ہمارے سسٹم میں اس فون نمبر کے ساتھ کوئی صارف نہیں ملا، آپ اب 'ہیلو' ٹائپ کرکے سائن اپ کرسکتے ہیں",
         english: "No user found with this phone number in our system, You can signup now by typing 'Hi' Here"
     }, 
     findServiceOfCustomer: {
         romanurdu: "'filhal, moojoda number per koi package activated nahi hy'",
-        urdu: "",
+        urdu: "فی الحال، اس نمبر پر کوئی پیکج نہیں ہے",
         english: "Currently, there is no package activated on this number"
     },
     complain: {
         exists: {
             english: 'your complaint status is ',
-            urdu: '',
+            urdu: 'آپ کی شکایت کی حیثیت ہے',
             romanurdu: 'apki shikayat ka status '
         },
         notExists: {
             english: 'No complaint found with the given complaint id',
-            urdu: '',
+            urdu: 'دی گئی شکایت کی شناخت کے ساتھ کوئی شکایت نہیں ملی',
             romanurdu: 'Matloba, compalaint id ki koi bi complain register nahi hy'
         }
     },
     complaints: {
         english: 'currently there is no registered complaint with this phone number',
-        urdu: '',
+        urdu: 'فی الحال اس فون نمبر کے ساتھ کوئی رجسٹرڈ شکایت نہیں ہے',
         romanurdu: 'filhal, is number sy koi bi complaint register nahi hy'
     },
     findBundles: {
         english: 'Currently, there is no package available',
-        urdu: '',
+        urdu: 'فی الحال، کوئی پیکیج دستیاب نہیں ہے',
         romanurdu: 'filhal, koi bi package available nahi hain'
     },
     findBundleInfo: {
         english: 'We have no service of this name in our system',
-        urdu: '',
+        urdu: 'ہمارے سسٹم میں اس نام کی کوئی خدمت نہیں ہے',
         romanurdu: 'hamary pass is naam ki koi service mojood nahi hy'
     },
     updatePackage: {
         english: 'We can not activate this package into your number',
-        urdu: '',
+        urdu: 'ہم یہ پیکج آپ کے نمبر میں چالو نہیں کر سکتے ہیں',
         romanurdu: 'Hum apky number per filhal package activate nahi kerskty'
     },
     deletePackage: {
         english: 'We can not de-activate this package into your number',
-        urdu: '',
+        urdu: 'ہم اس پیکج کو آپ کے نمبر میں غیر فعال نہیں کر سکتے ہیں',
         romanurdu: 'Hum apky number per filhal ye package de-activate nahi kerskty'
     },
     updateLanguage: {
         english: 'We can not update this Language to your number',
-        urdu: '',
+        urdu: 'ہم اس زبان کو آپ کے نمبر پر اپ ڈیٹ نہیں کرسکتے ہیں',
         romanurdu: 'Hum apky number per filhal Language update nahi kerskty'
     }
     

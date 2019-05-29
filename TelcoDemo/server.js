@@ -108,34 +108,68 @@ app.post('/webPost', (request, response) => {
 
 app.post('/dialogFlowWebhook', (request, response) => {
   console.log(request.body);
-  if (request.body.queryResult.intent.displayName === '0.1.1.my.current.package.roman') {
-    responseHelpers.currentPackageRoman(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.1.2.my.current.package.english') {
-    responseHelpers.currentPackageEnglish(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.find.and.activate.bundle.roman') {
-    responseHelpers.findBundlesRoman(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.1.find.bundle.roman') {
-    responseHelpers.findBundleInfoRoman(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.1.1.activate.bundle.roman') {
-    responseHelpers.activateBundleInfoRoman(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.0.2.welcome.sign.up.english') {
-    responseHelpers.signUpTheCustomer(request, response)
+  if (request.body.queryResult.intent.displayName === '0.1.welcome.select.language') {
+    responseHelpers.showServices(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.0.1.welcome.sign.up.urdu') {
+    responseHelpers.signUpTheCustomer(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.0.2.welcome.sign.up.english') {
     responseHelpers.signUpTheCustomer(request, response)
   } else if (request.body.queryResult.intent.displayName === '0.0.3.welcome.sign.up.roman.urdu') {
     responseHelpers.signUpTheCustomer(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.1.welcome.select.language') {
-    responseHelpers.showServices(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaint-status') {
-    responseHelpers.checkComplaintStatusEnglish(request, response)
-  }else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaintId.english') {
-    responseHelpers.fetchComplaintIdsEnglish(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.4.1.update.language.english') {
-    responseHelpers.updateCustomerLanguageEnglish(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.3.register.complaint') {
+  } else if (request.body.queryResult.intent.displayName === '0.1.1.my.current.package.roman') {
+    responseHelpers.currentPackage(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.1.2.my.current.package.english') {
+    responseHelpers.currentPackage(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.1.3.my.current.package.urdu') {
+    responseHelpers.currentPackage(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.2.1.find.and.activate.bundle.roman') {
+    responseHelpers.findBundles(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.2.1.find.bundle.roman') {
+    responseHelpers.findBundleInfo(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.2.1.activate.bundle.roman') {
+    responseHelpers.activateBundle(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.2.2.find.and.activate.bundle.english') {
+    responseHelpers.findBundles(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.2.2.find.bundle.english') {
+    responseHelpers.findBundleInfo(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.2.2.activate.bundle.english') {
+    responseHelpers.activateBundle(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.2.3.find.and.activate.bundle.urdu') {
+    responseHelpers.findBundles(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.2.3.find.bundle.urdu') {
+    responseHelpers.findBundleInfo(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.2.3.activate.bundle.urdu') {
+    responseHelpers.activateBundle(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.3.1.register.complaint.english') {
     responseHelpers.registerComplaint(request, response)
-  }  else if (request.body.queryResult.intent.displayName === '0.5.deactivate.bundle.roman') {
-    responseHelpers.deActivateBundleRoman(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.3.2.register.complaint.roman') {
+    responseHelpers.registerComplaint(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.3.3.register.complaint.urdu') {
+    responseHelpers.registerComplaint(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.4.1.update.language.english') {
+    responseHelpers.updateCustomerLanguage(request, response)
+  }  else if (request.body.queryResult.intent.displayName === '0.4.2.update.language.roman') {
+    responseHelpers.updateCustomerLanguage(request, response)
+  }  else if (request.body.queryResult.intent.displayName === '0.4.3.update.language.urdu') {
+    responseHelpers.updateCustomerLanguage(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.5.1.deactivate.bundle.roman') {
+    responseHelpers.deActivateBundle(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.5.2.deactivate.bundle.urdu') {
+    responseHelpers.deActivateBundle(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.5.3.deactivate.bundle.english') {
+    responseHelpers.deActivateBundle(request, response)
+  }  else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaintId.english') {
+    responseHelpers.fetchComplaintIds(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.6.2.fetch.complaintId.roman') {
+    responseHelpers.fetchComplaintIds(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.6.3.fetch.complaintId.urdu') {
+    responseHelpers.fetchComplaintIds(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaint.status.english') {
+    responseHelpers.checkComplaintStatus(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.6.2.fetch.complaint.status.roman') {
+    responseHelpers.checkComplaintStatus(request, response)
+  } else if (request.body.queryResult.intent.displayName === '0.6.3.fetch.complaint.status.urdu') {
+    responseHelpers.checkComplaintStatus(request, response)
   }
 })
 
