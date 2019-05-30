@@ -109,3 +109,34 @@ exports.findCustomerWithService = function (phone, populateString) {
         })
     })
 }
+
+exports.findCustomerBySessionId = function (sessionId, populateString) {
+    sessionId = sessionId.substring(1)
+    let token
+    let user
+    return new Promise(function(resolve, reject) {
+        util.callApi(domain, 'authentication', 'post', config.api_auth)
+        .then(tokens => {
+            token = tokens
+            return util.callApi(domain, `users?sessionId=${sessionId}`, 'get', {}, token.accessToken)
+        })
+        .then(users => users.data[0])
+        .then(users => {
+            users.phone = '+' + users.phone
+            user = users
+            return user
+        })
+        .then(users => util.callApi(domain, `packages?${populateString}=${users.current_service}`, 'get', {}, token.accessToken))
+        .then(services => services.data[0])
+        .then(services => {
+            user.current_service = services
+            return user
+        })
+        .then(users => {
+            resolve(users)
+        })
+        .catch(err => {
+            reject(err)
+        })
+    })
+}
