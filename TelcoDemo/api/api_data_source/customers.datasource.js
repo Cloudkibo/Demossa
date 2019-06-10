@@ -111,6 +111,7 @@ exports.findCustomerWithService = function (phone, populateString) {
 }
 
 exports.findCustomerBySessionId = function (sessionId, populateString) {
+    sessionId = sessionId.substring(1)
     let token
     let user
     return new Promise(function(resolve, reject) {
