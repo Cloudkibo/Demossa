@@ -42,7 +42,7 @@ exports.findComplaintByCustomerApi = function (customerId) {
             return util.callApi(domain, `tickets?customer=${customerId}`, 'get', {}, token.accessToken)
         })
         .then(complaints => {
-            return complaints = complaints.data[0]
+            return complaints = complaints.data
         })
         .then(complaints => {
             resolve(complaints)

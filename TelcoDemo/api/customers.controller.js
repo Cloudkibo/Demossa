@@ -17,19 +17,19 @@ exports.editLanguage = function (sessionId, newLanguage) {
 }
 
 exports.insertNewCustomer = function (body, cb) {
-    datalayer.findCustomerBySessionId(body.sessionId, 'current_service')
+    datalayer.findCustomer(body.phone, 'current_service')
     .then(customer => {
         if (customer) {
             return cb(null, {exists: true})
         }
-        return datalayer.createCustomer({
-            phone: body.phone,
-            language: body.language,
-            sessionId: body.sessionId
-        })
-    })
-    .then(customer => {
-        cb(null, {exists: false, customer})
+        else {
+            datalayer.createCustomer({
+                phone: body.phone,
+                language: body.language,
+                sessionId: body.sessionId
+            })
+            return cb(null, {exists: false})
+        }
     })
     .catch(err => cb(err))
 }

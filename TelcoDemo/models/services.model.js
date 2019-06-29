@@ -8,7 +8,7 @@ let serviceDb = new Schema({
     internet: String,
     sms: String,
     price: Number,
-    bill_cycle: String
+    billCycle: String
   })
 
 module.exports = mongoose.model('services', serviceDb)
