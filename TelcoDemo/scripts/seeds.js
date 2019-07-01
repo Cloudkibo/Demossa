@@ -13,7 +13,7 @@ var servicesData= [
         internet: '500 MB',
         sms: '150',
         price: 300,
-        bill_cycle: 'monthly'
+        billCycle: 'monthly'
     },
     {
         name: 'J600',
@@ -22,7 +22,7 @@ var servicesData= [
         internet: '2000 MB',
         sms: '600',
         price: 600,
-        bill_cycle: 'monthly'
+        billCycle: 'monthly'
     },
     {
         name: 'J999',
@@ -31,7 +31,7 @@ var servicesData= [
         internet: '2000 MB',
         sms: '1000',
         price: 699,
-        bill_cycle: 'monthly'
+        billCycle: 'monthly'
     },
     {
         name: 'J1500',
@@ -40,7 +40,7 @@ var servicesData= [
         internet: '7000 MB',
         sms: '7000 SMS',
         price: 800,
-        bill_cycle: 'monthly'
+        billCycle: 'monthly'
     }
 ]
 

@@ -29,12 +29,12 @@ const all = {
 
   domain: `${process.env.DOMAIN || 'http://localhost:3000'}`,
 
-  dataSource: 'mongo', // mongo or api
+  dataSource: 'api', // mongo or api
 
   api_auth: {
     strategy: 'local',
-    email: 'admin@omnisell.pk',
-    password: 'wordpass'
+    email: 'faizan@cloudkibo.com',
+    password: 'faizan'
   },
 
   api_domain: 'http://bot.omnisell.pk',
