@@ -7,7 +7,7 @@ exports.create = function (payload) {
     return new Promise(function(resolve, reject) {
         util.callApi(domain, 'authentication', 'post', config.api_auth)
         .then(token => {
-            return util.callApi(domain, 'users', 'post', payload, token.accessToken)
+            return util.callApi(domain, 'subscribers', 'post', payload, token.accessToken)
         })
         .then(users => {
             resolve(users)
@@ -23,13 +23,13 @@ exports.findCustomerByIdApi = function (phone) {
     return new Promise(function(resolve, reject) {
         util.callApi(domain, 'authentication', 'post', config.api_auth)
         .then(token => {
-            return util.callApi(domain, `users?phone=${phone}`, 'get', {}, token.accessToken)
+            return util.callApi(domain, `subscribers?phone=${phone}`, 'get', {}, token.accessToken)
         })
         .then(users => {
             return users = users.data[0]
         })
         .then(users => {
-            users.phone = '+' + users.phone
+            if(users) users.phone = '+' + users.phone
             resolve(users)
         })
         .catch(err => {
@@ -47,7 +47,7 @@ exports.findOneAndUpdate = function (query, payload) {
         util.callApi(domain, 'authentication', 'post', config.api_auth)
         .then(tokens => {
             token = tokens
-            return util.callApi(domain, `users?phone=${query.phone}`, 'get', {}, token.accessToken)
+            return util.callApi(domain, `subscribers?phone=${query.phone}`, 'get', {}, token.accessToken)
         })
         .then(users => users.data[0])
         .then(users => {
@@ -68,7 +68,7 @@ exports.findOneAndUpdate = function (query, payload) {
             console.log(tempUserPayload)
             return users
         })
-        .then(users => util.callApi(domain, `users/${users._id}`, 'put', tempUserPayload, token.accessToken))
+        .then(users => util.callApi(domain, `subscribers/${users._id}`, 'put', tempUserPayload, token.accessToken))
         .then(users => {
             users.phone = '+' + users.phone
             resolve(users)
@@ -87,18 +87,21 @@ exports.findCustomerWithService = function (phone, populateString) {
         util.callApi(domain, 'authentication', 'post', config.api_auth)
         .then(tokens => {
             token = tokens
-            return util.callApi(domain, `users?phone=${phone}`, 'get', {}, token.accessToken)
+            return util.callApi(domain, `subscribers?phone=${phone}`, 'get', {}, token.accessToken)
         })
         .then(users => users.data[0])
         .then(users => {
-            users.phone = '+' + users.phone
+            if(users) users.phone = '+' + users.phone
             user = users
             return user
         })
-        .then(users => util.callApi(domain, `packages?${populateString}=${users.current_service}`, 'get', {}, token.accessToken))
+        .then(users => {
+            if (users.current_service) util.callApi(domain, `packages?${populateString}=${users.current_service}`, 'get', {}, token.accessToken)
+            else return {data:[]}
+        })
         .then(services => services.data[0])
         .then(services => {
-            user.current_service = services
+            if(services) user.current_service = services
             return user
         })
         .then(users => {
@@ -111,25 +114,30 @@ exports.findCustomerWithService = function (phone, populateString) {
 }
 
 exports.findCustomerBySessionId = function (sessionId, populateString) {
-    sessionId = sessionId.substring(1)
     let token
     let user
     return new Promise(function(resolve, reject) {
         util.callApi(domain, 'authentication', 'post', config.api_auth)
         .then(tokens => {
             token = tokens
-            return util.callApi(domain, `users?sessionId=${sessionId}`, 'get', {}, token.accessToken)
+            return util.callApi(domain, `subscribers?sessionId=${sessionId}`, 'get', {}, token.accessToken)
         })
         .then(users => users.data[0])
         .then(users => {
-            users.phone = '+' + users.phone
+            if(users) users.phone = '+' + users.phone
+            else if(!users) resolve(users)
             user = users
             return user
         })
-        .then(users => util.callApi(domain, `packages?${populateString}=${users.current_service}`, 'get', {}, token.accessToken))
+        .then(users => {
+            if(users.current_service) {
+              return util.callApi(domain, `packages?_id=${users.current_service}`, 'get', {}, token.accessToken)
+            }
+            else return {data:[]}
+        })
         .then(services => services.data[0])
         .then(services => {
-            user.current_service = services
+            if(user.current_service) user.current_service = services
             return user
         })
         .then(users => {

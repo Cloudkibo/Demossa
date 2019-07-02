@@ -174,7 +174,7 @@ exports.findBundleInfo = function (request, response) {
           +'\n Internet: ' + found.internet
           +'\n SMS: ' + found.sms
           +'\n Price: ' + found.price
-          +'\n Bill Cycle: ' + found.bill_cycle
+          +'\n Bill Cycle: ' + found.billCycle
         }
         if(languageCode === 'english') {
           temp = ['Activate ' + found.name]
@@ -184,7 +184,7 @@ exports.findBundleInfo = function (request, response) {
           +'\n Internet: ' + found.internet
           +'\n SMS: ' + found.sms
           +'\n Price: ' + found.price
-          +'\n Bill Cycle: ' + found.bill_cycle
+          +'\n Bill Cycle: ' + found.billCycle
         }
         if(languageCode === 'urdu') {
           temp = ['سبسکرائب ' + found.name]
@@ -194,7 +194,7 @@ exports.findBundleInfo = function (request, response) {
           +`\n ${found.internet} : انٹرنیٹ `
           +`\n ${found.sms} : ایس ایم ایس `
           +`\n ${found.price} قیمت `
-          +`\n ${found.bill_cycle} بل سائیکل `
+          +`\n ${found.billCycle} بل سائیکل `
         }
         return quickRepliesResponse(response, message, quickReplyTitle, temp)
       }
@@ -226,6 +226,7 @@ exports.activateBundle = function (request, response) {
       return simpleMessageResponse(response, message, fallback)
     }
     else {
+      console.log("cusotomers", customer)
       services.findServiceByName(packageName)
       .then(found => {
         if(!found) {
@@ -418,7 +419,6 @@ exports.fetchComplaintIds = function (request, response) {
 
   customers.findCustomerBySessionId(sessionId)
   .then(found => {
-    console.log(found)
       if (!found) {
         message = statements.findCustomer[languageCode]
         return simpleMessageResponse(response, message, fallback)
@@ -426,12 +426,12 @@ exports.fetchComplaintIds = function (request, response) {
       return Complaint.fetchComplaintByCustomer(found._id)
     })
   .then(complaints => {
-    console.log(complaints)
     if (complaints.length > 0) {
       let quickReplies = []
       complaints.forEach(complain => {
         quickReplies.push(complain.complaintId)
       })
+      console.log(quickReplies)
       return quickRepliesResponse(response, '', quickReplyTitle, quickReplies)
     } else {
       message = statements.complaints[languageCode]
@@ -488,6 +488,9 @@ exports.checkComplaintStatus = function (request, response) {
                 quickReplies.push(complain.complaintId)
               }
             })
+            if(quickReplies.length == 1) {
+              quickReplyTitle = ''
+            }
             return quickRepliesResponse(response, message, quickReplyTitle, quickReplies)
           } else {
             message = statements.complaints[languageCode]
@@ -530,6 +533,8 @@ function simpleMessageResponse(response, message, fallback) {
 }
 
 function quickRepliesResponse(response, message, title, quickReplies) {
+  console.log('Response going to Dialogflow')
+  console.log(message)
   response.status(200).json({
     fulfillmentMessages: [
       {

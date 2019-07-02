@@ -1,6 +1,6 @@
 const requestPromise = require('request-promise')
 
-exports.callApi = (apiUrl, endpoint, method = 'get', body, token) => {
+exports.callApi = (apiUrl, endpoint, method, body, token) => {
   let headers
   if (token) {
     headers = {
@@ -16,8 +16,8 @@ exports.callApi = (apiUrl, endpoint, method = 'get', body, token) => {
   let options = {
     method: method.toUpperCase(),
     uri: `${apiUrl}/${endpoint}`,
-    headers,
-    body,
+    headers: headers,
+    body: body,
     json: true
   }
   // console.log('in callapi', JSON.stringify(body))

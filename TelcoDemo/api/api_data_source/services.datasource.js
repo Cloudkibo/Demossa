@@ -15,12 +15,12 @@ exports.findServiceByIdAPI = function (serviceId) {
             let tempServices = {
                 _id: services._id,
                 name: services.name,
-                onNet: services['onnet-minutes'],
-                offNet: services['offnet-minutes'],
+                onNet: services['onNet'],
+                offNet: services['offNet'],
                 internet: services.internet,
                 sms: services.sms,
                 price: services.price,
-                bill_cycle: services['bill-cycle']
+                bill_cycle: services['billCycle']
               }
             return tempServices
         })
@@ -48,12 +48,12 @@ exports.findServicesAPI = function () {
                 tempServices.push({
                     _id: services[i]._id,
                     name: services[i].name,
-                    onNet: services[i]['onnet-minutes'],
-                    offNet: services[i]['offnet-minutes'],
+                    onNet: services[i].onNet,
+                    offNet: services[i].offNet,
                     internet: services[i].internet,
                     sms: services[i].sms,
                     price: services[i].price,
-                    bill_cycle: services[i]['bill-cycle']
+                    bill_cycle: services[i].billCycle
                   })
             }
             return tempServices
@@ -80,12 +80,12 @@ exports.findServiceByNameAPI = function (packageName) {
             let tempServices = {
                 _id: services._id,
                 name: services.name,
-                onNet: services['onnet-minutes'],
-                offNet: services['offnet-minutes'],
+                onNet: services['onNet'],
+                offNet: services['offNet'],
                 internet: services.internet,
                 sms: services.sms,
                 price: services.price,
-                bill_cycle: services['bill-cycle']
+                bill_cycle: services['billCycle']
               }
             return tempServices
         })
