@@ -55,6 +55,16 @@ app.get("/", function (request, response) {
   // response.sendFile(__dirname + '/views/earningsRecord.html');
 });
 
+
+app.get('/fbPost', (req, res) => {
+  console.log("FB verified the webhook request.")
+  if (req.query['hub.verify_token'] === 'VERIFY_ME') {
+    res.send(req.query['hub.challenge'])
+  } else {
+    res.send('Error, wrong token')
+  }
+})
+
 app.post('/fbPost', (request, response) => {
   console.log('incoming post from facebook');
   let message = request.body.entry[0].messaging[0];
@@ -63,31 +73,61 @@ app.post('/fbPost', (request, response) => {
   if (message.message) {
     let query = message.message.text
     queryAIMessenger(query, subscriberId, pageId, true);
-  } else if (message.postback) {
-    let postback = JSON.parse(message.postback.payload)
-    let postbackTitle = message.postback.title
-    console.log(postback)
-    if (postback.type === 'selected') {
-      queryAIMessenger(postback.answer, subscriberId, pageId, false, postback.type)
-    } else if (postback.type === 'see more') {
-      queryAIMessenger(postback.query, subscriberId, pageId, false, postback.type)
-    } else if (postback.type === 'more') {
-      let options = postback.options;
-      if (options !== '') {
-        let items = options.split(',')
-        let payload = {
-          "type" : "quick-replies",
-          "payload" : {
-            "title": "Please select from following",
-            "replies": items
-          }
-        }
-        platforms.sendMessengerChat(payload, subscriberId, pageId)
-      }
-    }
   }
+  // } else if (message.postback) {
+  //   let postback = JSON.parse(message.postback.payload)
+  //   let postbackTitle = message.postback.title
+  //   console.log(postback)
+  //   if (postback.type === 'selected') {
+  //     queryAIMessenger(postback.answer, subscriberId, pageId, false, postback.type)
+  //   } else if (postback.type === 'see more') {
+  //     queryAIMessenger(postback.query, subscriberId, pageId, false, postback.type)
+  //   } else if (postback.type === 'more') {
+  //     let options = postback.options;
+  //     if (options !== '') {
+  //       let items = options.split(',')
+  //       let payload = {
+  //         "type" : "quick-replies",
+  //         "payload" : {
+  //           "title": "Please select from following",
+  //           "replies": items
+  //         }
+  //       }
+  //       platforms.sendMessengerChat(payload, subscriberId, pageId)
+  //     }
+  //   }
+  // }
   return response.status(200).json({ status: 'success', description: 'got the data.' });
 });
+
+function queryAIMessenger (query, subscriberId, pageId, simpleQueryNotPostBack, postBackType) {
+  queryDialogFlow(query, pageId)
+    .then(result => {
+      console.log(result)
+      util.intervalForEach(result, (item) => {
+          platforms.sendMessengerChat(item, subscriberId, pageId)
+        }, 600)
+      // NOTE: This is logic in case when we have more than one paragraphs. Remove above util code when using this
+      if (simpleQueryNotPostBack) {
+        if (result.length > 1) // if repsonse contains more than one paragraphs
+          platforms.sendMessengerChat(result[0], subscriberId, pageId, query)
+        else
+          platforms.sendMessengerChat(result[0], subscriberId, pageId)
+      } else { // if query is coming from postback
+        if (postBackType === 'see more') result.shift(); // only faqs reponses should hide the first paragraph
+        util.intervalForEach(result, (item) => {
+          platforms.sendMessengerChat(item, subscriberId, pageId)
+        }, 500)
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
+function queryDialogFlow(query, pageId) {
+  return ailayer.callDialogFlowAPI(query, pageId)
+}
 
 app.post('/webPost', (request, response) => {
   console.log('incoming post from web client');
@@ -106,110 +146,74 @@ app.post('/webPost', (request, response) => {
   }
 });
 
-app.post('/dialogFlowWebhook', (request, response) => {
-  console.log(request.body);
-  if (request.body.queryResult.intent.displayName === '0.1.welcome.select.language') {
-    responseHelpers.showServices(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.0.1.welcome.sign.up.urdu') {
-    responseHelpers.signUpTheCustomer(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.0.2.welcome.sign.up.english') {
-    responseHelpers.signUpTheCustomer(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.0.3.welcome.sign.up.roman.urdu') {
-    responseHelpers.signUpTheCustomer(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.1.1.my.current.package.roman') {
-    responseHelpers.currentPackage(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.1.2.my.current.package.english') {
-    responseHelpers.currentPackage(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.1.3.my.current.package.urdu') {
-    responseHelpers.currentPackage(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.1.find.and.activate.bundle.roman') {
-    responseHelpers.findBundles(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.1.find.bundle.roman') {
-    responseHelpers.findBundleInfo(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.1.activate.bundle.roman') {
-    responseHelpers.activateBundle(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.2.find.and.activate.bundle.english') {
-    responseHelpers.findBundles(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.2.find.bundle.english') {
-    responseHelpers.findBundleInfo(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.2.activate.bundle.english') {
-    responseHelpers.activateBundle(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.3.find.and.activate.bundle.urdu') {
-    responseHelpers.findBundles(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.3.find.bundle.urdu') {
-    responseHelpers.findBundleInfo(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.2.3.activate.bundle.urdu') {
-    responseHelpers.activateBundle(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.3.1.register.complaint.english') {
-    responseHelpers.registerComplaint(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.3.2.register.complaint.roman') {
-    responseHelpers.registerComplaint(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.3.3.register.complaint.urdu') {
-    responseHelpers.registerComplaint(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.4.1.update.language.english') {
-    responseHelpers.updateCustomerLanguage(request, response)
-  }  else if (request.body.queryResult.intent.displayName === '0.4.2.update.language.roman') {
-    responseHelpers.updateCustomerLanguage(request, response)
-  }  else if (request.body.queryResult.intent.displayName === '0.4.3.update.language.urdu') {
-    responseHelpers.updateCustomerLanguage(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.5.1.deactivate.bundle.roman') {
-    responseHelpers.deActivateBundle(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.5.2.deactivate.bundle.urdu') {
-    responseHelpers.deActivateBundle(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.5.3.deactivate.bundle.english') {
-    responseHelpers.deActivateBundle(request, response)
-  }  else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaintId.english') {
-    responseHelpers.fetchComplaintIds(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.6.2.fetch.complaintId.roman') {
-    responseHelpers.fetchComplaintIds(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.6.3.fetch.complaintId.urdu') {
-    responseHelpers.fetchComplaintIds(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaint.status.english') {
-    responseHelpers.checkComplaintStatus(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.6.2.fetch.complaint.status.roman') {
-    responseHelpers.checkComplaintStatus(request, response)
-  } else if (request.body.queryResult.intent.displayName === '0.6.3.fetch.complaint.status.urdu') {
-    responseHelpers.checkComplaintStatus(request, response)
-  }
-})
+// app.post('/dialogFlowWebhook', (request, response) => {
+//   console.log(request.body);
+//   if (request.body.queryResult.intent.displayName === '0.1.welcome.select.language') {
+//     responseHelpers.showServices(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.0.1.welcome.sign.up.urdu') {
+//     responseHelpers.signUpTheCustomer(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.0.2.welcome.sign.up.english') {
+//     responseHelpers.signUpTheCustomer(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.0.3.welcome.sign.up.roman.urdu') {
+//     responseHelpers.signUpTheCustomer(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.1.1.my.current.package.roman') {
+//     responseHelpers.currentPackage(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.1.2.my.current.package.english') {
+//     responseHelpers.currentPackage(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.1.3.my.current.package.urdu') {
+//     responseHelpers.currentPackage(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.2.1.find.and.activate.bundle.roman') {
+//     responseHelpers.findBundles(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.2.1.find.bundle.roman') {
+//     responseHelpers.findBundleInfo(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.2.1.activate.bundle.roman') {
+//     responseHelpers.activateBundle(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.2.2.find.and.activate.bundle.english') {
+//     responseHelpers.findBundles(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.2.2.find.bundle.english') {
+//     responseHelpers.findBundleInfo(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.2.2.activate.bundle.english') {
+//     responseHelpers.activateBundle(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.2.3.find.and.activate.bundle.urdu') {
+//     responseHelpers.findBundles(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.2.3.find.bundle.urdu') {
+//     responseHelpers.findBundleInfo(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.2.3.activate.bundle.urdu') {
+//     responseHelpers.activateBundle(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.3.1.register.complaint.english') {
+//     responseHelpers.registerComplaint(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.3.2.register.complaint.roman') {
+//     responseHelpers.registerComplaint(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.3.3.register.complaint.urdu') {
+//     responseHelpers.registerComplaint(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.4.1.update.language.english') {
+//     responseHelpers.updateCustomerLanguage(request, response)
+//   }  else if (request.body.queryResult.intent.displayName === '0.4.2.update.language.roman') {
+//     responseHelpers.updateCustomerLanguage(request, response)
+//   }  else if (request.body.queryResult.intent.displayName === '0.4.3.update.language.urdu') {
+//     responseHelpers.updateCustomerLanguage(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.5.1.deactivate.bundle.roman') {
+//     responseHelpers.deActivateBundle(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.5.2.deactivate.bundle.urdu') {
+//     responseHelpers.deActivateBundle(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.5.3.deactivate.bundle.english') {
+//     responseHelpers.deActivateBundle(request, response)
+//   }  else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaintId.english') {
+//     responseHelpers.fetchComplaintIds(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.6.2.fetch.complaintId.roman') {
+//     responseHelpers.fetchComplaintIds(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.6.3.fetch.complaintId.urdu') {
+//     responseHelpers.fetchComplaintIds(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.6.1.fetch.complaint.status.english') {
+//     responseHelpers.checkComplaintStatus(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.6.2.fetch.complaint.status.roman') {
+//     responseHelpers.checkComplaintStatus(request, response)
+//   } else if (request.body.queryResult.intent.displayName === '0.6.3.fetch.complaint.status.urdu') {
+//     responseHelpers.checkComplaintStatus(request, response)
+//   }
+// })
 
-function queryAIMessenger (query, subscriberId, pageId, simpleQueryNotPostBack, postBackType) {
-  queryDialogFlow(query, pageId)
-    .then(result => {
-      util.intervalForEach(result, (item) => {
-          platforms.sendMessengerChat(item, subscriberId, pageId)
-        }, 600)
-      // NOTE: This is logic in case when we have more than one paragraphs. Remove above util code when using this
-      // if (simpleQueryNotPostBack) {
-      //   if (result.length > 1) // if repsonse contains more than one paragraphs
-      //     platforms.sendMessengerChat(result[0], subscriberId, pageId, query)
-      //   else
-      //     platforms.sendMessengerChat(result[0], subscriberId, pageId)
-      // } else { // if query is coming from postback
-      //   if (postBackType === 'see more') result.shift(); // only faqs reponses should hide the first paragraph
-      //   util.intervalForEach(result, (item) => {
-      //     platforms.sendMessengerChat(item, subscriberId, pageId)
-      //   }, 500)
-      // }
-    })
-    .catch(err => {
-      console.log(err)
-    })
-}
 
-function queryDialogFlow(query, pageId) {
-  return ailayer.callDialogFlowAPIV2(query, pageId)
-}
-
-app.get('/fbPost', (request, response) => {
-  console.log("FB verified the webhook request.")
-  console.log(request.query)
-  if (request.query['hub.verify_token'] === 'room40') {
-    response.send(request.query['hub.challenge'])
-  } else {
-    response.send('Error, wrong token')
-  }
-})
 
 app.get('/*', (request, response) => {
   response.send('This page is not yet implemented in our demo.')

@@ -18,7 +18,6 @@ exports.callDialogFlowAPI = (query, pageId) => {
     return new Promise((resolve, reject) => {
       if (result.status.code === 200) {
         let respMsgs = result.result.fulfillment.messages;
-        console.log(respMsgs)
         let finalMessages = []
         for (let i=0; i<respMsgs.length; i++ ) {
           if (respMsgs[i].platform === 'facebook') {
@@ -54,23 +53,18 @@ exports.callDialogFlowAPI = (query, pageId) => {
 
 exports.callDialogFlowAPIV2 = (query, pageId) => {
   let apiUrl = 'https://dialogflow.googleapis.com/v2/projects/jazz-95b94/agent/sessions/12345:detectIntent';
-  let accessToken = 'Bearer ' + util.dialogFlowBotTokenV2(pageId);
+  let accessToken = 'Bearer 544620e12a45790e22c97d2d53d48ed89135a88f'
   let payload = {
     "queryInput": {
-      "text": {
-        "text": query,
-        "languageCode": "en"
-      }
+      "lang": "en",
+      "query": query,
     }
   }
-  
   return util.callApi(apiUrl, '', 'post', payload, accessToken)
   .then(result => {
     return new Promise((resolve, reject) => {
       if (result.status.code === 200) {
         let respMsgs = result.result.fulfillment.messages;
-        console.log(result.result)
-        return;
         let finalMessages = []
         for (let i=0; i<respMsgs.length; i++ ) {
           if (respMsgs[i].platform === 'facebook') {
