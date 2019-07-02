@@ -72,7 +72,7 @@ app.post('/fbPost', (request, response) => {
   let subscriberId = message.sender.id
   if (message.message) {
     let query = message.message.text
-    queryAIMessenger(query, subscriberId, pageId, true);
+    queryAIMessenger(query, subscriberId, pageId, false);
   }
   // } else if (message.postback) {
   //   let postback = JSON.parse(message.postback.payload)
@@ -104,21 +104,27 @@ function queryAIMessenger (query, subscriberId, pageId, simpleQueryNotPostBack, 
   queryDialogFlow(query, pageId)
     .then(result => {
       console.log(result)
-      util.intervalForEach(result, (item) => {
-          platforms.sendMessengerChat(item, subscriberId, pageId)
-        }, 600)
-      // NOTE: This is logic in case when we have more than one paragraphs. Remove above util code when using this
-      if (simpleQueryNotPostBack) {
-        if (result.length > 1) // if repsonse contains more than one paragraphs
-          platforms.sendMessengerChat(result[0], subscriberId, pageId, query)
-        else
-          platforms.sendMessengerChat(result[0], subscriberId, pageId)
-      } else { // if query is coming from postback
-        if (postBackType === 'see more') result.shift(); // only faqs reponses should hide the first paragraph
+      if(result.fulfillment){
+        if(result.fulfillment.messages.length ===0) {
+          console.log('all logic here')
+        } 
+      } else {
         util.intervalForEach(result, (item) => {
           platforms.sendMessengerChat(item, subscriberId, pageId)
-        }, 500)
+        }, 600)
       }
+      // NOTE: This is logic in case when we have more than one paragraphs. Remove above util code when using this
+      // if (simpleQueryNotPostBack) {
+      //   if (result.length > 1) // if repsonse contains more than one paragraphs
+      //     platforms.sendMessengerChat(result[0], subscriberId, pageId, query)
+      //   else
+      //     platforms.sendMessengerChat(result[0], subscriberId, pageId)
+      // } else { // if query is coming from postback
+      //   if (postBackType === 'see more') result.shift(); // only faqs reponses should hide the first paragraph
+      //   util.intervalForEach(result, (item) => {
+      //     platforms.sendMessengerChat(item, subscriberId, pageId)
+      //   }, 500)
+      // }
     })
     .catch(err => {
       console.log(err)

@@ -1,7 +1,7 @@
 const util = require('./utility.js')
 
 exports.callDialogFlowAPI = (query, pageId) => {
-  let apiUrl = 'https://api.dialogflow.com/v1';
+  let apiUrl = 'https://api.dialogflow.com/v1/';
   let accessToken = 'Bearer ' + util.dialogFlowBotToken(pageId);
   let payload = {
     "contexts": [
@@ -15,6 +15,7 @@ exports.callDialogFlowAPI = (query, pageId) => {
   
   return util.callApi(apiUrl, 'query?v=20170712', 'post', payload, accessToken)
   .then(result => {
+    console.log(result)
     return new Promise((resolve, reject) => {
       if (result.status.code === 200) {
         let respMsgs = result.result.fulfillment.messages;
@@ -43,7 +44,9 @@ exports.callDialogFlowAPI = (query, pageId) => {
             // finalMessages.push({ "type": "gen-text", "text": respMsgs[i].speech })
           }
         }
-        resolve(finalMessages)
+        console.log('--------------------------------')
+        if(finalMessages.length === 0) resolve(result.result)
+        else resolve(finalMessages)
       } else {
         reject(result)
       }

@@ -26,7 +26,6 @@ exports.insertNewCustomer = function (body, cb) {
             datalayer.createCustomer({
                 phone: body.phone,
                 language: body.language,
-                sessionId: body.sessionId
             })
             return cb(null, {exists: false})
         }
