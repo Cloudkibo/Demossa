@@ -26,11 +26,11 @@ exports.updateCustomer = function (query, payload) {
     }
 }
 
-exports.findCustomerBySessionId = function (sessionId, populateString) {
+exports.findCustomerBySubscriberId = function (subscriberId, populateString) {
     if (config.dataSource === 'api') {
-        return api_datasource.findCustomerBySessionId(sessionId, populateString)
+        return api_datasource.findCustomerBySubscriberId(subscriberId, populateString)
     } else {
-        return mongo_datasource.findCustomerBySessionId(sessionId, populateString)
+        return mongo_datasource.findCustomerBySubscriberId(subscriberId, populateString)
     }
 }
 

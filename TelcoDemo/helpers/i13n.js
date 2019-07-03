@@ -1,9 +1,9 @@
 
 exports.statements = {
     fallback : {
-        english: {type: 2, platform: 'facebook',title: 'Other Actions', quickReplies:['Current Package', 'Packages List', 'Unsubscribe Package', 'Register Complaint', 'Complaint Status', ]},
-        urdu: {title: 'دیگر اعمال', quickReplies:['موجودا پیکج ', 'پیکیجز', 'پیکج ختم کریں', 'شکایت درج کریں ', 'شکایت کا سٹیٹس']},
-        romanurdu: {title: 'Deegar aamaal', quickReplies:['Mojoda Package', 'Package ki malomat', 'Package Khatam karain', 'Shikayat Darj Karain', 'Shikyat Ka Status']}
+        english: {title: 'Other Actions', replies:['Current Package', 'Packages List', 'Unsubscribe Package', 'Register Complaint', 'Complaint Status', ]},
+        urdu: {title: 'دیگر اعمال', replies:['موجودا پیکج ', 'پیکیجز', 'پیکج ختم کریں', 'شکایت درج کریں ', 'شکایت کا سٹیٹس']},
+        romanurdu: {title: 'Deegar aamaal', replies:['Mojoda Package', 'Package ki malomat', 'Package Khatam karain', 'Shikayat Darj Karain', 'Shikyat Ka Status']}
     },
     wrongotp: {
         english: 'Wrong OTP, Please start again.',

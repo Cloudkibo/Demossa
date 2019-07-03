@@ -43,7 +43,7 @@ app.use(bodyParser.json());
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -100,14 +100,19 @@ app.post('/fbPost', (request, response) => {
   return response.status(200).json({ status: 'success', description: 'got the data.' });
 });
 
-function queryAIMessenger (query, subscriberId, pageId, simpleQueryNotPostBack, postBackType) {
+function queryAIMessenger(query, subscriberId, pageId, simpleQueryNotPostBack, postBackType) {
   queryDialogFlow(query, pageId)
     .then(result => {
       console.log(result)
-      if(result.fulfillment){
-        if(result.fulfillment.messages.length ===0) {
-          console.log('all logic here')
-        } 
+      if (result.fulfillment) {
+        if (result.fulfillment.messages.length === 0 || result.fulfillment.messages[0].speech === '') {
+          DialogFlowFunctions(result, subscriberId)
+            .then(response => {
+              util.intervalForEach(response, (item) => {
+                platforms.sendMessengerChat(item, subscriberId, pageId)
+              }, 600)
+            })
+        }
       } else {
         util.intervalForEach(result, (item) => {
           platforms.sendMessengerChat(item, subscriberId, pageId)
@@ -141,16 +146,166 @@ app.post('/webPost', (request, response) => {
   let query = request.body.message.text
   if (query) {
     queryDialogFlow(query)
-    .then(result => {
-      platforms.sendWebChat(request, response, result)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+      .then(result => {
+        platforms.sendWebChat(request, response, result)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   } else {
     response.status(501).json({ status: 'error', description: 'Query not found' });
   }
 });
+
+function DialogFlowFunctions(result, subscriberId) {
+  return new Promise(function (resolve, reject) {
+    if (result.metadata.intentName === '0.1.welcome.select.language') {
+      resolve(responseHelpers.showServices(result, subscriberId))
+    } else if (result.metadata.intentName === '0.0.1.welcome.sign.up.urdu') {
+      responseHelpers.signUpTheCustomer(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.0.2.welcome.sign.up.english') {
+      responseHelpers.signUpTheCustomer(result, subscriberId)
+        .then(response => {
+          resolve(response)
+        })
+    } else if (result.metadata.intentName === '0.0.3.welcome.sign.up.roman.urdu') {
+      responseHelpers.signUpTheCustomer(result, subscriberId)
+      .then(response => {
+        console.log(response)
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.1.1.my.current.package.roman') {
+      responseHelpers.currentPackage(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.1.2.my.current.package.english') {
+      responseHelpers.currentPackage(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.1.3.my.current.package.urdu') {
+      responseHelpers.currentPackage(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.2.1.find.and.activate.bundle.roman') {
+      responseHelpers.findBundles(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.2.1.find.bundle.roman') {
+      responseHelpers.findBundleInfo(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.2.1.activate.bundle.roman') {
+      responseHelpers.activateBundle(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.2.2.find.and.activate.bundle.english') {
+      responseHelpers.findBundles(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.2.2.find.bundle.english') {
+      responseHelpers.findBundleInfo(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.2.2.activate.bundle.english') {
+      responseHelpers.activateBundle(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.2.3.find.and.activate.bundle.urdu') {
+      responseHelpers.findBundles(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.2.3.find.bundle.urdu') {
+      responseHelpers.findBundleInfo(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.2.3.activate.bundle.urdu') {
+      responseHelpers.activateBundle(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.3.1.register.complaint.english') {
+      responseHelpers.registerComplaint(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.3.2.register.complaint.roman') {
+      responseHelpers.registerComplaint(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.3.3.register.complaint.urdu') {
+      responseHelpers.registerComplaint(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.4.1.update.language.english') {
+      resolve(responseHelpers.updateCustomerLanguage(result, subscriberId))
+    } else if (result.metadata.intentName === '0.4.2.update.language.roman') {
+      resolve(responseHelpers.updateCustomerLanguage(result, subscriberId))
+    } else if (result.metadata.intentName === '0.4.3.update.language.urdu') {
+      resolve(responseHelpers.updateCustomerLanguage(result, subscriberId))
+    } else if (result.metadata.intentName === '0.5.1.deactivate.bundle.roman') {
+      responseHelpers.deActivateBundle(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.5.2.deactivate.bundle.urdu') {
+      responseHelpers.deActivateBundle(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.5.3.deactivate.bundle.english') {
+      responseHelpers.deActivateBundle(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.6.1.fetch.complaintId.english') {
+      responseHelpers.fetchComplaintIds(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.6.2.fetch.complaintId.roman') {
+      responseHelpers.fetchComplaintIds(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.6.3.fetch.complaintId.urdu') {
+      responseHelpers.fetchComplaintIds(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.6.1.fetch.complaint.status.english') {
+      responseHelpers.checkComplaintStatus(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.6.2.fetch.complaint.status.roman') {
+      responseHelpers.checkComplaintStatus(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    } else if (result.metadata.intentName === '0.6.3.fetch.complaint.status.urdu') {
+      responseHelpers.checkComplaintStatus(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
+    }
+  })
+}
 
 // app.post('/dialogFlowWebhook', (request, response) => {
 //   console.log(request.body);
@@ -230,9 +385,9 @@ const https = require('https')
 const fs = require('fs')
 
 let options = {
-    ca: '',
-    key: '',
-    cert: ''
+  ca: '',
+  key: '',
+  cert: ''
 }
 
 if (config.env === 'production') {
@@ -262,6 +417,6 @@ server.listen(config.port, config.ip, () => {
 })
 
 httpsServer.listen(config.secure_port, () => {
-console.log(`DEMOSSA server STARTED on ${
-  config.secure_port} in ${config.env} mode on domain ${config.domain}`)
+  console.log(`DEMOSSA server STARTED on ${
+    config.secure_port} in ${config.env} mode on domain ${config.domain}`)
 })

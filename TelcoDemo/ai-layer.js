@@ -10,7 +10,7 @@ exports.callDialogFlowAPI = (query, pageId) => {
     "lang": "en",
     "query": query,
     "sessionId": "12345",
-    "timezone": "America/New_York"
+    // "timezone": "America/New_York"
   }
   
   return util.callApi(apiUrl, 'query?v=20170712', 'post', payload, accessToken)

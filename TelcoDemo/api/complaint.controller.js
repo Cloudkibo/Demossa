@@ -11,7 +11,7 @@ exports.fetchComplaintByCustomer = function(customerId) {
 }
 
 exports.insertNewComplaint = function (body, cb) {
-    customerDatalayer.findCustomerBySessionId(body.sessionId, 'current_service')
+    customerDatalayer.findCustomerBySubscriberId(body.subscriberId, 'current_service')
     .then(customer => {
         if (!customer) {
             return cb(null, {exists: false})
