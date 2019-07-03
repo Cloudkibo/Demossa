@@ -26,7 +26,7 @@ exports.insertNewCustomer = function (body, cb) {
             datalayer.createCustomer({
                 phone: body.phone,
                 language: body.language,
-                sessionId: body.sessionId
+                subscriberId: body.subscriberId
             })
             return cb(null, {exists: false})
         }
@@ -34,6 +34,6 @@ exports.insertNewCustomer = function (body, cb) {
     .catch(err => cb(err))
 }
 
-exports.findCustomerBySessionId = function (sessionId) {
-    return datalayer.findCustomerBySessionId(sessionId, 'current_service')
+exports.findCustomerBySubscriberId = function (subscriberId) {
+    return datalayer.findCustomerBySubscriberId(subscriberId, 'current_service')
 }

@@ -1,7 +1,7 @@
 const util = require('./utility.js')
 
 exports.callDialogFlowAPI = (query, pageId) => {
-  let apiUrl = 'https://api.dialogflow.com/v1';
+  let apiUrl = 'https://api.dialogflow.com/v1/';
   let accessToken = 'Bearer ' + util.dialogFlowBotToken(pageId);
   let payload = {
     "contexts": [
@@ -10,15 +10,15 @@ exports.callDialogFlowAPI = (query, pageId) => {
     "lang": "en",
     "query": query,
     "sessionId": "12345",
-    "timezone": "America/New_York"
+    // "timezone": "America/New_York"
   }
   
   return util.callApi(apiUrl, 'query?v=20170712', 'post', payload, accessToken)
   .then(result => {
+    console.log(result)
     return new Promise((resolve, reject) => {
       if (result.status.code === 200) {
         let respMsgs = result.result.fulfillment.messages;
-        console.log(respMsgs)
         let finalMessages = []
         for (let i=0; i<respMsgs.length; i++ ) {
           if (respMsgs[i].platform === 'facebook') {
@@ -44,7 +44,9 @@ exports.callDialogFlowAPI = (query, pageId) => {
             // finalMessages.push({ "type": "gen-text", "text": respMsgs[i].speech })
           }
         }
-        resolve(finalMessages)
+        console.log('--------------------------------')
+        if(finalMessages.length === 0) resolve(result.result)
+        else resolve(finalMessages)
       } else {
         reject(result)
       }
@@ -54,23 +56,18 @@ exports.callDialogFlowAPI = (query, pageId) => {
 
 exports.callDialogFlowAPIV2 = (query, pageId) => {
   let apiUrl = 'https://dialogflow.googleapis.com/v2/projects/jazz-95b94/agent/sessions/12345:detectIntent';
-  let accessToken = 'Bearer ' + util.dialogFlowBotTokenV2(pageId);
+  let accessToken = 'Bearer 544620e12a45790e22c97d2d53d48ed89135a88f'
   let payload = {
     "queryInput": {
-      "text": {
-        "text": query,
-        "languageCode": "en"
-      }
+      "lang": "en",
+      "query": query,
     }
   }
-  
   return util.callApi(apiUrl, '', 'post', payload, accessToken)
   .then(result => {
     return new Promise((resolve, reject) => {
       if (result.status.code === 200) {
         let respMsgs = result.result.fulfillment.messages;
-        console.log(result.result)
-        return;
         let finalMessages = []
         for (let i=0; i<respMsgs.length; i++ ) {
           if (respMsgs[i].platform === 'facebook') {

@@ -66,7 +66,7 @@ exports.isYouTubeUrl = (url) => {
 }
 
 exports.fbAccessToken = (pageId) => {
-  return '?access_token=EAAUTvApDOEYBALRZBxLYJTJyVI05SfCf7UdWjejck2ikWllZCZA1k4hgxulBDGsixGZC2trUHdaUWKN5LmkbVdF215Hvejn14uJfbZCbtyEP46sdG31fAbka0LGjxZBHDiYG96dcqEy36EuVbVzqqcVQnHynteJ1GxZBQlqDZArctQZDZD'
+  return '?access_token=EAAHbNZBFpFPsBAIpmNZBgHfugc7CIYzhQKaZAu6bP70vICBFTtvNLT03kZAWZBe3ZAlswZCdlpWViho2vvepWhUBipsQXAaZAvlK5FId0EyGXZC66Kol27NHeTM3pZBqukVkhz3kljsxL1zz5BGCrZCoE7K6J70LZAyET7d0eNWZCM3ZAsF9Npfc4XK9sX'
 }
 
 exports.dialogFlowBotToken = (pageId) => {

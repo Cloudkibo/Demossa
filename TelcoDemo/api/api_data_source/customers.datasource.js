@@ -113,14 +113,14 @@ exports.findCustomerWithService = function (phone, populateString) {
     })
 }
 
-exports.findCustomerBySessionId = function (sessionId, populateString) {
+exports.findCustomerBySubscriberId = function (subscriberId, populateString) {
     let token
     let user
     return new Promise(function(resolve, reject) {
         util.callApi(domain, 'authentication', 'post', config.api_auth)
         .then(tokens => {
             token = tokens
-            return util.callApi(domain, `subscribers?sessionId=${sessionId}`, 'get', {}, token.accessToken)
+            return util.callApi(domain, `subscribers?subscriberId=${subscriberId}`, 'get', {}, token.accessToken)
         })
         .then(users => users.data[0])
         .then(users => {

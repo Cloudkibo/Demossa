@@ -44,7 +44,6 @@ exports.sendMessengerChat = (item, recipient_id, product_name, query) => {
   if (payload) {
     messengerSendApi (payload, product_name)
     .then(result => {
-      console.log("FB Message sent")
     })
     .catch(err => {
       console.log(err.message)
