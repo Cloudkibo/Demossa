@@ -114,14 +114,20 @@ exports.findBundles = function (result, subscriberId) {
     let message = ''
     let languageCode = 'english'
     let quickReplyTitle = 'Please Select a Jazz Package'
+    let otherActions = 'Other Actions'
+    let quickReplies = []
+
 
     if (result.metadata.intentName === '0.2.1.find.and.activate.bundle.roman') {
       languageCode = 'romanurdu'
       quickReplyTitle = 'Jazz k packages ka intikhaab keejye'
+      otherActions = 'Deegar aamaal'
+      
     }
     if (result.metadata.intentName === '0.2.3.find.and.activate.bundle.urdu') {
       languageCode = 'urdu'
       quickReplyTitle = 'جاز پیکیج منتخب کریں'
+      otherActions = 'دیگر اعمال'
     }
 
     let fallback = statements.fallback[languageCode]
@@ -130,11 +136,10 @@ exports.findBundles = function (result, subscriberId) {
     promise
       .then((bundles) => {
         if (bundles.length > 0) {
-          let quickReplies = []
           bundles.forEach(element => {
             quickReplies.push(`${element.name}`)
           })
-          console.log(quickReplies)
+          quickReplies.push(otherActions)
           resolve(quickRepliesResponse(result, '', quickReplyTitle, quickReplies, fallback))
         } else {
           message = statements.findBundles[languageCode]
@@ -153,15 +158,18 @@ exports.findBundleInfo = function (result, subscriberId) {
     let message = ''
     let languageCode = 'english'
     let quickReplyTitle = 'Ativate the Package Right Now'
+    let otherActions = 'Other Actions'
     let packageName = result.parameters.package
 
     if (result.metadata.intentName === '0.2.1.find.bundle.roman') {
       languageCode = 'romanurdu'
       quickReplyTitle = 'Abhi package ko activate karain'
+      otherActions = 'Deegar aamaal'
     }
     if (result.metadata.intentName === '0.2.3.find.bundle.urdu') {
       languageCode = 'urdu'
       quickReplyTitle = 'ابھی سبسکرائب کریں '
+      otherActions = 'دیگر اعمال'
     }
 
     let fallback = statements.fallback[languageCode]
@@ -174,7 +182,7 @@ exports.findBundleInfo = function (result, subscriberId) {
         } else {
           let temp = []
           if (languageCode === 'romanurdu') {
-            temp = ['Activate ' + found.name]
+            temp = ['Activate ' + found.name, otherActions]
             message = found.name + ', package ki maloomat hain:'
               + '\n \n On-net Minutes: ' + found.onNet
               + '\n Off-net Minutes: ' + found.offNet
@@ -184,7 +192,7 @@ exports.findBundleInfo = function (result, subscriberId) {
               + '\n Bill Cycle: ' + found.billCycle
           }
           if (languageCode === 'english') {
-            temp = ['Activate ' + found.name]
+            temp = ['Activate ' + found.name, otherActions]
             message = found.name + ', information is:'
               + '\n \n On-net Minutes: ' + found.onNet
               + '\n Off-net Minutes: ' + found.offNet
@@ -194,7 +202,7 @@ exports.findBundleInfo = function (result, subscriberId) {
               + '\n Bill Cycle: ' + found.billCycle
           }
           if (languageCode === 'urdu') {
-            temp = ['سبسکرائب ' + found.name]
+            temp = ['سبسکرائب ' + found.name, otherActions]
             message = `,  معلومات ${found.name}`
               + `\n ${found.onNet} : اون نیٹ منٹس `
               + `\n ${found.offNet} : اوف نیٹ منٹس `
@@ -417,14 +425,17 @@ exports.fetchComplaintIds = function (result, subscriberId) {
     let message = ''
     let languageCode = 'english'
     let quickReplyTitle = 'Please select complaint Id'
+    let otherActions = 'Other Actions'
 
     if (result.metadata.intentName === '0.6.2.fetch.complaintId.roman') {
       languageCode = 'romanurdu'
       quickReplyTitle = 'complaint id ko select karain'
+      otherActions = 'Deegar aamaal'
     }
     if (result.metadata.intentName === '0.6.3.fetch.complaintId.urdu') {
       languageCode = 'urdu'
       quickReplyTitle = 'شکایت کی شناخت کا انتخاب کریں'
+      otherActions = 'دیگر اعمال'
     }
     let fallback = statements.fallback[languageCode]
 
@@ -442,6 +453,7 @@ exports.fetchComplaintIds = function (result, subscriberId) {
           complaints.forEach(complain => {
             quickReplies.push(complain.complaintId)
           })
+          quickReplies.push(otherActions)
           resolve(quickRepliesResponse(result, '', quickReplyTitle, quickReplies))
         } else {
           message = statements.complaints[languageCode]
@@ -460,15 +472,18 @@ exports.checkComplaintStatus = function (result, subscriberId) {
     let message = ''
     let languageCode = 'english'
     let quickReplyTitle = 'Your other complaints are'
+    let otherActions = 'Other Actions'
     let complaintId = result.parameters.complaintid
 
     if (result.metadata.intentName === '0.6.2.fetch.complaint.status.roman') {
       languageCode = 'romanurdu'
       quickReplyTitle = 'ap ki dosri complaints hain'
+      otherActions = 'Deegar aamaal'
     }
     if (result.metadata.intentName === '0.6.3.fetch.complaint.status.urdu') {
       languageCode = 'urdu'
       quickReplyTitle = 'آپ کی دوسری شکایتیں ہیں'
+      otherActions = 'دیگر اعمال'
     }
 
     let fallback = statements.fallback[languageCode]
@@ -501,11 +516,10 @@ exports.checkComplaintStatus = function (result, subscriberId) {
                     quickReplies.push(complain.complaintId)
                   }
                 })
-                console.log(quickReplies.length)
+                quickReplies.push(otherActions)
                 if (quickReplies.length === 0) {
                   quickReplyTitle = ''
                 }
-                console.log(quickReplyTitle)
                 resolve(quickRepliesResponse(result, message, quickReplyTitle, quickReplies))
               } else {
                 message = statements.complaints[languageCode]
@@ -524,6 +538,27 @@ exports.checkComplaintStatus = function (result, subscriberId) {
         message = statements.globalerror[languageCode]
         return simpleMessageResponse(response, message, fallback)
       })
+  })
+}
+
+exports.otherActions = function (result, subscriberId) {
+  return new Promise(function (resolve, reject) {
+  let message = ''
+    let languageCode = 'english'
+    let quickReplyTitle = 'Other Actions'
+    let complaintId = result.parameters.complaintid
+
+    if (result.metadata.intentName === '0.7.3.Other_Actions_Roman') {
+      languageCode = 'romanurdu'
+      quickReplyTitle = 'Deegar aamaal'
+    }
+    if (result.metadata.intentName === '0.7.1.Other_Actions_urdu') {
+      languageCode = 'urdu'
+      quickReplyTitle = 'دیگر اعمال'
+    }
+
+    let fallback = statements.fallback[languageCode]
+    resolve(simpleMessageResponse(result, message, fallback))
   })
 }
 
