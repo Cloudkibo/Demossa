@@ -303,6 +303,11 @@ function DialogFlowFunctions(result, subscriberId) {
       .then(response => {
         resolve(response)
       })
+    } else if(result.metadata.intentName === '0.7.1.Other_Actions_urdu' || result.metadata.intentName === '0.7.2.Other_Actions_English' || result.metadata.intentName === '0.7.3.Other_Actions_Roman') {
+      responseHelpers.otherActions(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
     }
   })
 }
