@@ -17,3 +17,11 @@ exports.insertNewToken = function (payload) {
         return mongo_datasource.insertNewToken(payload)
     // }
 }
+
+exports.updateExpiredToken = function (query, payload) {
+    // if (config.dataSource === 'api') {
+    //     return api_datasource.findCustomerByIdApi(phone)
+    // } else {
+        return mongo_datasource.updateExpiredToken(query, payload)
+    // }
+}

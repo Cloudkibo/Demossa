@@ -1,9 +1,9 @@
 
 exports.statements = {
     notLoggedIn : {
-        english: {title: 'Please authenticate yourself by click on login button', replies:['Login']},
-        urdu: {title: 'برائے مہربانی لاگ ان بٹن پر کلک کرکے اپنے آپ کو تصدیق کریں', replies:['لاگ ان']},
-        romanurdu: {title: 'Baray-e-Meherbani apni Tasdeeq Kerwaien, abhi login per click karain', replies:['Login']}
+        english: {title: 'Your session has been expired. Please authenticate yourself by click on login button', replies:['Login']},
+        urdu: {title: ' آپ کا سیشن ختم ہو چکا ہے. برائے مہربانی لاگ ان بٹن پر کلک کرکے اپنے آپ کو تصدیق کریں', replies:['لاگ ان']},
+        romanurdu: {title: 'Apka session khatam ho chukta hay. Baray-e-Meherbani apni Tasdeeq Kerwaien, abhi login per click karain', replies:['Sign in']}
     },
     fallback : {
         english: {title: 'Other Actions', replies:['Current Package', 'Packages List', 'Unsubscribe Package', 'Register Complaint', 'Complaint Status', ]},
@@ -25,9 +25,9 @@ exports.statements = {
             romanurdu: 'Aap ka account humaray database mei registered user k tor per mojood hei. App hum se koi bhi sawaal pooch saktey hein aur koi bhi service ya maloomat ki jaankari hasil ya uss mei tabdeeli kar saktey hein'
         },
         success: {
-            english: 'Thank you for signing up with us. You can ask us any question here or update your services or information.',
-            urdu: 'اکاؤنٹ بنانے کا شکریہ آپ ہم سے کوئی بھی سوال پوچھ سکتے ہیں اور کوئی بھی سروس یا معلومات کی جانکاری حاصل یا اس میں تبدیلی کر سکتے ہیں',
-            romanurdu: 'Account banaaney ka shukriya. App hum se koi bhi sawaal pooch saktey hein aur koi bhi service ya maloomat ki jaankari hasil ya uss mei tabdeeli kar saktey hein'
+            english: 'Thank you for signing up with us. You can ask us any question here or update your services or information. We have created 5 hour session of your conversation with this bot. After 5 hour you will have to again authenticate yourself by phone number',
+            urdu: 'اکاؤنٹ بنانے کا شکریہ آپ ہم سے کوئی بھی سوال پوچھ سکتے ہیں اور کوئی بھی سروس یا معلومات کی جانکاری حاصل یا اس میں تبدیلی کر سکتے ہیں ہم نے اس بوٹ کے ساتھ آپ کی بات چیت کے 5 گھنٹے کا سیشن تیار کیا ہے. 5 گھنٹوں کے بعد آپ کو دوبارہ فون نمبر کے ذریعہ اپنے پاس لاگ ان کرنا ہوگا',
+            romanurdu: 'Account banaaney ka shukriya. App hum se koi bhi sawaal pooch saktey hein aur koi bhi service ya maloomat ki jaankari hasil ya uss mei tabdeeli kar saktey hein. Hum ny iss bot ky sath aap ki bat cheet ka 5 ghanty ka session tayyar kiya hy. us ky baad aap ko dobara phone number sy sign in kerna hoga'
         }
     },
     globalerror: {

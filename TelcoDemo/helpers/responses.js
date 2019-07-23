@@ -44,7 +44,7 @@ exports.signUpTheCustomer = function (result, subscriberId) {
       } else {
         var token = jwt.sign({
           data: 'foobar'
-        }, 'secret', { expiresIn: '1m' });
+        }, 'secret', { expiresIn: '5h' });
         var tokenPayload = { customer: customer.customer, token: token }
         tokens.insertNewToken(tokenPayload)
           .then(success => {
@@ -77,7 +77,11 @@ exports.currentPackage = function (result, subscriberId) {
 
     authenticate(result, subscriberId)
       .then(token => {
-        if (token) {
+        if (token === 'noUser') {
+          message = statements.findCustomer[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+        else if (token) {
           customers.findCustomerBySubscriberId(subscriberId)
             .then(customer => {
               if (!customer) {
@@ -112,7 +116,10 @@ exports.currentPackage = function (result, subscriberId) {
                     + customer.service_usage.Offnet + 'اور باقی اوف نیٹ منٹس ہیں '
                     + '.' + customer.service_usage.Data + 'حالانکہ، آپ کا بقایا ڈیٹا ہے '
                 }
+              } else {
+                message = statements.findServiceOfCustomer[languageCode]
               }
+              resolve(simpleMessageResponse(result, message, fallback))
             })
             .catch(err => {
               console.log(err)
@@ -198,7 +205,11 @@ exports.findBundleInfo = function (result, subscriberId) {
 
     authenticate(result, subscriberId)
       .then(token => {
-        if (token) {
+        if (token === 'noUser') {
+          message = statements.findCustomer[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+        else if (token) {
           var promise = services.findServiceByName(packageName)
           promise
             .then(found => {
@@ -273,7 +284,11 @@ exports.activateBundle = function (result, subscriberId) {
     let fallback = statements.fallback[languageCode]
     authenticate(result, subscriberId)
       .then(token => {
-        if (token) {
+        if (token === 'noUser') {
+          message = statements.findCustomer[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+        else if (token) {
           customers.findCustomerBySubscriberId(subscriberId)
             .then(customer => {
               if (!customer) {
@@ -351,7 +366,11 @@ exports.registerComplaint = function (result, subscriberId) {
 
     authenticate(result, subscriberId)
       .then(token => {
-        if (token) {
+        if (token === 'noUser') {
+          message = statements.findCustomer[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+        else if (token) {
           Complaint.insertNewComplaint({
             subscriberId, complaint
           }, (err, result) => {
@@ -448,7 +467,11 @@ exports.deActivateBundle = function (result, subscriberId) {
 
     authenticate(result, subscriberId)
       .then(token => {
-        if (token) {
+        if (token === 'noUser') {
+          message = statements.findCustomer[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+        else if (token) {
           customers.findCustomerBySubscriberId(subscriberId)
             .then(customer => {
               if (!customer) {
@@ -519,7 +542,11 @@ exports.fetchComplaintIds = function (result, subscriberId) {
 
     authenticate(result, subscriberId)
       .then(token => {
-        if (token) {
+        if (token === 'noUser') {
+          message = statements.findCustomer[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+        else if (token) {
           customers.findCustomerBySubscriberId(subscriberId)
             .then(found => {
               if (!found) {
@@ -580,69 +607,73 @@ exports.checkComplaintStatus = function (result, subscriberId) {
     let fallback = statements.fallback[languageCode]
 
     authenticate(result, subscriberId)
-  .then(token => {
-    if (token) {
-      var promise = Complaint.fetchcomplaint(complaintId)
-      promise
-        .then(complaint => {
-          if (!complaint) {
-            message = statements.complain.notExists[languageCode]
-            resolve(simpleMessageResponse(result, message, fallback))
-          } else {
-            if (languageCode === 'english') {
-              message = 'your complain description is: ' + complaint.description +
-                '\n and your complaint status: ' + complaint.status
-            }
-            if (languageCode === 'romanurdu') {
-              message = 'apki shikayat hy: ' + complaint.description +
-                '\n or apki shikyat ka status: ' + complaint.status
-            }
-            if (languageCode === 'urdu') {
-              message = 'آپکی شکایت ہے : ' + complaint.description +
-                '\n اور آپکی شکایت کا سٹیٹس ہے : ' + complaint.status
-            }
-            Complaint.fetchComplaintByCustomer(complaint.customer)
-              .then(complaints => {
-                console.log(complaints)
-                if (complaints.length > 0) {
-                  let quickReplies = []
-                  complaints.forEach(complain => {
-                    if (complain.complaintId != complaint.complaintId) {
-                      quickReplies.push(complain.complaintId)
+      .then(token => {
+        if (token === 'noUser') {
+          message = statements.findCustomer[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+        else if (token) {
+          var promise = Complaint.fetchcomplaint(complaintId)
+          promise
+            .then(complaint => {
+              if (!complaint) {
+                message = statements.complain.notExists[languageCode]
+                resolve(simpleMessageResponse(result, message, fallback))
+              } else {
+                if (languageCode === 'english') {
+                  message = 'your complain description is: ' + complaint.description +
+                    '\n and your complaint status: ' + complaint.status
+                }
+                if (languageCode === 'romanurdu') {
+                  message = 'apki shikayat hy: ' + complaint.description +
+                    '\n or apki shikyat ka status: ' + complaint.status
+                }
+                if (languageCode === 'urdu') {
+                  message = 'آپکی شکایت ہے : ' + complaint.description +
+                    '\n اور آپکی شکایت کا سٹیٹس ہے : ' + complaint.status
+                }
+                Complaint.fetchComplaintByCustomer(complaint.customer)
+                  .then(complaints => {
+                    console.log(complaints)
+                    if (complaints.length > 0) {
+                      let quickReplies = []
+                      complaints.forEach(complain => {
+                        if (complain.complaintId != complaint.complaintId) {
+                          quickReplies.push(complain.complaintId)
+                        }
+                      })
+                      quickReplies.push(otherActions)
+                      if (quickReplies.length === 0) {
+                        quickReplyTitle = ''
+                      }
+                      resolve(quickRepliesResponse(result, message, quickReplyTitle, quickReplies))
+                    } else {
+                      message = statements.complaints[languageCode]
+                      resolve(simpleMessageResponse(result, message, fallback))
                     }
                   })
-                  quickReplies.push(otherActions)
-                  if (quickReplies.length === 0) {
-                    quickReplyTitle = ''
-                  }
-                  resolve(quickRepliesResponse(result, message, quickReplyTitle, quickReplies))
-                } else {
-                  message = statements.complaints[languageCode]
-                  resolve(simpleMessageResponse(result, message, fallback))
-                }
-              })
-              .catch(err => {
-                console.log(err)
-                message = statements.globalerror[languageCode]
-                return simpleMessageResponse(result, message, fallback)
-              })
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          message = statements.globalerror[languageCode]
-          return simpleMessageResponse(response, message, fallback)
-        })
-    } else {
-      message = ' '
-      fallback = statements.notLoggedIn[languageCode]
-      resolve(simpleMessageResponse(result, message, fallback))
-    }
-  })
-  .catch(err => {
-    console.log(err)
-    simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
-  })
+                  .catch(err => {
+                    console.log(err)
+                    message = statements.globalerror[languageCode]
+                    return simpleMessageResponse(result, message, fallback)
+                  })
+              }
+            })
+            .catch(err => {
+              console.log(err)
+              message = statements.globalerror[languageCode]
+              return simpleMessageResponse(response, message, fallback)
+            })
+        } else {
+          message = ' '
+          fallback = statements.notLoggedIn[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+      })
   })
 }
 
@@ -665,19 +696,92 @@ exports.otherActions = function (result, subscriberId) {
     let fallback = statements.fallback[languageCode]
 
     authenticate(result, subscriberId)
-  .then(token => {
-    if (token) {
-      resolve(simpleMessageResponse(result, message, fallback))
-    } else {
-      message = ' '
-      fallback = statements.notLoggedIn[languageCode]
+      .then(token => {
+        if (token === 'noUser') {
+          message = statements.findCustomer[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+        else if (token) {
+          resolve(simpleMessageResponse(result, message, fallback))
+        } else {
+          message = ' '
+          fallback = statements.notLoggedIn[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+      })
+  })
+}
+
+exports.signInTheCustomer = (result, subscriberId) => {
+  return new Promise(function (resolve, reject) {
+    let message = 'You are already signed in'
+    let otp = result.parameters.otp
+    let phone = result.parameters.phone
+    let languageCode = 'english'
+    if (result.metadata.intentName === '0.8.3.login.roman') {
+      languageCode = 'romanurdu'
+      quickReplyTitle = 'Deegar aamaal'
+      message = 'app already signed in hain'
+    }
+    if (result.metadata.intentName === '0.8.2.login.urdu') {
+      languageCode = 'urdu'
+      quickReplyTitle = 'دیگر اعمال'
+      message = 'آپ پہلے ہی سائن ان ہیں'
+    }
+
+    let fallback = statements.fallback[languageCode]
+
+    if (util.customerDb.otps.indexOf(otp) < 0) {
+      message = statements.wrongotp[languageCode]
+      fallback = statements.fallback[languageCode]
       resolve(simpleMessageResponse(result, message, fallback))
     }
-  })
-  .catch(err => {
-    console.log(err)
-    simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
-  })
+    authenticate(result, subscriberId)
+      .then(token => {
+        if(token === 'noUser') {
+          message = statements.findCustomer[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+        else if (token) {
+          resolve(simpleMessageResponse(result, message, fallback))
+        } else {
+          customers.findCustomer(phone)
+            .then(customer => {
+              if (!customer) {
+                message = statements.findCustomer[languageCode]
+                resolve(simpleMessageResponse(result, message, fallback))
+              } else {
+                var token = jwt.sign({
+                  data: 'foobar'
+                }, 'secret', { expiresIn: '5h' });
+                var query = { customer: customer }
+                var tokenPayload = { token: token }
+                tokens.updateExpiredToken(query, tokenPayload)
+                  .then(updated => {
+                    if (languageCode === 'urdu') {
+                      message = '   میں نے آپ کو لاگ ان کیا ہے ہم نے اس بوٹ کے ساتھ آپ کی بات چیت کے 5 گھنٹے کا سیشن تیار کیا ہے. 5 گھنٹوں کے بعد آپ کو دوبارہ فون نمبر کے ذریعہ اپنے پاس لاگ ان کرنا ہوگ'
+                      resolve(simpleMessageResponse(result, message, fallback))
+                    } else if (languageCode === 'romanurdu') {
+                      message = 'main ny ap ko login kediya hy or iss bot ky sath aap ki bat cheet ka 5 ghanty ka session tayyar kiya hy. us ky baad aap ko dobara phone number sy sign in kerna hoga'
+                      resolve(simpleMessageResponse(result, message, fallback))
+                    } else {
+                      message = 'i have loged you in and created 5 hour session of your conversation with this bot. After 5 hour you will have to again authenticate yourself by phone number'
+                      resolve(simpleMessageResponse(result, message, fallback))
+                    }
+                  })
+              }
+            })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+        simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+      })
+
   })
 }
 
@@ -710,18 +814,20 @@ function quickRepliesResponse(result, message, title, quickReplies, fallback) {
 }
 
 function authenticate(result, subscriberId) {
+  let message = ''
   return new Promise(function (resolve, reject) {
     customers.findCustomerBySubscriberId(subscriberId)
       .then(customer => {
         if (!customer) {
-          message = statements.findCustomer[languageCode]
-          resolve(simpleMessageResponse(result, message, fallback))
+          resolve('noUser')
         } else {
           tokens.findCustomerToken(customer)
             .then(token => {
-              jwt.verify(token.token, 'secret', function (err, decoded) {
-                resolve(decoded)
-              })
+              if (token) {
+                jwt.verify(token.token, 'secret', function (err, decoded) {
+                  resolve(decoded)
+                })
+              }
             })
         }
       })

@@ -18,3 +18,15 @@ exports.insertNewToken = function (payload) {
         resolve(obj.save())
     })
 }
+
+exports.updateExpiredToken = function (query, payload) {
+    return new Promise(function(resolve, reject) {
+        Tokens.findOneAndUpdate(query, payload, (err, updated) => {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(updated)
+            }
+        })
+    })
+} 
