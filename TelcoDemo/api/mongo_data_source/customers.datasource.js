@@ -1,8 +1,11 @@
 const Customer = require('../../models/customers.model')
+const Tokens = require('../../models/tokens.model')
 
 exports.create = (payload) => {
-    let obj = new Customer(payload)
-    return obj.save()
+    return new Promise(function(resolve, reject) {
+        let obj = new Customer(payload)
+        resolve(obj.save())
+    })
 }
 
 exports.findCustomerByIdMongo = function (phone) {

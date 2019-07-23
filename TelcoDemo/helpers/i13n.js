@@ -1,5 +1,10 @@
 
 exports.statements = {
+    notLoggedIn : {
+        english: {title: 'Please authenticate yourself by click on login button', replies:['Login']},
+        urdu: {title: 'برائے مہربانی لاگ ان بٹن پر کلک کرکے اپنے آپ کو تصدیق کریں', replies:['لاگ ان']},
+        romanurdu: {title: 'Baray-e-Meherbani apni Tasdeeq Kerwaien, abhi login per click karain', replies:['Login']}
+    },
     fallback : {
         english: {title: 'Other Actions', replies:['Current Package', 'Packages List', 'Unsubscribe Package', 'Register Complaint', 'Complaint Status', ]},
         urdu: {title: 'دیگر اعمال', replies:['موجودا پیکج ', 'پیکیجز', 'پیکج ختم کریں', 'شکایت درج کریں ', 'شکایت کا سٹیٹس']},
@@ -81,6 +86,11 @@ exports.statements = {
         english: 'We can not update this Language to your number',
         urdu: 'ہم اس زبان کو آپ کے نمبر پر اپ ڈیٹ نہیں کرسکتے ہیں',
         romanurdu: 'Hum apky number per filhal Language update nahi kerskty'
+    },
+    tokenNotFound: {
+        english: 'No complaint found with the given complaint id',
+        urdu: 'دی گئی شکایت کی شناخت کے ساتھ کوئی شکایت نہیں ملی',
+        romanurdu: 'Matloba, compalaint id ki koi bi complain register nahi hy'
     }
     
 }
