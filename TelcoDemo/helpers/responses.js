@@ -2,6 +2,8 @@ const util = require('./../utility')
 const customers = require('./../api/customers.controller')
 const Complaint = require('./../api/complaint.controller')
 const services = require('./../api/services.controller')
+const tokens = require('./../api/tokens.controller')
+var jwt = require('jsonwebtoken')
 const statements = require('./i13n').statements
 
 exports.showServices = function (request, response) {
@@ -40,9 +42,20 @@ exports.signUpTheCustomer = function (result, subscriberId) {
         const tmp = simpleMessageResponse(result, message, fallback)
         resolve(tmp)
       } else {
-        message = statements.signup.success[languageCode]
-        fallback = statements.fallback[languageCode]
-        resolve(simpleMessageResponse(result, message, fallback))
+        var token = jwt.sign({
+          data: 'foobar'
+        }, 'secret', { expiresIn: '1m' });
+        var tokenPayload = { customer: customer.customer, token: token }
+        tokens.insertNewToken(tokenPayload)
+          .then(success => {
+            message = statements.signup.success[languageCode]
+            fallback = statements.fallback[languageCode]
+            resolve(simpleMessageResponse(result, message, fallback))
+          })
+          .catch(err => {
+            console.log(err)
+            simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+          })
       }
     })
   })
@@ -62,45 +75,54 @@ exports.currentPackage = function (result, subscriberId) {
 
     let fallback = statements.fallback[languageCode]
 
-    customers.findCustomerBySubscriberId(subscriberId)
-      .then(customer => {
-        if (!customer) {
-          message = statements.findCustomer[languageCode]
+    authenticate(result, subscriberId)
+      .then(token => {
+        if (token) {
+          customers.findCustomerBySubscriberId(subscriberId)
+            .then(customer => {
+              if (!customer) {
+                message = statements.findCustomer[languageCode]
+                resolve(simpleMessageResponse(result, message, fallback))
+              }
+              if (customer.current_service) {
+                if (languageCode === 'romanurdu') message = 'Apka mojooda package hei ' + customer.current_service.name
+                if (languageCode === 'urdu') message = customer.current_service.name + 'آپ کا موجودہ پیکج ہے '
+                if (languageCode === 'english') message = 'Your current package is ' + customer.current_service.name
+
+              }
+              else if (customer.service_usage) {
+                if (languageCode === 'english') {
+                  message = 'Your current package is ' + customer.current_service.name
+                    + ' your remaining sms are ' + customer.service_usage.Sms
+                    + ', remaining on-net minutes are ' + customer.service_usage.Onnet
+                    + ' and remaining off-net minutes are ' + customer.service_usage.Offnet
+                    + '. while, your remaning data is ' + customer.service_usage.Data + '.'
+                }
+                if (languageCode === 'romanurdu') {
+                  message = 'Apka mojooda package hei ' + customer.current_service.name
+                    + ' ap ky baqaya sms hain ' + customer.service_usage.Sms
+                    + ', baqaya on-net minutes hain ' + customer.service_usage.Onnet
+                    + ' or baqaya off-net minutes hain ' + customer.service_usage.Offnet
+                    + '. jab k ap ka baqaya data hy ' + customer.service_usage.Data + '.'
+                }
+                if (languageCode === 'urdu') {
+                  message = customer.current_service.name + 'آپ کا موجودہ پیکج ہے '
+                    + customer.service_usage.Sms + 'آپ کے باقی ایس ایم ایس ہیں'
+                    + customer.service_usage.Onnet + 'باقی اون نیٹ منٹ ہیں'
+                    + customer.service_usage.Offnet + 'اور باقی اوف نیٹ منٹس ہیں '
+                    + '.' + customer.service_usage.Data + 'حالانکہ، آپ کا بقایا ڈیٹا ہے '
+                }
+              }
+            })
+            .catch(err => {
+              console.log(err)
+              simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+            })
+        } else {
+          message = ' '
+          fallback = statements.notLoggedIn[languageCode]
           resolve(simpleMessageResponse(result, message, fallback))
         }
-        if (customer.current_service) {
-          if (languageCode === 'romanurdu') message = 'Apka mojooda package hei ' + customer.current_service.name
-          if (languageCode === 'urdu') message = customer.current_service.name + 'آپ کا موجودہ پیکج ہے '
-          if (languageCode === 'english') message = 'Your current package is ' + customer.current_service.name
-
-        }
-        else if (customer.service_usage) {
-          if (languageCode === 'english') {
-            message = 'Your current package is ' + customer.current_service.name
-              + ' your remaining sms are ' + customer.service_usage.Sms
-              + ', remaining on-net minutes are ' + customer.service_usage.Onnet
-              + ' and remaining off-net minutes are ' + customer.service_usage.Offnet
-              + '. while, your remaning data is ' + customer.service_usage.Data + '.'
-          }
-          if (languageCode === 'romanurdu') {
-            message = 'Apka mojooda package hei ' + customer.current_service.name
-              + ' ap ky baqaya sms hain ' + customer.service_usage.Sms
-              + ', baqaya on-net minutes hain ' + customer.service_usage.Onnet
-              + ' or baqaya off-net minutes hain ' + customer.service_usage.Offnet
-              + '. jab k ap ka baqaya data hy ' + customer.service_usage.Data + '.'
-          }
-          if (languageCode === 'urdu') {
-            message = customer.current_service.name + 'آپ کا موجودہ پیکج ہے '
-              + customer.service_usage.Sms + 'آپ کے باقی ایس ایم ایس ہیں'
-              + customer.service_usage.Onnet + 'باقی اون نیٹ منٹ ہیں'
-              + customer.service_usage.Offnet + 'اور باقی اوف نیٹ منٹس ہیں '
-              + '.' + customer.service_usage.Data + 'حالانکہ، آپ کا بقایا ڈیٹا ہے '
-          }
-
-        } else {
-          message = statements.findServiceOfCustomer[languageCode]
-        }
-        resolve(simpleMessageResponse(result, message, fallback))
       })
       .catch(err => {
         console.log(err)
@@ -122,7 +144,7 @@ exports.findBundles = function (result, subscriberId) {
       languageCode = 'romanurdu'
       quickReplyTitle = 'Jazz k packages ka intikhaab keejye'
       otherActions = 'Deegar aamaal'
-      
+
     }
     if (result.metadata.intentName === '0.2.3.find.and.activate.bundle.urdu') {
       languageCode = 'urdu'
@@ -173,45 +195,59 @@ exports.findBundleInfo = function (result, subscriberId) {
     }
 
     let fallback = statements.fallback[languageCode]
-    var promise = services.findServiceByName(packageName)
-    promise
-      .then(found => {
-        if (!found) {
-          message = statements.findBundleInfo[languageCode]
-          resolve(simpleMessageResponse(result, message, fallback))
+
+    authenticate(result, subscriberId)
+      .then(token => {
+        if (token) {
+          var promise = services.findServiceByName(packageName)
+          promise
+            .then(found => {
+              if (!found) {
+                message = statements.findBundleInfo[languageCode]
+                resolve(simpleMessageResponse(result, message, fallback))
+              } else {
+                let temp = []
+                if (languageCode === 'romanurdu') {
+                  temp = ['Activate ' + found.name, otherActions]
+                  message = found.name + ', package ki maloomat hain:'
+                    + '\n \n On-net Minutes: ' + found.onNet
+                    + '\n Off-net Minutes: ' + found.offNet
+                    + '\n Internet: ' + found.internet
+                    + '\n SMS: ' + found.sms
+                    + '\n Price: ' + found.price
+                    + '\n Bill Cycle: ' + found.billCycle
+                }
+                if (languageCode === 'english') {
+                  temp = ['Activate ' + found.name, otherActions]
+                  message = found.name + ', information is:'
+                    + '\n \n On-net Minutes: ' + found.onNet
+                    + '\n Off-net Minutes: ' + found.offNet
+                    + '\n Internet: ' + found.internet
+                    + '\n SMS: ' + found.sms
+                    + '\n Price: ' + found.price
+                    + '\n Bill Cycle: ' + found.billCycle
+                }
+                if (languageCode === 'urdu') {
+                  temp = ['سبسکرائب ' + found.name, otherActions]
+                  message = `,  معلومات ${found.name}`
+                    + `\n ${found.onNet} : اون نیٹ منٹس `
+                    + `\n ${found.offNet} : اوف نیٹ منٹس `
+                    + `\n ${found.internet} : انٹرنیٹ `
+                    + `\n ${found.sms} : ایس ایم ایس `
+                    + `\n ${found.price} قیمت `
+                    + `\n ${found.billCycle} بل سائیکل `
+                }
+                resolve(quickRepliesResponse(result, message, quickReplyTitle, temp))
+              }
+            })
+            .catch(err => {
+              console.log(err)
+              simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+            })
         } else {
-          let temp = []
-          if (languageCode === 'romanurdu') {
-            temp = ['Activate ' + found.name, otherActions]
-            message = found.name + ', package ki maloomat hain:'
-              + '\n \n On-net Minutes: ' + found.onNet
-              + '\n Off-net Minutes: ' + found.offNet
-              + '\n Internet: ' + found.internet
-              + '\n SMS: ' + found.sms
-              + '\n Price: ' + found.price
-              + '\n Bill Cycle: ' + found.billCycle
-          }
-          if (languageCode === 'english') {
-            temp = ['Activate ' + found.name, otherActions]
-            message = found.name + ', information is:'
-              + '\n \n On-net Minutes: ' + found.onNet
-              + '\n Off-net Minutes: ' + found.offNet
-              + '\n Internet: ' + found.internet
-              + '\n SMS: ' + found.sms
-              + '\n Price: ' + found.price
-              + '\n Bill Cycle: ' + found.billCycle
-          }
-          if (languageCode === 'urdu') {
-            temp = ['سبسکرائب ' + found.name, otherActions]
-            message = `,  معلومات ${found.name}`
-              + `\n ${found.onNet} : اون نیٹ منٹس `
-              + `\n ${found.offNet} : اوف نیٹ منٹس `
-              + `\n ${found.internet} : انٹرنیٹ `
-              + `\n ${found.sms} : ایس ایم ایس `
-              + `\n ${found.price} قیمت `
-              + `\n ${found.billCycle} بل سائیکل `
-          }
-          resolve(quickRepliesResponse(result, message, quickReplyTitle, temp))
+          message = ' '
+          fallback = statements.notLoggedIn[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
         }
       })
       .catch(err => {
@@ -235,51 +271,64 @@ exports.activateBundle = function (result, subscriberId) {
     }
 
     let fallback = statements.fallback[languageCode]
-    customers.findCustomerBySubscriberId(subscriberId)
-      .then(customer => {
-        if (!customer) {
-          message = statements.findCustomer[languageCode]
-          resolve(simpleMessageResponse(result, message, fallback))
-        }
-        else {
-          console.log("cusotomers", customer)
-          services.findServiceByName(packageName)
-            .then(found => {
-              if (!found) {
-                message = statements.findBundleInfo[languageCode]
+    authenticate(result, subscriberId)
+      .then(token => {
+        if (token) {
+          customers.findCustomerBySubscriberId(subscriberId)
+            .then(customer => {
+              if (!customer) {
+                message = statements.findCustomer[languageCode]
                 resolve(simpleMessageResponse(result, message, fallback))
-              } else {
-                var userPromise = customers.updatePackageRoman(customer.phone, found._id)
-                userPromise.then(updated => {
-                  if (!updated) {
-                    message = statements.updatePackage[languageCode]
-                  } else {
-                    if (languageCode === 'romanurdu') {
-                      message = 'Ap ky mojooda number ' + customer.phone +
-                        '\n per ' + found.name +
-                        '\n package activate kerdia gaya hy'
+              }
+              else {
+                console.log("cusotomers", customer)
+                services.findServiceByName(packageName)
+                  .then(found => {
+                    if (!found) {
+                      message = statements.findBundleInfo[languageCode]
+                      resolve(simpleMessageResponse(result, message, fallback))
+                    } else {
+                      var userPromise = customers.updatePackageRoman(customer.phone, found._id)
+                      userPromise.then(updated => {
+                        if (!updated) {
+                          message = statements.updatePackage[languageCode]
+                        } else {
+                          if (languageCode === 'romanurdu') {
+                            message = 'Ap ky mojooda number ' + customer.phone +
+                              '\n per ' + found.name +
+                              '\n package activate kerdia gaya hy'
+                          }
+                          if (languageCode === 'english') {
+                            message = 'We have activated the Package ' + found.name
+                              + ' on you number, ' + customer.phone
+                          }
+                          if (languageCode === 'urdu') {
+                            message = 'پر سبسکرائب کردیا ھے ' + customer.phone + ' پیکج آپ کے نمبر ' + found.name
+                          }
+                        }
+                        resolve(simpleMessageResponse(result, message, fallback))
+                      })
+                        .catch(err => {
+                          console.log(err)
+                          simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+                        })
                     }
-                    if (languageCode === 'english') {
-                      message = 'We have activated the Package ' + found.name
-                        + ' on you number, ' + customer.phone
-                    }
-                    if (languageCode === 'urdu') {
-                      message = 'پر سبسکرائب کردیا ھے ' + customer.phone + ' پیکج آپ کے نمبر ' + found.name
-                    }
-                  }
-                  resolve(simpleMessageResponse(result, message, fallback))
-                })
+                  })
                   .catch(err => {
                     console.log(err)
-                    simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+                    simpleMessageResponse(response, statements.globalerror[languageCode], fallback)
                   })
               }
             })
-            .catch(err => {
-              console.log(err)
-              simpleMessageResponse(response, statements.globalerror[languageCode], fallback)
-            })
+        } else {
+          message = ' '
+          fallback = statements.notLoggedIn[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
         }
+      })
+      .catch(err => {
+        console.log(err)
+        simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
       })
   })
 }
@@ -300,34 +349,47 @@ exports.registerComplaint = function (result, subscriberId) {
 
     let fallback = statements.fallback[languageCode]
 
-    Complaint.insertNewComplaint({
-      subscriberId, complaint
-    }, (err, result) => {
-      if (err) {
-        message = statements.globalerror[languageCode]
-        fallback = statements.fallback[languageCode]
-        resolve(simpleMessageResponse(result, message, fallback))
-      }
-      if (!result.exists) {
-        message = statements.nocustomer[languageCode]
-        fallback = statements.fallback[languageCode]
-        resolve(simpleMessageResponse(result, message, fallback))
-      } else {
-        if (languageCode === 'english') {
-          message = 'your compalint is registered. Here is your Complaint Id: ' + result.complaintId
-        }
-        if (languageCode === 'romanurdu') {
-          message = 'Apki complaint registerd hochuki hy.' + result.complaintId
-            + ' yeh ap ki Complaint Id hy'
-        }
-        if (languageCode === 'urdu') {
-          message = ' یہ آپکی شکایت کی شناخت ہے ' + result.complaintId + ' آپکی شکایت رجسٹر ہوچکی ہے'
+    authenticate(result, subscriberId)
+      .then(token => {
+        if (token) {
+          Complaint.insertNewComplaint({
+            subscriberId, complaint
+          }, (err, result) => {
+            if (err) {
+              message = statements.globalerror[languageCode]
+              fallback = statements.fallback[languageCode]
+              resolve(simpleMessageResponse(result, message, fallback))
+            }
+            if (!result.exists) {
+              message = statements.nocustomer[languageCode]
+              fallback = statements.fallback[languageCode]
+              resolve(simpleMessageResponse(result, message, fallback))
+            } else {
+              if (languageCode === 'english') {
+                message = 'your compalint is registered. Here is your Complaint Id: ' + result.complaintId
+              }
+              if (languageCode === 'romanurdu') {
+                message = 'Apki complaint registerd hochuki hy.' + result.complaintId
+                  + ' yeh ap ki Complaint Id hy'
+              }
+              if (languageCode === 'urdu') {
+                message = ' یہ آپکی شکایت کی شناخت ہے ' + result.complaintId + ' آپکی شکایت رجسٹر ہوچکی ہے'
 
+              }
+              fallback = statements.fallback[languageCode]
+              resolve(simpleMessageResponse(result, message, fallback))
+            }
+          })
+        } else {
+          message = ' '
+          fallback = statements.notLoggedIn[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
         }
-        fallback = statements.fallback[languageCode]
-        resolve(simpleMessageResponse(result, message, fallback))
-      }
-    })
+      })
+      .catch(err => {
+        console.log(err)
+        simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+      })
   })
 }
 
@@ -344,6 +406,8 @@ exports.updateCustomerLanguage = function (request, response) {
   }
 
   let fallback = statements.fallback[languageCode]
+
+
   customers.editLanguage(sessionId, language)
     .then(updated => {
       if (!updated) {
@@ -381,41 +445,55 @@ exports.deActivateBundle = function (result, subscriberId) {
     }
 
     let fallback = statements.fallback[languageCode]
-    customers.findCustomerBySubscriberId(subscriberId)
-      .then(customer => {
-        if (!customer) {
-          message = statements.findCustomer[languageCode]
-          resolve(simpleMessageResponse(result, message, fallback))
-        }
-        else {
-          customers.updatePackageRoman(customer.phone, 'deActivatePackage')
-            .then(deleted => {
-              if (!deleted) {
-                message = statements.deletePackage[languageCode]
-              } else {
-                if (languageCode === 'english') {
-                  message = 'we have de-activated the package from you number ' + customer.phone
-                }
-                if (languageCode === 'romanurdu') {
-                  message = 'Ap ky mojooda number ' + customer.phone +
-                    '\n sy package de-activate kerdia gaya hy'
-                }
-                if (languageCode === 'urdu') {
-                  message = 'آپکے موجودا نمبر سے  ' + customer.phone +
-                    '\n پیکج ختم کردیا گیا ہے '
-                }
+
+    authenticate(result, subscriberId)
+      .then(token => {
+        if (token) {
+          customers.findCustomerBySubscriberId(subscriberId)
+            .then(customer => {
+              if (!customer) {
+                message = statements.findCustomer[languageCode]
+                resolve(simpleMessageResponse(result, message, fallback))
               }
-              resolve(simpleMessageResponse(result, message, fallback))
+              else {
+                customers.updatePackageRoman(customer.phone, 'deActivatePackage')
+                  .then(deleted => {
+                    if (!deleted) {
+                      message = statements.deletePackage[languageCode]
+                    } else {
+                      if (languageCode === 'english') {
+                        message = 'we have de-activated the package from you number ' + customer.phone
+                      }
+                      if (languageCode === 'romanurdu') {
+                        message = 'Ap ky mojooda number ' + customer.phone +
+                          '\n sy package de-activate kerdia gaya hy'
+                      }
+                      if (languageCode === 'urdu') {
+                        message = 'آپکے موجودا نمبر سے  ' + customer.phone +
+                          '\n پیکج ختم کردیا گیا ہے '
+                      }
+                    }
+                    resolve(simpleMessageResponse(result, message, fallback))
+                  })
+                  .catch(err => {
+                    console.log(err)
+                    simpleMessageResponse(response, statements.globalerror[languageCode], fallback)
+                  })
+              }
             })
             .catch(err => {
               console.log(err)
-              simpleMessageResponse(response, statements.globalerror[languageCode], fallback)
+              simpleMessageResponse(response, statements.globalerror.romanurdu, fallback)
             })
+        } else {
+          message = ' '
+          fallback = statements.notLoggedIn[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
         }
       })
       .catch(err => {
         console.log(err)
-        simpleMessageResponse(response, statements.globalerror.romanurdu, fallback)
+        simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
       })
   })
 }
@@ -439,24 +517,37 @@ exports.fetchComplaintIds = function (result, subscriberId) {
     }
     let fallback = statements.fallback[languageCode]
 
-    customers.findCustomerBySubscriberId(subscriberId)
-      .then(found => {
-        if (!found) {
-          message = statements.findCustomer[languageCode]
-          resolve(simpleMessageResponse(result, message, fallback))
-        }
-        return Complaint.fetchComplaintByCustomer(found._id)
-      })
-      .then(complaints => {
-        if (complaints.length > 0) {
-          let quickReplies = []
-          complaints.forEach(complain => {
-            quickReplies.push(complain.complaintId)
-          })
-          quickReplies.push(otherActions)
-          resolve(quickRepliesResponse(result, '', quickReplyTitle, quickReplies))
+    authenticate(result, subscriberId)
+      .then(token => {
+        if (token) {
+          customers.findCustomerBySubscriberId(subscriberId)
+            .then(found => {
+              if (!found) {
+                message = statements.findCustomer[languageCode]
+                resolve(simpleMessageResponse(result, message, fallback))
+              }
+              return Complaint.fetchComplaintByCustomer(found._id)
+            })
+            .then(complaints => {
+              if (complaints.length > 0) {
+                let quickReplies = []
+                complaints.forEach(complain => {
+                  quickReplies.push(complain.complaintId)
+                })
+                quickReplies.push(otherActions)
+                resolve(quickRepliesResponse(result, '', quickReplyTitle, quickReplies))
+              } else {
+                message = statements.complaints[languageCode]
+                resolve(simpleMessageResponse(result, message, fallback))
+              }
+            })
+            .catch(err => {
+              console.log(err)
+              simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+            })
         } else {
-          message = statements.complaints[languageCode]
+          message = ' '
+          fallback = statements.notLoggedIn[languageCode]
           resolve(simpleMessageResponse(result, message, fallback))
         }
       })
@@ -487,63 +578,77 @@ exports.checkComplaintStatus = function (result, subscriberId) {
     }
 
     let fallback = statements.fallback[languageCode]
-    var promise = Complaint.fetchcomplaint(complaintId)
-    promise
-      .then(complaint => {
-        if (!complaint) {
-          message = statements.complain.notExists[languageCode]
-          resolve(simpleMessageResponse(result, message, fallback))
-        } else {
-          if (languageCode === 'english') {
-            message = 'your complain description is: ' + complaint.description +
-              '\n and your complaint status: ' + complaint.status
-          }
-          if (languageCode === 'romanurdu') {
-            message = 'apki shikayat hy: ' + complaint.description +
-              '\n or apki shikyat ka status: ' + complaint.status
-          }
-          if (languageCode === 'urdu') {
-            message = 'آپکی شکایت ہے : ' + complaint.description +
-              '\n اور آپکی شکایت کا سٹیٹس ہے : ' + complaint.status
-          }
-          Complaint.fetchComplaintByCustomer(complaint.customer)
-            .then(complaints => {
-              console.log(complaints)
-              if (complaints.length > 0) {
-                let quickReplies = []
-                complaints.forEach(complain => {
-                  if (complain.complaintId != complaint.complaintId) {
-                    quickReplies.push(complain.complaintId)
+
+    authenticate(result, subscriberId)
+  .then(token => {
+    if (token) {
+      var promise = Complaint.fetchcomplaint(complaintId)
+      promise
+        .then(complaint => {
+          if (!complaint) {
+            message = statements.complain.notExists[languageCode]
+            resolve(simpleMessageResponse(result, message, fallback))
+          } else {
+            if (languageCode === 'english') {
+              message = 'your complain description is: ' + complaint.description +
+                '\n and your complaint status: ' + complaint.status
+            }
+            if (languageCode === 'romanurdu') {
+              message = 'apki shikayat hy: ' + complaint.description +
+                '\n or apki shikyat ka status: ' + complaint.status
+            }
+            if (languageCode === 'urdu') {
+              message = 'آپکی شکایت ہے : ' + complaint.description +
+                '\n اور آپکی شکایت کا سٹیٹس ہے : ' + complaint.status
+            }
+            Complaint.fetchComplaintByCustomer(complaint.customer)
+              .then(complaints => {
+                console.log(complaints)
+                if (complaints.length > 0) {
+                  let quickReplies = []
+                  complaints.forEach(complain => {
+                    if (complain.complaintId != complaint.complaintId) {
+                      quickReplies.push(complain.complaintId)
+                    }
+                  })
+                  quickReplies.push(otherActions)
+                  if (quickReplies.length === 0) {
+                    quickReplyTitle = ''
                   }
-                })
-                quickReplies.push(otherActions)
-                if (quickReplies.length === 0) {
-                  quickReplyTitle = ''
+                  resolve(quickRepliesResponse(result, message, quickReplyTitle, quickReplies))
+                } else {
+                  message = statements.complaints[languageCode]
+                  resolve(simpleMessageResponse(result, message, fallback))
                 }
-                resolve(quickRepliesResponse(result, message, quickReplyTitle, quickReplies))
-              } else {
-                message = statements.complaints[languageCode]
-                resolve(simpleMessageResponse(result, message, fallback))
-              }
-            })
-            .catch(err => {
-              console.log(err)
-              message = statements.globalerror[languageCode]
-              return simpleMessageResponse(result, message, fallback)
-            })
-        }
-      })
-      .catch(err => {
-        console.log(err)
-        message = statements.globalerror[languageCode]
-        return simpleMessageResponse(response, message, fallback)
-      })
+              })
+              .catch(err => {
+                console.log(err)
+                message = statements.globalerror[languageCode]
+                return simpleMessageResponse(result, message, fallback)
+              })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          message = statements.globalerror[languageCode]
+          return simpleMessageResponse(response, message, fallback)
+        })
+    } else {
+      message = ' '
+      fallback = statements.notLoggedIn[languageCode]
+      resolve(simpleMessageResponse(result, message, fallback))
+    }
+  })
+  .catch(err => {
+    console.log(err)
+    simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+  })
   })
 }
 
 exports.otherActions = function (result, subscriberId) {
   return new Promise(function (resolve, reject) {
-  let message = ''
+    let message = ''
     let languageCode = 'english'
     let quickReplyTitle = 'Other Actions'
     let complaintId = result.parameters.complaintid
@@ -558,7 +663,21 @@ exports.otherActions = function (result, subscriberId) {
     }
 
     let fallback = statements.fallback[languageCode]
-    resolve(simpleMessageResponse(result, message, fallback))
+
+    authenticate(result, subscriberId)
+  .then(token => {
+    if (token) {
+      resolve(simpleMessageResponse(result, message, fallback))
+    } else {
+      message = ' '
+      fallback = statements.notLoggedIn[languageCode]
+      resolve(simpleMessageResponse(result, message, fallback))
+    }
+  })
+  .catch(err => {
+    console.log(err)
+    simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+  })
   })
 }
 
@@ -588,4 +707,23 @@ function quickRepliesResponse(result, message, title, quickReplies, fallback) {
     },
   ]
   return response
+}
+
+function authenticate(result, subscriberId) {
+  return new Promise(function (resolve, reject) {
+    customers.findCustomerBySubscriberId(subscriberId)
+      .then(customer => {
+        if (!customer) {
+          message = statements.findCustomer[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        } else {
+          tokens.findCustomerToken(customer)
+            .then(token => {
+              jwt.verify(token.token, 'secret', function (err, decoded) {
+                resolve(decoded)
+              })
+            })
+        }
+      })
+  })
 }

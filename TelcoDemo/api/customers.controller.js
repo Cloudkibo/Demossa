@@ -28,7 +28,9 @@ exports.insertNewCustomer = function (body, cb) {
                 language: body.language,
                 subscriberId: body.subscriberId
             })
-            return cb(null, {exists: false})
+            .then(newCustomer => {
+                return cb(null, {exists: false, customer: newCustomer})
+            })
         }
     })
     .catch(err => cb(err))
