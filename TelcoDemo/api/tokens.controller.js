@@ -7,3 +7,7 @@ exports.findCustomerToken = function(customer) {
 exports.insertNewToken = function(payload) {
     return datalayer.insertNewToken(payload)
 }
+
+exports.updateExpiredToken = function(query, payload) {
+    return datalayer.updateExpiredToken(query, payload)
+}

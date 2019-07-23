@@ -308,6 +308,11 @@ function DialogFlowFunctions(result, subscriberId) {
       .then(response => {
         resolve(response)
       })
+    } else if (result.metadata.intentName === '0.8.1.login.english' || result.metadata.intentName === '0.8.2.login.urdu' || result.metadata.intentName === '0.8.3.login.roman') {
+      responseHelpers.signInTheCustomer(result, subscriberId)
+      .then(response => {
+        resolve(response)
+      })
     }
   })
 }
