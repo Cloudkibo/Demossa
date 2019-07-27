@@ -174,7 +174,6 @@ function DialogFlowFunctions(result, subscriberId) {
     } else if (result.metadata.intentName === '0.0.3.welcome.sign.up.roman.urdu') {
       responseHelpers.signUpTheCustomer(result, subscriberId)
       .then(response => {
-        console.log(response)
         resolve(response)
       })
     } else if (result.metadata.intentName === '0.1.1.my.current.package.roman') {

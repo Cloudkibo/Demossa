@@ -123,7 +123,7 @@ exports.currentPackage = function (result, subscriberId) {
             })
             .catch(err => {
               console.log(err)
-              simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+              resolve(simpleMessageResponse(result, statements.globalerror[languageCode], fallback))
             })
         } else {
           message = ' '
@@ -133,7 +133,7 @@ exports.currentPackage = function (result, subscriberId) {
       })
       .catch(err => {
         console.log(err)
-        simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+        resolve(simpleMessageResponse(result, statements.globalerror[languageCode], fallback))
       })
   })
 }
@@ -759,7 +759,7 @@ exports.signInTheCustomer = (result, subscriberId) => {
                   data: 'foobar'
                 }, 'secret', { expiresIn: '5h' });
                 var query = { customer: customer }
-                var tokenPayload = { token: token }
+                var tokenPayload = { token: token, customer: customer._id}
                 tokens.updateExpiredToken(query, tokenPayload)
                   .then(updated => {
                     if (languageCode === 'urdu') {
