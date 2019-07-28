@@ -20,7 +20,7 @@ exports.findServiceByIdAPI = function (serviceId) {
                 internet: services.internet,
                 sms: services.sms,
                 price: services.price,
-                bill_cycle: services['billCycle']
+                bill_cycle: services.billCycle
               }
             return tempServices
         })
@@ -85,7 +85,7 @@ exports.findServiceByNameAPI = function (packageName) {
                 internet: services.internet,
                 sms: services.sms,
                 price: services.price,
-                bill_cycle: services['billCycle']
+                billCycle: services['billCycle']
               }
             return tempServices
         })
