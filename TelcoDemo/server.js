@@ -410,7 +410,7 @@ if (config.env === 'production') {
   }
 }
 
-const server = http.createServer(httpsApp)
+const server = http.createServer(app)
 // const httpsServer = https.createServer(options, httpsApp)
 
 if (config.env === 'production') {
