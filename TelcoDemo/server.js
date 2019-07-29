@@ -20,7 +20,7 @@ var httpApp = express()
 
 mongoose.connect(config.mongo.uri, config.mongo.options)
 
-const app = httpApp // (config.env === 'production') ? httpsApp : httpApp
+const app = (config.env === 'production') ? httpsApp : httpApp
 
 const seed = require('./scripts/seeds')
 
@@ -410,8 +410,8 @@ if (config.env === 'production') {
   }
 }
 
-const server = http.createServer(httpApp)
-const httpsServer = https.createServer(options, httpsApp)
+const server = http.createServer(httpsApp)
+// const httpsServer = https.createServer(options, httpsApp)
 
 if (config.env === 'production') {
   //httpApp.get('*', (req, res) => {
@@ -425,7 +425,7 @@ server.listen(config.port, config.ip, () => {
     config.port} in ${config.env} mode on domain ${config.domain}`)
 })
 
-httpsServer.listen(config.secure_port, () => {
-  console.log(`DEMOSSA server STARTED on ${
-    config.secure_port} in ${config.env} mode on domain ${config.domain}`)
-})
+//httpsServer.listen(config.secure_port, () => {
+//  console.log(`DEMOSSA server STARTED on ${
+//    config.secure_port} in ${config.env} mode on domain ${config.domain}`)
+//})
