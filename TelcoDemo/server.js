@@ -20,7 +20,7 @@ var httpApp = express()
 
 mongoose.connect(config.mongo.uri, config.mongo.options)
 
-const app = (config.env === 'production') ? httpsApp : httpApp
+const app = httpApp // (config.env === 'production') ? httpsApp : httpApp
 
 const seed = require('./scripts/seeds')
 
