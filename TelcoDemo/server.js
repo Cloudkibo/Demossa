@@ -414,9 +414,9 @@ const server = http.createServer(httpApp)
 const httpsServer = https.createServer(options, httpsApp)
 
 if (config.env === 'production') {
-  httpApp.get('*', (req, res) => {
-    res.redirect(`${config.domain}${req.url}`)
-  })
+  //httpApp.get('*', (req, res) => {
+  //  res.redirect(`${config.domain}${req.url}`)
+  //})
 }
 
 // listen for requests :)
