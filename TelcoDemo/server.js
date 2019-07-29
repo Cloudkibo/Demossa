@@ -421,7 +421,7 @@ const httpsServer = https.createServer(options, httpsApp)
 //}
 
 // listen for requests :)
-server.listen(config.port, config.ip, () => {
+server.listen(config.port, () => {
   console.log(`DEMOSSA server STARTED on ${
     config.port} in ${config.env} mode on domain ${config.domain}`)
 })
