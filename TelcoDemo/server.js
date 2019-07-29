@@ -20,8 +20,8 @@ var httpApp = express()
 
 mongoose.connect(config.mongo.uri, config.mongo.options)
 
-// const app = (config.env === 'production') ? httpsApp : httpApp
-const app = httpApp
+const app = (config.env === 'production') ? httpsApp : httpApp
+// const app = httpApp
 
 const seed = require('./scripts/seeds')
 
@@ -414,11 +414,11 @@ if (config.env === 'production') {
 const server = http.createServer(httpApp)
 const httpsServer = https.createServer(options, httpsApp)
 
-//if (config.env === 'production') {
-//  httpApp.get('*', (req, res) => {
-//    res.redirect(`${config.domain}${req.url}`)
-//  })
-//}
+if (config.env === 'production') {
+  httpApp.get('*', (req, res) => {
+    res.redirect(`${config.domain}${req.url}`)
+  })
+}
 
 // listen for requests :)
 server.listen(config.port, () => {
