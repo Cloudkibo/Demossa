@@ -1,4 +1,5 @@
 const util = require('./utility.js')
+const sendOtp = require('./api/otp.send')
 
 exports.callDialogFlowAPI = (query, pageId) => {
   let apiUrl = 'https://api.dialogflow.com/v1/';
@@ -43,6 +44,18 @@ exports.callDialogFlowAPI = (query, pageId) => {
             // only including messenger messages right now, commenting this out
             // finalMessages.push({ "type": "gen-text", "text": respMsgs[i].speech })
           }
+        }
+        if(result.result.parameters.phone != '' && result.result.parameters.otp === '' ) {
+            var otp = util.generateId(4)
+            var message = `Dear customer, your OTP for registration is ${otp}. Use this code to validate your login.`
+            if(result.result.metadata.intentName.includes('urdu')) {
+              message `ہے۔ اپنے لاگ ان کی توثیق کرنے کے لئے اس کوڈ کا استعمال کریں۔ ${otp} پیارے گاہک ، رجسٹریشن کیلئے آپ کا نمبر` 
+            } if(result.result.metadata.intentName.includes('roman')) {
+              message = `Piyare customer, rigistration ky liye apka OTP ${otp} hay. Apny Login kay liye is code ka istimal karain.`
+            }
+            //send otp and save otp in to the datebase
+            console.log(otp)
+            sendOtp.sendOtp(result.result.parameters.phone, otp, message)
         }
         console.log('--------------------------------')
         if(finalMessages.length === 0) resolve(result.result)

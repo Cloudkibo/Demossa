@@ -12,6 +12,10 @@ exports.updatePackageRoman = function(phone, newPackageId) {
     }
 }
 
+exports.updateOtp = function(phone, otp) {
+    return datalayer.updateCustomer({phone:phone}, {otp:otp})
+}
+
 exports.editLanguage = function (sessionId, newLanguage) {
     return datalayer.updateCustomer({sessionId: sessionId}, {language: newLanguage})
 }
