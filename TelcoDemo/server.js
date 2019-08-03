@@ -21,6 +21,7 @@ var httpApp = express()
 mongoose.connect(config.mongo.uri, config.mongo.options)
 
 const app = (config.env === 'production') ? httpsApp : httpApp
+// const app = httpApp
 
 const seed = require('./scripts/seeds')
 
@@ -419,7 +420,7 @@ if (config.env === 'production') {
 }
 
 // listen for requests :)
-server.listen(config.port, config.ip, () => {
+server.listen(config.port, () => {
   console.log(`DEMOSSA server STARTED on ${
     config.port} in ${config.env} mode on domain ${config.domain}`)
 })
