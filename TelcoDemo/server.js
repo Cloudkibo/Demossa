@@ -101,7 +101,7 @@ app.post('/fbPost', (request, response) => {
 });
 
 function queryAIMessenger(query, subscriberId, pageId, simpleQueryNotPostBack, postBackType) {
-  queryDialogFlow(query, pageId)
+  queryDialogFlow(query, pageId, subscriberId)
     .then(result => {
       console.log(result)
       if (result.fulfillment) {
@@ -136,8 +136,8 @@ function queryAIMessenger(query, subscriberId, pageId, simpleQueryNotPostBack, p
     })
 }
 
-function queryDialogFlow(query, pageId) {
-  return ailayer.callDialogFlowAPI(query, pageId)
+function queryDialogFlow(query, pageId, subscriberId) {
+  return ailayer.callDialogFlowAPI(query, pageId, subscriberId)
 }
 
 app.post('/webPost', (request, response) => {

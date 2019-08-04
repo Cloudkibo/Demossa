@@ -9,55 +9,57 @@ const statements = require('./i13n').statements
 exports.showServices = function (request, response) {
   let message = 'Sorry, I am unable to answer this for now. Please contact admin'
   let fallback = statements.fallback.english
-  console.log(request.body.queryResult.parameters)
   return simpleMessageResponse(response, message, fallback)
 }
 
 exports.signUpTheCustomer = function (result, subscriberId) {
   return new Promise(function (resolve, reject) {
     let message = 'thank you for sign up'
-    let otp = result.parameters.otp
+    let otp = '' + result.parameters.otp
+    let smsOtp = result.parameters.smsOtp.split(' ')
     let phone = result.parameters.phone
     let language = result.parameters.Language
     let languageCode = 'urdu'
     let fallback = statements.fallback.urdu
     if (language === 'Roman Urdu') languageCode = 'romanurdu'
     if (language === 'English') languageCode = 'english'
-    if (util.customerDb.otps.indexOf(otp) < 0) {
+
+    if (otp != smsOtp[1]) {
       message = statements.wrongotp[languageCode]
       fallback = statements.fallback[languageCode]
       resolve(simpleMessageResponse(result, message, fallback))
+    } else {
+      customers.insertNewCustomer({
+        phone, language, subscriberId
+      }, (err, customer) => {
+        if (err) {
+          message = statements.globalerror[languageCode]
+          fallback = statements.fallback[languageCode]
+          resolve(simpleMessageResponse(result, message, fallback))
+        }
+        if (customer.exists) {
+          message = statements.signup.exists[languageCode]
+          fallback = statements.fallback[languageCode]
+          const tmp = simpleMessageResponse(result, message, fallback)
+          resolve(tmp)
+        } else {
+          var token = jwt.sign({
+            data: 'foobar'
+          }, 'secret', { expiresIn: '5h' });
+          var tokenPayload = { customer: customer.customer, token: token }
+          tokens.insertNewToken(tokenPayload)
+            .then(success => {
+              message = statements.signup.success[languageCode]
+              fallback = statements.fallback[languageCode]
+              resolve(simpleMessageResponse(result, message, fallback))
+            })
+            .catch(err => {
+              console.log(err)
+              simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+            })
+        }
+      })
     }
-    customers.insertNewCustomer({
-      phone, language, subscriberId
-    }, (err, customer) => {
-      if (err) {
-        message = statements.globalerror[languageCode]
-        fallback = statements.fallback[languageCode]
-        resolve(simpleMessageResponse(result, message, fallback))
-      }
-      if (customer.exists) {
-        message = statements.signup.exists[languageCode]
-        fallback = statements.fallback[languageCode]
-        const tmp = simpleMessageResponse(result, message, fallback)
-        resolve(tmp)
-      } else {
-        var token = jwt.sign({
-          data: 'foobar'
-        }, 'secret', { expiresIn: '2m' });
-        var tokenPayload = { customer: customer.customer, token: token }
-        tokens.insertNewToken(tokenPayload)
-          .then(success => {
-            message = statements.signup.success[languageCode]
-            fallback = statements.fallback[languageCode]
-            resolve(simpleMessageResponse(result, message, fallback))
-          })
-          .catch(err => {
-            console.log(err)
-            simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
-          })
-      }
-    })
   })
 }
 
@@ -717,7 +719,8 @@ exports.otherActions = function (result, subscriberId) {
 exports.signInTheCustomer = (result, subscriberId) => {
   return new Promise(function (resolve, reject) {
     let message = 'You are already signed in'
-    let otp = result.parameters.otp
+    let otp = '' + result.parameters.otp
+    let smsOtp = result.parameters.smsOtp.split(' ')
     let phone = result.parameters.phone
     let languageCode = 'english'
     if (result.metadata.intentName === '0.8.3.login.roman') {
@@ -732,54 +735,53 @@ exports.signInTheCustomer = (result, subscriberId) => {
     }
 
     let fallback = statements.fallback[languageCode]
-
-    if (util.customerDb.otps.indexOf(otp) < 0) {
+    if (otp !== smsOtp[1]) {
       message = statements.wrongotp[languageCode]
       fallback = statements.fallback[languageCode]
       resolve(simpleMessageResponse(result, message, fallback))
+    } else {
+      customers.findCustomer(phone)
+        .then(customer => {
+          if (!customer) {
+            message = statements.findCustomer[languageCode]
+            resolve(simpleMessageResponse(result, message, fallback))
+          } else {
+            authenticate(result, subscriberId)
+              .then(token => {
+                if (token === 'noUser') {
+                  message = statements.findCustomer[languageCode]
+                  resolve(simpleMessageResponse(result, message, fallback))
+                }
+                else if (token) {
+                  resolve(simpleMessageResponse(result, message, fallback))
+                } else {
+                  var token = jwt.sign({
+                    data: 'foobar'
+                  }, 'secret', { expiresIn: '5h' });
+                  var query = { customer: customer }
+                  var tokenPayload = { token: token, customer: customer._id }
+                  tokens.updateExpiredToken(query, tokenPayload)
+                    .then(updated => {
+                      if (languageCode === 'urdu') {
+                        message = '   میں نے آپ کو لاگ ان کیا ہے ہم نے اس بوٹ کے ساتھ آپ کی بات چیت کے 5 گھنٹے کا سیشن تیار کیا ہے. 5 گھنٹوں کے بعد آپ کو دوبارہ فون نمبر کے ذریعہ اپنے پاس لاگ ان کرنا ہوگ'
+                        resolve(simpleMessageResponse(result, message, fallback))
+                      } else if (languageCode === 'romanurdu') {
+                        message = 'main ny ap ko login kediya hy or iss bot ky sath aap ki bat cheet ka 5 ghanty ka session tayyar kiya hy. us ky baad aap ko dobara phone number sy sign in kerna hoga'
+                        resolve(simpleMessageResponse(result, message, fallback))
+                      } else {
+                        message = 'i have loged you in and created 5 hour session of your conversation with this bot. After 5 hour you will have to again authenticate yourself by phone number'
+                        resolve(simpleMessageResponse(result, message, fallback))
+                      }
+                    })
+                }
+              })
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
+        })
     }
-    customers.findCustomer(phone)
-      .then(customer => {
-        if (!customer) {
-          message = statements.findCustomer[languageCode]
-          resolve(simpleMessageResponse(result, message, fallback))
-        } else {
-          authenticate(result, subscriberId)
-            .then(token => {
-              if (token === 'noUser') {
-                message = statements.findCustomer[languageCode]
-                resolve(simpleMessageResponse(result, message, fallback))
-              }
-              else if (token) {
-                resolve(simpleMessageResponse(result, message, fallback))
-              } else {
-                var token = jwt.sign({
-                  data: 'foobar'
-                }, 'secret', { expiresIn: '2m' });
-                var query = { customer: customer }
-                var tokenPayload = { token: token, customer: customer._id }
-                tokens.updateExpiredToken(query, tokenPayload)
-                  .then(updated => {
-                    if (languageCode === 'urdu') {
-                      message = '   میں نے آپ کو لاگ ان کیا ہے ہم نے اس بوٹ کے ساتھ آپ کی بات چیت کے 5 گھنٹے کا سیشن تیار کیا ہے. 5 گھنٹوں کے بعد آپ کو دوبارہ فون نمبر کے ذریعہ اپنے پاس لاگ ان کرنا ہوگ'
-                      resolve(simpleMessageResponse(result, message, fallback))
-                    } else if (languageCode === 'romanurdu') {
-                      message = 'main ny ap ko login kediya hy or iss bot ky sath aap ki bat cheet ka 5 ghanty ka session tayyar kiya hy. us ky baad aap ko dobara phone number sy sign in kerna hoga'
-                      resolve(simpleMessageResponse(result, message, fallback))
-                    } else {
-                      message = 'i have loged you in and created 5 hour session of your conversation with this bot. After 5 hour you will have to again authenticate yourself by phone number'
-                      resolve(simpleMessageResponse(result, message, fallback))
-                    }
-                  })
-              }
-            })
-        }
-      })
-      .catch(err => {
-        console.log(err)
-        simpleMessageResponse(result, statements.globalerror[languageCode], fallback)
-      })
-
   })
 }
 
