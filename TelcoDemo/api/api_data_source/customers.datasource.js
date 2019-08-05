@@ -40,8 +40,6 @@ exports.findCustomerByIdApi = function (phone) {
 
 // TODO update
 exports.findOneAndUpdate = function (query, payload) {
-    console.log(query.phone)
-    console.log(payload.otp)
     let token
     let tempUserPayload = {}
     return new Promise(function(resolve, reject) {
@@ -58,8 +56,6 @@ exports.findOneAndUpdate = function (query, payload) {
                 users.current_service = payload.current_service
             } else if (payload.$unset && payload.$unset.current_service === '') {
                 users.current_service = ''
-            } else if (payload.otp) {
-                users.otp = payload.otp
             }
             return users
         })

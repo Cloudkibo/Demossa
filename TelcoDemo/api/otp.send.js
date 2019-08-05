@@ -3,7 +3,7 @@ const config = require('../config/environment')
 const customer = require('./customers.controller')
 const domain = config.api_domain
 
-exports.sendOtp = function (phone, otp, message) {
+exports.sendOtp = function (phone, message) {
     phone = phone.substring(1)
     config.otp.mobileNo = phone
     config.otp.message = message
@@ -13,7 +13,7 @@ exports.sendOtp = function (phone, otp, message) {
             return util.callApi(domain, 'sms', 'post', config.otp, token.accessToken)
         })
         .then(sentOtp => {
-            customer.updateOtp(phone, otp)
+           resolve(sentOtp)
         })
         .catch(err => {
             reject(err)
