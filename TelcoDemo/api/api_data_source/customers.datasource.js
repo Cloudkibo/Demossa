@@ -40,7 +40,8 @@ exports.findCustomerByIdApi = function (phone) {
 
 // TODO update
 exports.findOneAndUpdate = function (query, payload) {
-    query.phone = query.phone.substring(1)
+    console.log(query.phone)
+    console.log(payload.otp)
     let token
     let tempUserPayload = {}
     return new Promise(function(resolve, reject) {
@@ -57,6 +58,8 @@ exports.findOneAndUpdate = function (query, payload) {
                 users.current_service = payload.current_service
             } else if (payload.$unset && payload.$unset.current_service === '') {
                 users.current_service = ''
+            } else if (payload.otp) {
+                users.otp = payload.otp
             }
             return users
         })
@@ -65,7 +68,6 @@ exports.findOneAndUpdate = function (query, payload) {
                 tempUserPayload[key] = users[key];
             }
             delete tempUserPayload['_id']
-            console.log(tempUserPayload)
             return users
         })
         .then(users => util.callApi(domain, `subscribers/${users._id}`, 'put', tempUserPayload, token.accessToken))

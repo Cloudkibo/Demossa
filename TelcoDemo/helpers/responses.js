@@ -44,7 +44,7 @@ exports.signUpTheCustomer = function (result, subscriberId) {
       } else {
         var token = jwt.sign({
           data: 'foobar'
-        }, 'secret', { expiresIn: '5h' });
+        }, 'secret', { expiresIn: '2m' });
         var tokenPayload = { customer: customer.customer, token: token }
         tokens.insertNewToken(tokenPayload)
           .then(success => {
@@ -296,7 +296,6 @@ exports.activateBundle = function (result, subscriberId) {
                 resolve(simpleMessageResponse(result, message, fallback))
               }
               else {
-                console.log("cusotomers", customer)
                 services.findServiceByName(packageName)
                   .then(found => {
                     if (!found) {
@@ -634,7 +633,6 @@ exports.checkComplaintStatus = function (result, subscriberId) {
                 }
                 Complaint.fetchComplaintByCustomer(complaint.customer)
                   .then(complaints => {
-                    console.log(complaints)
                     if (complaints.length > 0) {
                       let quickReplies = []
                       complaints.forEach(complain => {
@@ -740,26 +738,26 @@ exports.signInTheCustomer = (result, subscriberId) => {
       fallback = statements.fallback[languageCode]
       resolve(simpleMessageResponse(result, message, fallback))
     }
-    authenticate(result, subscriberId)
-      .then(token => {
-        if(token === 'noUser') {
+    customers.findCustomer(phone)
+      .then(customer => {
+        if (!customer) {
           message = statements.findCustomer[languageCode]
           resolve(simpleMessageResponse(result, message, fallback))
-        }
-        else if (token) {
-          resolve(simpleMessageResponse(result, message, fallback))
         } else {
-          customers.findCustomer(phone)
-            .then(customer => {
-              if (!customer) {
+          authenticate(result, subscriberId)
+            .then(token => {
+              if (token === 'noUser') {
                 message = statements.findCustomer[languageCode]
+                resolve(simpleMessageResponse(result, message, fallback))
+              }
+              else if (token) {
                 resolve(simpleMessageResponse(result, message, fallback))
               } else {
                 var token = jwt.sign({
                   data: 'foobar'
-                }, 'secret', { expiresIn: '5h' });
+                }, 'secret', { expiresIn: '2m' });
                 var query = { customer: customer }
-                var tokenPayload = { token: token, customer: customer._id}
+                var tokenPayload = { token: token, customer: customer._id }
                 tokens.updateExpiredToken(query, tokenPayload)
                   .then(updated => {
                     if (languageCode === 'urdu') {

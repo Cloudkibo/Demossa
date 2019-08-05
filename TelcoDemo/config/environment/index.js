@@ -45,6 +45,14 @@ const all = {
         safe: true
       }
     }
+  },
+  otp : {
+    mobileNo:"923407083077",
+    message: "this is a test message that is being sent to user",
+    provider:"telenor",
+    name:"Clicky pk",
+    userName:"923484844827",
+    password:"RoneleT"
   }
 }
 
