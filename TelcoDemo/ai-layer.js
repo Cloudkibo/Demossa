@@ -57,6 +57,7 @@ exports.callDialogFlowAPI = (query, pageId, subscriberId) => {
             sendOtp.sendOtp(result.result.parameters.phone, message)
             //save otp in the parameters
             callDialogFlow('LH '+otp, pageId, subscriberId)
+            console.log('your otp is', otp)
         }
         console.log('--------------------------------')
         if(finalMessages.length === 0) resolve(result.result)
