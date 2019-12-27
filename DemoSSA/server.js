@@ -302,7 +302,7 @@ let options = {
     try {
       options = {
         ca: fs.readFileSync('/etc/letsencrypt/live/www.synaps3webrtc.com/fullchain.pem'),
-        key: fs.readFileSync('/etc/letsencrypt/live/www.synaps3webrtc.com/private.pem'),
+        key: fs.readFileSync('/etc/letsencrypt/live/www.synaps3webrtc.com/privkey.pem'),
         cert: fs.readFileSync('/etc/letsencrypt/live/www.synaps3webrtc.com/cert.pem')
       }
     } catch (e) {
