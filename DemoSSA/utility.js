@@ -58,7 +58,7 @@ exports.isUrl = (str) => {
 }
 
 exports.randomItem = (items) => {
-  return items[Math.floor(Math.random()*items.length)]
+  return items[Math.floor(Math.random() * items.length)]
 }
 
 exports.isYouTubeUrl = (url) => {
@@ -68,9 +68,9 @@ exports.isYouTubeUrl = (url) => {
 
 exports.fbAccessToken = (pageId) => {
   if (pageId === '382154169188869') {
-    return '?access_token=EAAUTvApDOEYBAPQ7jNxOldfXXP6RfNUbeGZCHU7JHimNX8azM77NBQSh0AQk3PiGYudi2ZAfck8r6rFEMMwrcsH7NBqbIXYJQllZCZCmYIiLQa7C4lKeU7M0VwiDUjllHOzuWdtQGULWuGXPnzljr9fbUIKXzZBMT9RUsguduPCOIk1yKSABc'
+    return '?access_token=EAAUTvApDOEYBAHXldCT12Scr89oRZAsfaz4folqdZCcW4oP1Vt3XIYf2vTwqSZBoYvZB8U0I6GeIazHwP8FaYPWdnnJaR9HfaJWWSY4cymOHCjAMELxhWpZAS9b20texHkPsBjfuzoVmVRMLoCWWL8rreMW4JktrQtmmo33EAYe50ZACgIRLkZB9xk0P7Qj38EZD'
   } else if (pageId === '350372502408394') {
-    return '?access_token=EAAUTvApDOEYBAJcAVaFDicjWozxuhdCloRPeLt9q5JSDfmI8iZAd7eFeOXhhCTLNWChx6ssIA9U1oZBGrZCIKiNU63lnuxX08vHa9ZAzNVZCjZBFQdqO1CQO1DhM4Hk1Pc0Jg6sZBqMJYjPNKYh5GINoqyYnIsHeL24OYOyU2FZBvZBE8PFyOZAo2T'
+    return '?access_token=EAAUTvApDOEYBAACp48icVb1C8jxmAK2Fc6dJOjQupo4QMnB3oXY3SqrXmZA2cHF3It4V9aB81DsZA3vRqbOHGHGzw58I32ZB6gZBqVCPSVYrN67CUOM16ukBCubo5Vlhnzjj9VCV7ZAzRIZBQwKsGHTXzZCrOV3KzW8LmTo35gA8nLXwToubghJXm9GUqNAphIZD'
   }
   return '?access_token=EAAUTvApDOEYBAJUKwDiMnWAib6RkKH4MrLqQew8GE34Jdx5C1MhoRX8WcdBQP6yFXw5T04Cf4eZAyImi3xIXOqB8sZAXEszgtEHKbFHWSIpFlZCGR5FEY7iectIjaKeYAWA6XZAmBH7ZC8dxis7FgJCt3PImRDJQ2avTfZB1n4KQZDZD'
 }

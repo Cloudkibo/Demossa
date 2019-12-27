@@ -144,25 +144,25 @@ app.get('/updateContactInformation', (request, response) => {
 
 app.get('/newfile', (request, response) => {
   response.sendFile(__dirname + '/views/newfile.html');
-});
+})
 
 app.post('/fbPost', (request, response) => {
-  console.log('incoming post from facebook');
+  console.log('incoming post from facebook')
   let body = {}
   if (request.fromKiboPush) {
     body = request
   } else {
     body = request.body
   }
-  let message = body.entry[0].messaging[0];
-  let pageId = message.recipient.id
-  let subscriberId = message.sender.id
+  const message = body.entry[0].messaging[0]
+  const pageId = message.recipient.id
+  const subscriberId = message.sender.id
   if (message.message) {
-    let query = message.message.text
-    queryAIMessenger(query, subscriberId, pageId, true);
+    const query = message.message.text
+    queryAIMessenger(query, subscriberId, pageId, true)
   } else if (message.postback) {
-    let postback = JSON.parse(message.postback.payload)
-    let postbackTitle = message.postback.title
+    const postback = JSON.parse(message.postback.payload)
+    // let postbackTitle = message.postback.title
     console.log(postback)
     if (postback.type === 'selected') {
       let query = postback.answer
@@ -173,20 +173,20 @@ app.post('/fbPost', (request, response) => {
     } else if (postback.type === 'see more') {
       queryAIMessenger(postback.query, subscriberId, pageId, false, postback.type)
     } else if (postback.type === 'more') {
-      let options = postback.options;
+      const options = postback.options
       if (options !== '') {
-        let items = options.split(',')
-        let payload = {
-          "type" : "quick-replies",
-          "payload" : {
-            "title": "Please select from following",
-            "replies": items
+        const items = options.split(',')
+        const payload = {
+          type: 'quick-replies',
+          payload: {
+            title: 'Please select from following',
+            replies: items
           }
         }
         platforms.sendMessengerChat(payload, subscriberId, pageId)
       }
     } else if (postback.type === 'list-more') {
-      let options = postback.options;
+      const options = postback.options
       if (options !== '') {
         let items = options.split(',')
         let payload = {
