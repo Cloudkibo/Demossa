@@ -301,9 +301,9 @@ let options = {
   if (process.env.NODE_ENV === 'production') {
     try {
       options = {
-        ca: fs.readFileSync('/root/certs/ca_bundle.crt'),
-        key: fs.readFileSync('/root/certs/private.key'),
-        cert: fs.readFileSync('/root/certs/certificate.crt')
+        ca: fs.readFileSync('/etc/letsencrypt/live/www.synaps3webrtc.com/fullchain.pem'),
+        key: fs.readFileSync('/etc/letsencrypt/live/www.synaps3webrtc.com/private.pem'),
+        cert: fs.readFileSync('/etc/letsencrypt/live/www.synaps3webrtc.com/cert.pem')
       }
     } catch (e) {
 
