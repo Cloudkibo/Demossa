@@ -27,7 +27,7 @@ exports.sendMessengerChat = (item, recipientId, pageId, query) => {
   //   payload = genericPayload(item, recipientId)
   // }
   if (payload) {
-    callFacebookApi('v4.0', `me/messages?access_token=${config.fbAccessToken[pageId]}`, 'post', payload)
+    callFacebookApi('v3.2', `me/messages?access_token=${config.fbAccessToken[pageId]}`, 'post', payload)
       .then(result => {
         console.log('FB Message sent', JSON.stringify(result.body))
       })
