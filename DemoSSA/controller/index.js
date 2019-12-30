@@ -40,33 +40,29 @@ exports.handleEvent = (request, response) => {
       queryAIMessenger(postback.query, subscriberId, pageId, false, postback.type)
     } else if (postback.type === 'more') {
       const options = postback.options
-      if (options !== '') {
-        const items = options.split(',')
+      if (options.length > 0) {
         const payload = {
-          type: 'quick-replies',
-          payload: {
+          platform: 'FACEBOOK',
+          quickReplies: {
             title: 'Please select from following',
-            replies: items
+            quickReplies: options
           }
         }
         sendMessengerChat(payload, subscriberId, pageId)
       }
     } else if (postback.type === 'list-more') {
       const options = postback.options
-      if (options !== '') {
-        const items = options.split(',')
+      if (options.length > 0) {
         const payload = {
-          type: 'payload',
+          platform: 'FACEBOOK',
           payload: {
-            payload: {
-              facebook: {
-                attachment: {
-                  type: '',
-                  payload: {
-                    title: 'Disability Benefits',
-                    subtitle: 'Please select from the following',
-                    list: items
-                  }
+            facebook: {
+              attachment: {
+                type: '',
+                payload: {
+                  title: 'Disability Benefits',
+                  subtitle: 'Please select from the following',
+                  list: options
                 }
               }
             }

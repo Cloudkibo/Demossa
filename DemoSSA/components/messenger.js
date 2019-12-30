@@ -14,6 +14,8 @@ exports.sendMessengerChat = (item, recipientId, pageId, query) => {
   if (item.text) {
     item.text = item.text.text[0]
     payload = textMsgPayload(item, recipientId, query)
+  } else if (item.quickReplies) {
+    payload = quickRepliesPayload(item, recipientId)
   } else {
     payload = genericPayload(item, recipientId)
   }

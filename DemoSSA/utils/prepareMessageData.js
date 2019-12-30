@@ -214,6 +214,7 @@ function postbackButtonsPayload (item, recipientId) {
       }
     }
   }
+  payload.message = JSON.stringify(payload.message)
   return payload
 }
 
@@ -273,6 +274,7 @@ function methodOfChangePayload (item, recipientId) {
       }
     }
   }
+  payload.message = JSON.stringify(payload.message)
   return payload
 }
 
@@ -311,6 +313,7 @@ function genericMediaVideoPayload (item, recipientId) {
       }
     }
   }
+  payload.message = JSON.stringify(payload.message)
   return payload
 }
 
@@ -349,20 +352,21 @@ exports.quickRepliesPayload = (item, recipientId) => {
       id: recipientId
     },
     message: {
-      text: item.payload.title,
+      text: item.quickReplies.title,
       quick_replies: []
     }
   }
-  for (let i = 0; i < item.payload.replies.length; i++) {
+  for (let i = 0; i < item.quickReplies.quickReplies.length; i++) {
     payload.message.quick_replies.push({
       content_type: 'text',
-      title: item.payload.replies[i],
+      title: item.quickReplies.quickReplies[i],
       payload: JSON.stringify({
-        quickReplyTitle: item.payload.title,
-        answer: item.payload.replies[i]
+        quickReplyTitle: item.quickReplies.title,
+        answer: item.quickReplies.quickReplies[i]
       })
     })
   }
+  payload.message = JSON.stringify(payload.message)
   return payload
 }
 
@@ -510,6 +514,7 @@ function galleryPayload (item, recipientId) {
       }
     }
   }
+  payload.message = JSON.stringify(payload.message)
   return payload
 }
 
@@ -550,5 +555,6 @@ function genericGalleryPayload (item, recipientId) {
       }
     }
   }
+  payload.message = JSON.stringify(payload.message)
   return payload
 }
