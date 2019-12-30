@@ -18,8 +18,9 @@ exports.queryAIMessenger = (query, subscriberId, pageId, simpleQueryNotPostBack,
     dialogflowData
   )
     .then(result => {
-      console.log('response from dialogflow', JSON.stringify(result))
+      console.log('response from dialogflow')
       const data = result.data.queryResult.fulfillmentMessages.filter((m) => m.platform === 'FACEBOOK')
+      console.log(data)
       if (simpleQueryNotPostBack) {
         if (data.length > 1 && config.viewMorePageIds.indexOf(pageId) > -1) { // if repsonse contains more than one paragraphs
           sendMessengerChat(data[0], subscriberId, pageId, query)
