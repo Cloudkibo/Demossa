@@ -18,7 +18,7 @@ exports.queryAIMessenger = (query, subscriberId, pageId, simpleQueryNotPostBack,
     dialogflowData
   )
     .then(result => {
-      console.log('response from dialogflow', result)
+      console.log('response from dialogflow', JSON.stringify(result))
       if (simpleQueryNotPostBack) {
         if (result.length > 1 && config.viewMorePageIds.indexOf(pageId) > -1) { // if repsonse contains more than one paragraphs
           sendMessengerChat(result[0], subscriberId, pageId, query)
