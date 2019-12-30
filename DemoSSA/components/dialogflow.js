@@ -22,7 +22,7 @@ exports.queryAIMessenger = (query, subscriberId, pageId, simpleQueryNotPostBack,
       const data = result.data.queryResult.fulfillmentMessages.filter((m) => m.platform === 'FACEBOOK')
       if (simpleQueryNotPostBack) {
         if (data.length > 1 && config.viewMorePageIds.indexOf(pageId) > -1) { // if repsonse contains more than one paragraphs
-          sendMessengerChat(result[0], subscriberId, pageId, query)
+          sendMessengerChat(data[0], subscriberId, pageId, query)
         } else {
           intervalForEach(data, (item) => {
             sendMessengerChat(item, subscriberId, pageId)
