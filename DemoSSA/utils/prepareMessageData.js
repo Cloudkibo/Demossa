@@ -342,6 +342,7 @@ function buttonWebPayload (item, recipientId) {
       }
     }
   }
+  payload.message = JSON.stringify(payload.message)
   return payload
 }
 
