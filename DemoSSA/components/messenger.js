@@ -12,6 +12,7 @@ exports.sendMessengerChat = (item, recipientId, pageId, query) => {
   console.log(item)
   let payload
   if (item.text) {
+    item.text = item.text.text[0]
     payload = textMsgPayload(item, recipientId, query)
   } else {
     payload = genericPayload(item, recipientId)
