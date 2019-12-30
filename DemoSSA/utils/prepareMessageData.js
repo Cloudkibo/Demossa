@@ -82,6 +82,7 @@ function simpleTextWithSeeMoreButton (item, recipientId, query) {
       }
     }
   }
+  payload.message = JSON.stringify(payload.message)
   return payload
 }
 
@@ -409,6 +410,7 @@ exports.cardPayload = (item, recipientId) => {
       webview_height_ratio: 'tall'
     })
   }
+  payload.message = JSON.stringify(payload.message)
   return payload
 }
 
