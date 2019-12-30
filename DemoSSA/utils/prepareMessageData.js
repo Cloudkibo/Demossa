@@ -416,7 +416,7 @@ function listPayload (item, recipientId) {
     recipient: {
       id: recipientId
     },
-    message: JSON.stringify({
+    message: {
       attachment: {
         type: 'template',
         payload: {
@@ -433,7 +433,7 @@ function listPayload (item, recipientId) {
           buttons: []
         }
       }
-    })
+    }
   }
   for (let i = 0; i < list.length; i++) {
     if (i === 3) break
@@ -467,6 +467,7 @@ function listPayload (item, recipientId) {
       })
     })
   }
+  payload.message = JSON.stringify(payload.message)
   return payload
 }
 
