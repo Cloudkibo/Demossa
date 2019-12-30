@@ -151,37 +151,37 @@ exports.imagePayload = (item, recipientId) => {
 // }
 
 exports.genericPayload = (item, recipientId) => {
-  if (item.payload.payload.facebook.attachment.payload.attachment_id) {
+  if (item.payload.facebook.attachment.payload.attachment_id) {
     return genericMediaVideoPayload(item, recipientId)
-  } else if (item.payload.payload.facebook.attachment.payload.external_link) {
-    const btnText = item.payload.payload.facebook.attachment.payload.btnTxt || 'Read More'
-    const text = item.payload.payload.facebook.attachment.payload.text || 'Please click on Read More to know more about this.'
+  } else if (item.payload.facebook.attachment.payload.external_link) {
+    const btnText = item.payload.facebook.attachment.payload.btnTxt || 'Read More'
+    const text = item.payload.facebook.attachment.payload.text || 'Please click on Read More to know more about this.'
     return buttonWebPayload(
       {
         text,
         btnText,
-        url: item.payload.payload.facebook.attachment.payload.external_link,
+        url: item.payload.facebook.attachment.payload.external_link,
         webViewEnabled: false
       },
       recipientId
     )
-  } else if (item.payload.payload.facebook.attachment.payload.gallery) {
+  } else if (item.payload.facebook.attachment.payload.gallery) {
     return galleryPayload(item, recipientId)
-  } else if (item.payload.payload.facebook.attachment.payload.postback_buttons) {
+  } else if (item.payload.facebook.attachment.payload.postback_buttons) {
     return postbackButtonsPayload(item, recipientId)
-  } else if (item.payload.payload.facebook.attachment.payload.generic_gallery) {
+  } else if (item.payload.facebook.attachment.payload.generic_gallery) {
     return genericGalleryPayload(item, recipientId)
-  } else if (item.payload.payload.facebook.attachment.payload.list) {
+  } else if (item.payload.facebook.attachment.payload.list) {
     return listPayload(item, recipientId)
-  } else if (item.payload.payload.facebook.attachment.payload.method_of_change) {
+  } else if (item.payload.facebook.attachment.payload.method_of_change) {
     return methodOfChangePayload(item, recipientId)
   }
 }
 
 function postbackButtonsPayload (item, recipientId) {
-  const buttons = item.payload.payload.facebook.attachment.payload.postback_buttons
-  const title = item.payload.payload.facebook.attachment.payload.title
-  const text = item.payload.payload.facebook.attachment.payload.text
+  const buttons = item.payload.facebook.attachment.payload.postback_buttons
+  const title = item.payload.facebook.attachment.payload.title
+  const text = item.payload.facebook.attachment.payload.text
   const postbackButtons = []
 
   for (let i = 0; i < buttons.length; i++) {
@@ -218,7 +218,7 @@ function postbackButtonsPayload (item, recipientId) {
 }
 
 function methodOfChangePayload (item, recipientId) {
-  const methods = item.payload.payload.facebook.attachment.payload.method_of_change
+  const methods = item.payload.facebook.attachment.payload.method_of_change
   const buttons = []
 
   if (methods.online) {
@@ -290,11 +290,11 @@ function genericMediaVideoPayload (item, recipientId) {
           elements: [
             {
               media_type: 'video',
-              attachment_id: item.payload.payload.facebook.attachment.payload.attachment_id,
+              attachment_id: item.payload.facebook.attachment.payload.attachment_id,
               buttons: [
                 {
                   type: 'web_url',
-                  url: item.payload.payload.facebook.attachment.payload.url,
+                  url: item.payload.facebook.attachment.payload.url,
                   title: 'View Full Video'
                 },
                 {
@@ -408,9 +408,9 @@ exports.cardPayload = (item, recipientId) => {
 }
 
 function listPayload (item, recipientId) {
-  const list = item.payload.payload.facebook.attachment.payload.list
-  const title = item.payload.payload.facebook.attachment.payload.title ? item.payload.payload.facebook.attachment.payload.title : 'Social Security Administration'
-  const subtitle = item.payload.payload.facebook.attachment.payload.subtitle ? item.payload.payload.facebook.attachment.payload.subtitle : 'Select one of the benefits'
+  const list = item.payload.facebook.attachment.payload.list
+  const title = item.payload.facebook.attachment.payload.title ? item.payload.facebook.attachment.payload.title : 'Social Security Administration'
+  const subtitle = item.payload.facebook.attachment.payload.subtitle ? item.payload.facebook.attachment.payload.subtitle : 'Select one of the benefits'
   const payload = {
     messaging_type: 'RESPONSE',
     recipient: {
@@ -471,7 +471,7 @@ function listPayload (item, recipientId) {
 }
 
 function galleryPayload (item, recipientId) {
-  const gallery = item.payload.payload.facebook.attachment.payload.gallery
+  const gallery = item.payload.facebook.attachment.payload.gallery
   const length = gallery.length > 10 ? 10 : gallery.length
   const galleryElements = []
   for (let i = 0; i < length; i++) {
@@ -513,7 +513,7 @@ function galleryPayload (item, recipientId) {
 }
 
 function genericGalleryPayload (item, recipientId) {
-  const gallery = item.payload.payload.facebook.attachment.payload.generic_gallery
+  const gallery = item.payload.facebook.attachment.payload.generic_gallery
   const length = gallery.length > 10 ? 10 : gallery.length
   const galleryElements = []
   for (let i = 0; i < length; i++) {

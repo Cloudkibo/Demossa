@@ -19,17 +19,18 @@ exports.queryAIMessenger = (query, subscriberId, pageId, simpleQueryNotPostBack,
   )
     .then(result => {
       console.log('response from dialogflow', JSON.stringify(result))
+      const data = result.data.queryResult.fulfillmentMessages.filter((m) => m.platform === 'FACEBOOK')
       if (simpleQueryNotPostBack) {
-        if (result.length > 1 && config.viewMorePageIds.indexOf(pageId) > -1) { // if repsonse contains more than one paragraphs
+        if (data.length > 1 && config.viewMorePageIds.indexOf(pageId) > -1) { // if repsonse contains more than one paragraphs
           sendMessengerChat(result[0], subscriberId, pageId, query)
         } else {
-          intervalForEach(result, (item) => {
+          intervalForEach(data, (item) => {
             sendMessengerChat(item, subscriberId, pageId)
           }, 500)
         }
       } else { // if query is coming from postback
-        if (postBackType === 'see more') result.shift() // only faqs reponses should hide the first paragraph
-        intervalForEach(result, (item) => {
+        if (postBackType === 'see more') data.shift() // only faqs reponses should hide the first paragraph
+        intervalForEach(data, (item) => {
           sendMessengerChat(item, subscriberId, pageId)
         }, 500)
       }

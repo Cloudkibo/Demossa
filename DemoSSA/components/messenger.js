@@ -11,17 +11,20 @@ const {
 exports.sendMessengerChat = (item, recipientId, pageId, query) => {
   console.log(item)
   let payload
-  if (item.type === 'text' || item.type === 'gen-text') {
+  if (item.text) {
     payload = textMsgPayload(item, recipientId, query)
-  } else if (item.type === 'image') {
-    payload = imagePayload(item, recipientId)
-  } else if (item.type === 'quick-replies') {
-    payload = quickRepliesPayload(item, recipientId)
-  } else if (item.type === 'card') {
-    payload = cardPayload(item, recipientId)
-  } else if (item.type === 'payload') {
+  } else {
     payload = genericPayload(item, recipientId)
   }
+  // else if (item.type === 'image') {
+  //   payload = imagePayload(item, recipientId)
+  // } else if (item.type === 'quick-replies') {
+  //   payload = quickRepliesPayload(item, recipientId)
+  // } else if (item.type === 'card') {
+  //   payload = cardPayload(item, recipientId)
+  // } else if (item.type === 'payload') {
+  //   payload = genericPayload(item, recipientId)
+  // }
   if (payload) {
     callFacebookApi('v4.0', `me/messages?access_token=${config.fbAccessToken[pageId]}`, 'post', payload)
       .then(result => {
