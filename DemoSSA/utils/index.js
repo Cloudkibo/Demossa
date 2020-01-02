@@ -1,3 +1,5 @@
+const config = require('../config/index.js')
+
 exports.createButtons = (displayUrl) => {
   return {
     messages: [
@@ -69,5 +71,15 @@ exports.isUrl = (str) => {
     return true
   } else {
     return false
+  }
+}
+
+exports.corsOptions = {
+  origin: function (origin, callback) {
+    if (config.corsDomains.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
   }
 }

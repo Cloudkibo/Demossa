@@ -10,7 +10,8 @@ const all = {
   gcpPojectId: {
     382154169188869: 'demossa-768c0',
     350372502408394: 'demossa2-a9b99'
-  }
+  },
+  corsDomains: ['https://kiboengage.cloudkibo.com', 'https://skiboengage.cloudkibo.com', 'http://localhost:3021']
 }
 
 module.exports = all

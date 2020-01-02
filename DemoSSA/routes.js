@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const { createButtons } = require('./utils/index.js')
 const controller = require('./controller/index.js')
 const cors = require('cors')
+const { corsOptions } = require('.utils/index.js')
 
 module.exports = function (app) {
   // Setup template engine - add pug
@@ -31,6 +32,7 @@ module.exports = function (app) {
 
   app.get('/fbPost', controller.verifyToken)
   app.post('/fbPost', controller.handleEvent)
+  app.options('/webPost', cors(corsOptions))
   app.post('/webPost', cors(), controller.handleWebClient)
 
   app.get('/', function (request, response) {
