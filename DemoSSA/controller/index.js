@@ -1,7 +1,6 @@
 const { queryAIMessenger, callDialogFlowAPI } = require('../components/dialogflow.js')
 const { sendMessengerChat } = require('../components/messenger.js')
 const { sendWebChat } = require('../components/webClient.js')
-const config = require('../config/index.js')
 
 exports.verifyToken = (request, response) => {
   console.log('FB verified the webhook request', request.query)
@@ -88,7 +87,7 @@ exports.handleWebClient = (request, response) => {
       }
     }
     callDialogFlowAPI(
-      `https://dialogflow.googleapis.com/v2/projects/${config.gcpPojectId[request.body.pageId]}/agent/sessions/${request.body.subscriberId}:detectIntent`,
+      'https://dialogflow.googleapis.com/v2/projects/demossa-768c0/agent/sessions/webClient:detectIntent',
       'POST',
       dialogflowData
     )
