@@ -3,6 +3,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { createButtons } = require('./utils/index.js')
 const controller = require('./controller/index.js')
+const cors = require('cors')
 
 module.exports = function (app) {
   // Setup template engine - add pug
@@ -30,7 +31,7 @@ module.exports = function (app) {
 
   app.get('/fbPost', controller.verifyToken)
   app.post('/fbPost', controller.handleEvent)
-  app.post('/webPost', controller.handleWebClient)
+  app.post('/webPost', cors(), controller.handleWebClient)
 
   app.get('/', function (request, response) {
     response.sendFile(path.join(__dirname, '/views/earningsRecord.html'))
