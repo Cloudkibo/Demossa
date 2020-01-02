@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const { createButtons } = require('./utils/index.js')
 const controller = require('./controller/index.js')
 const cors = require('cors')
-const { corsOptions } = require('.utils/index.js')
+const { corsOptions } = require('./utils/index.js')
 
 module.exports = function (app) {
   // Setup template engine - add pug
