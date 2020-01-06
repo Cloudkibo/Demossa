@@ -31,7 +31,7 @@ module.exports = function (app) {
   })
 
   app.get('/fbPost', controller.verifyToken)
-  app.post('/fbPost', controller.handleEvent)
+  app.post('/fbPost', controller.handleMessengerClient)
   app.options('/webPost', cors(corsOptions))
   app.post('/webPost', cors(), controller.handleWebClient)
 

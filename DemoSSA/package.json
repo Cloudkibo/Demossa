@@ -8,7 +8,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "start:dev": "cross-env DOMAIN=https://kibopush-sojharo.ngrok.io DEBUG=demossa:* PORT=3000 SECURE_PORT=8443 NODE_ENV=development nodemon server.js",
+    "start:dev": "cross-env DOMAIN=https://kibopush-sojharo.ngrok.io DEBUG=demossa:* PORT=3051 SECURE_PORT=8443 NODE_ENV=development nodemon server.js",
     "debug": "cross-env DOMAIN=https://kibopush-sojharo.ngrok.io DEBUG=express:router:route,express:application,demossa:* PORT=3000 SECURE_PORT=8443 NODE_ENV=development nodemon server.js"
   },
   "dependencies": {

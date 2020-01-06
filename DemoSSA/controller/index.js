@@ -11,7 +11,7 @@ exports.verifyToken = (request, response) => {
   }
 }
 
-exports.handleEvent = (request, response) => {
+exports.handleMessengerClient = (request, response) => {
   console.log('incoming post from facebook')
   let body = {}
   if (request.fromKiboPush) {
@@ -92,7 +92,8 @@ exports.handleWebClient = (request, response) => {
       dialogflowData
     )
       .then(result => {
-        sendWebChat(request, response, result)
+        const data = result.data.queryResult.fulfillmentMessages.filter((m) => m.platform === 'FACEBOOK')
+        sendWebChat(request, response, data)
       })
       .catch(err => {
         console.log(err)
@@ -101,3 +102,4 @@ exports.handleWebClient = (request, response) => {
     response.status(501).json({ status: 'error', description: 'Query not found' })
   }
 }
+

@@ -82,7 +82,9 @@ function simpleTextWithSeeMoreButton (item, recipientId, query) {
       }
     }
   }
-  payload.message = JSON.stringify(payload.message)
+  if (recipientId !== 'web recipient') {
+    payload.message = JSON.stringify(payload.message)
+  }
   return payload
 }
 
@@ -215,7 +217,9 @@ function postbackButtonsPayload (item, recipientId) {
       }
     }
   }
-  payload.message = JSON.stringify(payload.message)
+  if (recipientId !== 'web recipient') {
+    payload.message = JSON.stringify(payload.message)
+  }
   return payload
 }
 
@@ -275,7 +279,9 @@ function methodOfChangePayload (item, recipientId) {
       }
     }
   }
-  payload.message = JSON.stringify(payload.message)
+  if (recipientId !== 'web recipient') {
+    payload.message = JSON.stringify(payload.message)
+  }
   return payload
 }
 
@@ -314,7 +320,9 @@ function genericMediaVideoPayload (item, recipientId) {
       }
     }
   }
-  payload.message = JSON.stringify(payload.message)
+  if (recipientId !== 'web recipient') {
+    payload.message = JSON.stringify(payload.message)
+  }
   return payload
 }
 
@@ -343,7 +351,9 @@ function buttonWebPayload (item, recipientId) {
       }
     }
   }
-  payload.message = JSON.stringify(payload.message)
+  if (recipientId !== 'web recipient') {
+    payload.message = JSON.stringify(payload.message)
+  }
   return payload
 }
 
@@ -368,7 +378,9 @@ exports.quickRepliesPayload = (item, recipientId) => {
       })
     })
   }
-  payload.message = JSON.stringify(payload.message)
+  if (recipientId !== 'web recipient') {
+    payload.message = JSON.stringify(payload.message)
+  }
   return payload
 }
 
@@ -410,7 +422,9 @@ exports.cardPayload = (item, recipientId) => {
       webview_height_ratio: 'tall'
     })
   }
-  payload.message = JSON.stringify(payload.message)
+  if (recipientId !== 'web recipient') {
+    payload.message = JSON.stringify(payload.message)
+  }
   return payload
 }
 
@@ -474,7 +488,9 @@ function listPayload (item, recipientId) {
       })
     })
   }
-  payload.message = JSON.stringify(payload.message)
+  if (recipientId !== 'web recipient') {
+    payload.message = JSON.stringify(payload.message)
+  }
   return payload
 }
 
@@ -517,7 +533,9 @@ function galleryPayload (item, recipientId) {
       }
     }
   }
-  payload.message = JSON.stringify(payload.message)
+  if (recipientId !== 'web recipient') {
+    payload.message = JSON.stringify(payload.message)
+  }
   return payload
 }
 
@@ -558,6 +576,8 @@ function genericGalleryPayload (item, recipientId) {
       }
     }
   }
-  payload.message = JSON.stringify(payload.message)
+  if (recipientId !== 'web recipient') {
+    payload.message = JSON.stringify(payload.message)
+  }
   return payload
 }

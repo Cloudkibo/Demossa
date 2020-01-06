@@ -10,20 +10,17 @@ exports.sendWebChat = (request, response, items) => {
   console.log(items)
   const payload = []
   for (let i = 0; i < items.length; i++) {
-    const item = items[i]
-    if (item.type === 'text' || item.type === 'gen-text') {
-      payload.push(textMsgPayload(item, 'web recipient'))
-    } else if (item.type === 'image') {
-      payload.push(imagePayload(item, 'web recipient'))
-    } else if (item.type === 'quick-replies') {
-      payload.push(quickRepliesPayload(item, 'web recipient'))
-    } else if (item.type === 'card') {
-      payload.push(cardPayload(item, 'web recipient'))
-    } else if (item.type === 'payload') {
-      payload.push(genericPayload(item, 'web recipient'))
+    if (items[i].text) {
+      items[i].text = items[i].text.text[0]
+      payload.push(textMsgPayload(items[i], 'web recipient'))
+    } else if (items[i].quickReplies) {
+      payload.push(quickRepliesPayload(items[i], 'web recipient'))
+    } else {
+      payload.push(genericPayload(items[i], 'web recipient'))
     }
   }
   if (payload) {
+    console.log('sending payload ', payload)
     response.status(200).json({ answer: payload })
   }
 }

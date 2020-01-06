@@ -1,6 +1,6 @@
 const all = {
   viewMorePageIds: ['382154169188869'],
-  GCP_CREDENTIALS_FILE: process.env.GCP_CREDENTIALS_FILE,
+  GCP_CREDENTIALS_FILE: process.env.GCP_CREDENTIALS_FILE || '/Users/sojharo/RestructureWork/GCPCredentials/smart-reply-dev-66c9c58c745e.json',
   fbAccessToken: {
     // demossa
     382154169188869: 'EAAUTvApDOEYBAHXldCT12Scr89oRZAsfaz4folqdZCcW4oP1Vt3XIYf2vTwqSZBoYvZB8U0I6GeIazHwP8FaYPWdnnJaR9HfaJWWSY4cymOHCjAMELxhWpZAS9b20texHkPsBjfuzoVmVRMLoCWWL8rreMW4JktrQtmmo33EAYe50ZACgIRLkZB9xk0P7Qj38EZD',
