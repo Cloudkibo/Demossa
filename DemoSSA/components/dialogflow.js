@@ -19,6 +19,7 @@ exports.queryAIMessenger = (query, subscriberId, pageId, simpleQueryNotPostBack,
   )
     .then(result => {
       console.log('response from dialogflow')
+      console.log(result)
       const data = result.data.queryResult.fulfillmentMessages.filter((m) => m.platform === 'FACEBOOK')
       console.log(data)
       if (simpleQueryNotPostBack) {
