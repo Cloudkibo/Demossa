@@ -306,13 +306,13 @@ function genericMediaVideoPayload (item, recipientId) {
                   url: item.payload.facebook.attachment.payload.url,
                   title: 'View Full Video'
                 },
-                {
-                  type: 'web_url',
-                  url: process.env.DOMAIN + '/show-webview',
-                  title: 'Visit \'my Social Security\' Account',
-                  messenger_extensions: true,
-                  webview_height_ratio: 'tall'
-                }
+                // {
+                //   type: 'web_url',
+                //   url: process.env.DOMAIN + '/show-webview',
+                //   title: 'Visit \'my Social Security\' Account',
+                //   messenger_extensions: true,
+                //   webview_height_ratio: 'tall'
+                // }
               ]
             }
           ]
