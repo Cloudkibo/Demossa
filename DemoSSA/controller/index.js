@@ -22,6 +22,8 @@ exports.handleMessengerClient = (request, response) => {
   const message = body.entry[0].messaging[0]
   const pageId = message.recipient.id
   const subscriberId = message.sender.id
+  console.log('message body')
+  console.log(message)
   if (message.message) {
     const query = message.message.text
     queryAIMessenger(query, subscriberId, pageId, true)
