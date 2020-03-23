@@ -39,6 +39,22 @@ exports.sendMessengerChat = (item, recipientId, pageId, query) => {
   }
 }
 
+exports.senderAction = (recipientId, pageId, action) => {
+  let payload = {
+    recipient: {
+      id: recipientId
+    },
+    sender_action: action
+  }
+  callFacebookApi('v3.2', `me/messages?access_token=${config.fbAccessToken[pageId]}`, 'post', payload)
+    .then(result => {
+      console.log('FB Message Action sent', JSON.stringify(result.body))
+    })
+    .catch(err => {
+      console.log(err.message)
+    })
+}
+
 function callFacebookApi (version, path, method, data) {
   console.log(`calling https://graph.facebook.com/${version}/${path}`)
   return needle(

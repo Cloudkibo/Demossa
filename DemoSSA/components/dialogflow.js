@@ -1,5 +1,5 @@
 const config = require('../config/index.js')
-const { sendMessengerChat } = require('./messenger.js')
+const { sendMessengerChat, senderAction } = require('./messenger.js')
 const { intervalForEach } = require('../utils/index.js')
 const { JWT } = require('google-auth-library')
 
@@ -19,15 +19,16 @@ exports.queryAIMessenger = (query, subscriberId, pageId, simpleQueryNotPostBack,
   )
     .then(result => {
       console.log('response from dialogflow')
-      console.log(result)
       const data = result.data.queryResult.fulfillmentMessages.filter((m) => m.platform === 'FACEBOOK')
       console.log(data)
       if (simpleQueryNotPostBack) {
         if (data.length > 1 && config.viewMorePageIds.indexOf(pageId) > -1) { // if repsonse contains more than one paragraphs
           sendMessengerChat(data[0], subscriberId, pageId, query)
         } else {
+          senderAction(subscriberId, pageId, 'typing_on')
           intervalForEach(data, (item) => {
             sendMessengerChat(item, subscriberId, pageId)
+            senderAction(subscriberId, pageId, 'typing_off')
           }, 1500)
         }
       } else { // if query is coming from postback

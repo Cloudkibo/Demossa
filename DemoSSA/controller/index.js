@@ -1,5 +1,5 @@
 const { queryAIMessenger, callDialogFlowAPI } = require('../components/dialogflow.js')
-const { sendMessengerChat } = require('../components/messenger.js')
+const { sendMessengerChat, senderAction } = require('../components/messenger.js')
 const { sendWebChat } = require('../components/webClient.js')
 
 exports.verifyToken = (request, response) => {
@@ -22,8 +22,7 @@ exports.handleMessengerClient = (request, response) => {
   const message = body.entry[0].messaging[0]
   const pageId = message.recipient.id
   const subscriberId = message.sender.id
-  console.log('message body')
-  console.log(message)
+  senderAction(subscriberId, pageId, 'mark_seen')
   if (message.message) {
     const query = message.message.text
     queryAIMessenger(query, subscriberId, pageId, true)
