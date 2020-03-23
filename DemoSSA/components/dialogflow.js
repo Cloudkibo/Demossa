@@ -28,13 +28,13 @@ exports.queryAIMessenger = (query, subscriberId, pageId, simpleQueryNotPostBack,
         } else {
           intervalForEach(data, (item) => {
             sendMessengerChat(item, subscriberId, pageId)
-          }, 500)
+          }, 1500)
         }
       } else { // if query is coming from postback
         if (postBackType === 'see more') data.shift() // only faqs reponses should hide the first paragraph
         intervalForEach(data, (item) => {
           sendMessengerChat(item, subscriberId, pageId)
-        }, 500)
+        }, 1500)
       }
     })
     .catch(err => {

@@ -304,7 +304,7 @@ function genericMediaVideoPayload (item, recipientId) {
                 {
                   type: 'web_url',
                   url: item.payload.facebook.attachment.payload.url,
-                  title: 'View Full Video'
+                  title: 'Watch on Youtube'
                 },
                 // {
                 //   type: 'web_url',
