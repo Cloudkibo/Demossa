@@ -28,6 +28,9 @@ exports.handleMessengerClient = (request, response) => {
     const query = message.message.text
     queryAIMessenger(query, subscriberId, pageId, true)
   } else if (message.postback) {
+    if (message.postback.title === 'Get Started') {
+      return queryAIMessenger(message.postback.titl, subscriberId, pageId, true)
+    }
     const postback = JSON.parse(message.postback.payload)
     // let postbackTitle = message.postback.title
     console.log(postback)
