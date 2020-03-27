@@ -155,8 +155,8 @@ exports.imagePayload = (item, recipientId) => {
 
 exports.genericPayload = (item, recipientId, pageId) => {
   if (item.payload.facebook.attachment.payload.attachment_ids) {
-     if(item.payload.facebook.attachment.payload.type 
-        && item.payload.facebook.attachment.payload.type === 'audio') {
+     if(item.payload.facebook.attachment.payload.attachment_ids.type 
+        && item.payload.facebook.attachment.payload.attachment_ids.type === 'audio') {
            return audioPayload(item, recipientId, pageId)
      } else {
          return genericMediaVideoPayload(item, recipientId, pageId)
