@@ -344,6 +344,7 @@ function audioPayload (item, recipientId, pageId) {
   if (recipientId !== 'web recipient') {
     payload.message = JSON.stringify(payload.message)
   }
+  console.log('audio payload', payload)
   return payload
 }
 
