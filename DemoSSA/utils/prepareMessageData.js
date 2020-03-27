@@ -155,7 +155,12 @@ exports.imagePayload = (item, recipientId) => {
 
 exports.genericPayload = (item, recipientId, pageId) => {
   if (item.payload.facebook.attachment.payload.attachment_ids) {
-    return genericMediaVideoPayload(item, recipientId, pageId)
+     if(item.payload.facebook.attachment.payload.type 
+        && item.payload.facebook.attachment.payload.type === 'audio') {
+           return audioPayload(item, recipientId, pageId)
+     } else {
+         return genericMediaVideoPayload(item, recipientId, pageId)
+     }
   } else if (item.payload.facebook.attachment.payload.external_link) {
     const btnText = item.payload.facebook.attachment.payload.btnTxt || 'Read More'
     const text = item.payload.facebook.attachment.payload.text || 'Please click on Read More to know more about this.'
@@ -336,7 +341,7 @@ function audioPayload (item, recipientId, pageId) {
       attachment:{
         type:"audio", 
         payload:{
-          attachment_id: item.payload.facebook.attachment.payload.attachment_id[pageId],
+          attachment_id: item.payload.facebook.attachment.payload.attachment_ids[pageId],
         }
       }
     }
