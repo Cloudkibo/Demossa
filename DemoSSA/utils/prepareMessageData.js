@@ -326,6 +326,27 @@ function genericMediaVideoPayload (item, recipientId, pageId) {
   return payload
 }
 
+function audioPayload (item, recipientId, pageId) {
+  const payload = {
+    messaging_type: 'RESPONSE',
+    recipient: {
+      id: recipientId
+    },
+    message:{
+      attachment:{
+        type:"audio", 
+        payload:{
+          attachment_id: item.payload.facebook.attachment.payload.attachment_id[pageId],
+        }
+      }
+    }
+  }
+  if (recipientId !== 'web recipient') {
+    payload.message = JSON.stringify(payload.message)
+  }
+  return payload
+}
+
 function buttonWebPayload (item, recipientId) {
   const payload = {
     messaging_type: 'RESPONSE',
