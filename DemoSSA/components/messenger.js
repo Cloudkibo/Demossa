@@ -17,7 +17,7 @@ exports.sendMessengerChat = (item, recipientId, pageId, query) => {
   } else if (item.quickReplies) {
     payload = quickRepliesPayload(item, recipientId)
   } else {
-    payload = genericPayload(item, recipientId)
+    payload = genericPayload(item, recipientId, pageId)
   }
   // else if (item.type === 'image') {
   //   payload = imagePayload(item, recipientId)

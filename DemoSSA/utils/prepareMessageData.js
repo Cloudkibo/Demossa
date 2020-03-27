@@ -153,9 +153,9 @@ exports.imagePayload = (item, recipientId) => {
 //   return payload;
 // }
 
-exports.genericPayload = (item, recipientId) => {
-  if (item.payload.facebook.attachment.payload.attachment_id) {
-    return genericMediaVideoPayload(item, recipientId)
+exports.genericPayload = (item, recipientId, pageId) => {
+  if (item.payload.facebook.attachment.payload.attachment_ids) {
+    return genericMediaVideoPayload(item, recipientId, pageId)
   } else if (item.payload.facebook.attachment.payload.external_link) {
     const btnText = item.payload.facebook.attachment.payload.btnTxt || 'Read More'
     const text = item.payload.facebook.attachment.payload.text || 'Please click on Read More to know more about this.'
@@ -285,7 +285,7 @@ function methodOfChangePayload (item, recipientId) {
   return payload
 }
 
-function genericMediaVideoPayload (item, recipientId) {
+function genericMediaVideoPayload (item, recipientId, pageId) {
   const payload = {
     messaging_type: 'RESPONSE',
     recipient: {
@@ -299,7 +299,7 @@ function genericMediaVideoPayload (item, recipientId) {
           elements: [
             {
               media_type: 'video',
-              attachment_id: item.payload.facebook.attachment.payload.attachment_id,
+              attachment_id: item.payload.facebook.attachment.payload.attachment_ids[pageId],
               buttons: [
                 {
                   type: 'web_url',
