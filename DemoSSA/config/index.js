@@ -9,7 +9,7 @@ const all = {
     // CovidAlert
     113059013658389: 'EAAUTvApDOEYBADtsHRhghU0Oszu1ToK4ge7zFwS5cYZAhdPhXEMZBf6NlsZAtau1FpSXfSWcbY4tAawZAh7fM9PZBAeW1C8N2ZBDfN6Gcaz6HimpDJJrzdPfZCd0V7VwRHapALsN48RziBRCgUYu3JLt95CeqWQHqorI78bZCSZCEScTh2Ofm4evN',
     // Health Alert Me
-    103839534565995: 'EAAUTvApDOEYBAMKMDIsc4QaEMe7kIk8ordg58jsTLqDl632CZBvt0Al9UkY2yZCbZAoBZC9Ab7CLQV1W96uGsgqPrKuIIJpLsCMz55sfgPRDangPZBF05vq8RkX3kBd2bU9A46TO0bBvUySR0FwZC3FNybMQrwlV7gQawj2dOvivSZCpM0oQ0rC',
+//    103839534565995: 'EAAUTvApDOEYBAMKMDIsc4QaEMe7kIk8ordg58jsTLqDl632CZBvt0Al9UkY2yZCbZAoBZC9Ab7CLQV1W96uGsgqPrKuIIJpLsCMz55sfgPRDangPZBF05vq8RkX3kBd2bU9A46TO0bBvUySR0FwZC3FNybMQrwlV7gQawj2dOvivSZCpM0oQ0rC',
     // CovidAlertUrdu
 //    104316101220333: 'EAAUTvApDOEYBALmqqxAInW6wiWZCa5fJmb6W1vmeE8n8ioTaOdbgJx5uZCua08PrAT46nnHGlldjh70u5twlUXtLqCejmsfUjNXnt5BGnpxYx4jEofZCxte0o1bwnCmykSEeSuZCXVzF8uYTSJA50ZB1ZBvNhabwHFUcAm5hHZBCpkZBDShuN1eZB'
 
@@ -18,7 +18,7 @@ const all = {
     382154169188869: 'demossa-768c0',
     350372502408394: 'demossa2-a9b99',
     113059013658389: 'covidvirus-vtfpal',
-    103839534565995: 'covidvirus-vtfpal',
+//    103839534565995: 'covidvirus-vtfpal',
 //    104316101220333: 'covid19viruspk-qkgdtj'
   },
   corsDomains: ['https://kiboengage.cloudkibo.com', 'https://skiboengage.cloudkibo.com', 'http://localhost:3021', 'http://localhost:3000']
