@@ -13,7 +13,10 @@ exports.index = function (req, res) {
       }
     }
   }
-  dialogFlowApiCaller(config.ECOMMERCE_PROJECT_ID, `agent/sessions/123:detectIntent`, 'post', data)
+  dialogFlowApiCaller(
+    req.body.vertical === 'commerce' ? config.ECOMMERCE_PROJECT_ID : config.AIRLINES_PROJECT_ID,
+    `agent/sessions/${req.body.subscriberId}:detectIntent`,
+    'post', data)
     .then(result => {
       if (result.data && result.data.responseId && result.data.queryResult.fulfillmentMessages.length > 0) {
         let fulfillmentMessages = result.data.queryResult.fulfillmentMessages
