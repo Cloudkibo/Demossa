@@ -1,0 +1,43 @@
+{
+  "name": "KiboAutomation",
+  "version": "0.0.1",
+  "description": "A simple Node app built on Express, instantly up and running.",
+  "main": "server.js",
+  "scripts": {
+    "start": "cross-env DEBUG=KiboAutomation:* NODE_ENV=development nodemon --trace-warnings server.js",
+    "start:dev": "cross-env DOMAIN=https://kibopush-imran.ngrok.io DEBUG=KiboAutomation:* PORT=3051 SECURE_PORT=8443 NODE_ENV=development nodemon server.js",
+    "debug": "cross-env DOMAIN=https://kibopush-imran.ngrok.io DEBUG=express:router:route,express:application,KiboAutomation:* PORT=3000 SECURE_PORT=8443 NODE_ENV=development nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cloudkibo/KiboAutomation"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cloudkibo/KiboAutomation/issues"
+  },
+  "dependencies": {
+    "body-parser": "1.18.3",
+    "express": "^4.16.3",
+    "@sentry/node": "^5.28.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "cross-env": "^5.0.1",
+    "nodemon": "^1.18.3",
+    "standard": "^11.0.1"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "public/*"
+    ],
+    "delay": "1000"
+  },
+  "standard": {
+    "ignore": [
+      "public/*"
+    ],
+    "parser": "babel-eslint",
+    "globals": []
+  }
+}
