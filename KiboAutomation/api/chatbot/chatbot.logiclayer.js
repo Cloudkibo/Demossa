@@ -11,7 +11,9 @@ exports.getProjectId = function (vertical) {
   }
 }
 exports.preparePayload = function (fulfillmentMessages, intent) {
-  let payload = {}
+  let payload = {
+    responseType: intent.isFallback ? 'fallback' : 'matched'
+  }
   fulfillmentMessages.forEach(fulfillmentMessage => {
     if (fulfillmentMessage.payload) {
       payload.options = fulfillmentMessage.payload.options
@@ -21,7 +23,6 @@ exports.preparePayload = function (fulfillmentMessages, intent) {
     if (fulfillmentMessage.text) {
       payload.text = fulfillmentMessage.text.text[0]
     }
-    payload.responseType = intent.isFallback ? 'fallback' : 'matched'
   })
   return payload
 }
