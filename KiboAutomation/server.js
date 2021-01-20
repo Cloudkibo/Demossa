@@ -20,9 +20,9 @@ const httpsServer = https.createServer(options, httpsApp)
 if (config.env === 'production') {
   try {
     options = {
-      ca: fs.readFileSync('/root/certs/ca_bundle.crt'),
-      key: fs.readFileSync('/root/certs/private.key'),
-      cert: fs.readFileSync('/root/certs/certificate.crt')
+      ca: fs.readFileSync('/root/certs/kiboautomation/ca_bundle.crt'),
+      key: fs.readFileSync('/root/certs/kiboautomation/private.key'),
+      cert: fs.readFileSync('/root/certs/kiboautomation/certificate.crt')
     }
   } catch (e) {
     console.log('Error occured while reading ssl certs', e)
