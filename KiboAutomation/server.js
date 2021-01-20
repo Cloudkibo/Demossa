@@ -14,8 +14,6 @@ let options = {
 }
 
 const app = (process.env.NODE_ENV === 'production') ? httpsApp : httpApp
-const server = http.createServer(httpApp)
-const httpsServer = https.createServer(options, httpsApp)
 
 if (config.env === 'production') {
   try {
@@ -31,6 +29,9 @@ if (config.env === 'production') {
     res.redirect(`${config.domain}${req.url}`)
   })
 }
+
+const server = http.createServer(httpApp)
+const httpsServer = https.createServer(options, httpsApp)
 
 if (config.env === 'production' || config.env === 'staging') {
   Sentry.init({
