@@ -12,6 +12,10 @@ exports.getChatbotResponseSchema = {
     subscriberId: {
       type: 'string',
       required: true
+    },
+    type: {
+      type: 'string',
+      required: true
     }
   }
 }

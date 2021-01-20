@@ -26,3 +26,20 @@ exports.preparePayload = function (fulfillmentMessages, intent) {
   })
   return payload
 }
+exports.prepareQuery = function (type, userInput) {
+  let query = {
+    queryInput: {}
+  }
+  if (type === 'text') {
+    query.queryInput.text = {
+      text: userInput,
+      languageCode: 'en-US'
+    }
+  } else {
+    query.queryInput.event = {
+      name: userInput,
+      languageCode: 'en-US'
+    }
+  }
+  return query
+}

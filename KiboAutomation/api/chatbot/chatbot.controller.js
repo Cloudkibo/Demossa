@@ -1,23 +1,15 @@
-const config = require('./../../config/index')
 const { dialogFlowApiCaller } = require('./../../global/dialogFlow/index')
 const { sendSuccessResponse, sendErrorResponse } = require('./../../global/response')
-const { getProjectId, preparePayload } = require('./chatbot.logiclayer')
+const { getProjectId, preparePayload, prepareQuery } = require('./chatbot.logiclayer')
 const TAG = 'api/intents/intents.controller.js'
 const logger = require('./../../global/logger')
 
 exports.index = function (req, res) {
-  let data = {
-    queryInput: {
-      text: {
-        text: req.body.userInput,
-        languageCode: 'en-US'
-      }
-    }
-  }
   dialogFlowApiCaller(
     getProjectId(req.body.vertical),
     `agent/sessions/${req.body.subscriberId}:detectIntent`,
-    'post', data)
+    'post',
+    prepareQuery(req.body.type, req.body.userInput))
     .then(result => {
       if (result.data && result.data.responseId && result.data.queryResult.fulfillmentMessages.length > 0) {
         let payload = preparePayload(result.data.queryResult.fulfillmentMessages, result.data.queryResult.intent)
