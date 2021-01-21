@@ -19,6 +19,7 @@ exports.preparePayload = function (fulfillmentMessages, intent) {
       payload.options = fulfillmentMessage.payload.options
       payload.API = fulfillmentMessage.payload.API
       payload.otherOptions = fulfillmentMessage.payload.otherOptions
+      payload.event = fulfillmentMessage.payload.event
     }
     if (fulfillmentMessage.text) {
       payload.text = fulfillmentMessage.text.text[0]
