@@ -9,7 +9,7 @@ module.exports = function (app) {
 
   // http://expressjs.com/en/starter/static-files.html
   app.use(express.static(path.join(__dirname, 'public')))
-  app.use('/', require('./api/chatbot'))
+  app.use('/api', require('./api/chatbot'))
 
   app.get('/*', (request, response) => {
     response.send('This page is not yet implemented.')
