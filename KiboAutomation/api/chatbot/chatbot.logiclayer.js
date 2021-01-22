@@ -20,6 +20,7 @@ exports.preparePayload = function (fulfillmentMessages, intent) {
       payload.API = fulfillmentMessage.payload.API
       payload.otherOptions = fulfillmentMessage.payload.otherOptions
       payload.event = fulfillmentMessage.payload.event
+      payload.openEndedResponse = fulfillmentMessage.payload.openEndedResponse
     }
     if (fulfillmentMessage.text) {
       payload.text = fulfillmentMessage.text.text[0]
