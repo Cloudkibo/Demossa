@@ -21,6 +21,7 @@ exports.preparePayload = function (fulfillmentMessages, intent) {
       payload.otherOptions = fulfillmentMessage.payload.otherOptions
       payload.event = fulfillmentMessage.payload.event
       payload.openEndedResponse = fulfillmentMessage.payload.openEndedResponse
+      payload.showCard = fulfillmentMessage.payload.showCard
     }
     if (fulfillmentMessage.text) {
       payload.text = fulfillmentMessage.text.text[0]
