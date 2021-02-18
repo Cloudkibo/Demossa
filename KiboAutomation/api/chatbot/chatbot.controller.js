@@ -12,7 +12,11 @@ exports.index = function (req, res) {
     prepareQuery(req.body.type, req.body.userInput))
     .then(result => {
       if (result.data && result.data.responseId && result.data.queryResult.fulfillmentMessages.length > 0) {
-        let payload = preparePayload(result.data.queryResult.fulfillmentMessages, result.data.queryResult.intent)
+        let payload = preparePayload(
+          result.data.queryResult.fulfillmentMessages,
+          result.data.queryResult.intent,
+          result.data.queryResult.intentDetectionConfidence
+        )
         sendSuccessResponse(res, 200, payload)
       } else {
         sendSuccessResponse(res, 200, {})
