@@ -10,23 +10,31 @@ exports.getProjectId = function (vertical) {
       return ''
   }
 }
-exports.preparePayload = function (fulfillmentMessages, intent) {
-  let payload = {
-    responseType: intent.isFallback ? 'fallback' : 'matched'
+exports.preparePayload = function (fulfillmentMessages, intent, confidence) {
+  let payload = {}
+  if (confidence >= 0.8) {
+    payload = {
+      responseType: intent.isFallback ? 'fallback' : 'matched'
+    }
+    fulfillmentMessages.forEach(fulfillmentMessage => {
+      if (fulfillmentMessage.payload) {
+        payload.options = fulfillmentMessage.payload.options
+        payload.API = fulfillmentMessage.payload.API
+        payload.otherOptions = fulfillmentMessage.payload.otherOptions
+        payload.event = fulfillmentMessage.payload.event
+        payload.openEndedResponse = fulfillmentMessage.payload.openEndedResponse
+        payload.showCard = fulfillmentMessage.payload.showCard
+      }
+      if (fulfillmentMessage.text) {
+        payload.text = fulfillmentMessage.text.text[0]
+      }
+    })
+  } else {
+    payload = {
+      responseType: 'fallback',
+      text: 'Sorry, I did not understand.'
+    }
   }
-  fulfillmentMessages.forEach(fulfillmentMessage => {
-    if (fulfillmentMessage.payload) {
-      payload.options = fulfillmentMessage.payload.options
-      payload.API = fulfillmentMessage.payload.API
-      payload.otherOptions = fulfillmentMessage.payload.otherOptions
-      payload.event = fulfillmentMessage.payload.event
-      payload.openEndedResponse = fulfillmentMessage.payload.openEndedResponse
-      payload.showCard = fulfillmentMessage.payload.showCard
-    }
-    if (fulfillmentMessage.text) {
-      payload.text = fulfillmentMessage.text.text[0]
-    }
-  })
   return payload
 }
 exports.prepareQuery = function (type, userInput) {
