@@ -1,4 +1,7 @@
 const config = require('./../../config/index')
+const axios = require('axios')
+const fs = require('fs')
+const path = require('path')
 
 exports.getProjectId = function (vertical) {
   switch (vertical) {
@@ -37,11 +40,21 @@ exports.preparePayload = function (fulfillmentMessages, intent, confidence) {
   }
   return payload
 }
-exports.prepareQuery = function (type, userInput) {
+exports.prepareQuery = async function (type, userInput) {
   let query = {
     queryInput: {}
   }
-  if (type === 'text') {
+  if (type === 'audio') {
+    const inputAudio = await getAudio(userInput)
+    query.inputAudio = inputAudio
+    query.queryInput = {
+      audioConfig: {
+        languageCode: 'en-US',
+        audioEncoding: 'AUDIO_ENCODING_OGG_OPUS',
+        sampleRateHertz: 16000
+      }
+    }
+  } else if (type === 'text') {
     query.queryInput.text = {
       text: userInput,
       languageCode: 'en-US'
@@ -53,4 +66,25 @@ exports.prepareQuery = function (type, userInput) {
     }
   }
   return query
+}
+
+const getAudio = async (userInput) => {
+  return new Promise(async (resolve, reject) => {
+    const response = await axios({
+      method: 'GET',
+      url: userInput,
+      responseType: 'stream'
+    })
+    let stream = response.data.pipe(fs.createWriteStream(path.join(__dirname, '/file.ogg')))
+    stream.on('finish', () => {
+      const inputAudio = fs.readFileSync(path.join(__dirname, '/file.ogg')).toString('base64')
+      fs.unlink(path.join(__dirname, '/file.ogg'), function (err) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(inputAudio)
+        }
+      })
+    })
+  })
 }

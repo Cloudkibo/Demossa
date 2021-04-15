@@ -78,3 +78,6 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# .DS_Store file often created by Mac OS
+.DS_Store
